@@ -257,6 +257,47 @@ textarea.input-field {
   transform: scale(1.15);
 }
 
+/* Footer Shape Selector */
+.footer-shape-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 4px;
+}
+@media (max-width: 480px) {
+  .footer-shape-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.btn-shape-pill {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 6px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-shape-pill:hover {
+  background: rgba(139, 92, 246, 0.16);
+  border-color: var(--card-border-hover);
+  color: #ffffff;
+}
+.btn-shape-pill.active {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: var(--accent-cyan);
+  color: #22d3ee;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+  font-weight: 700;
+}
+
 /* Add More Section / Dynamic Custom Fields */
 .btn-add-section {
   display: inline-flex;
@@ -865,6 +906,34 @@ textarea.input-field {
         <input type="file" id="logoFileInput" accept="image/*" hidden>
       </div>
 
+      <!-- Footer Shape & Style Selection -->
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label" style="font-size: 11px;">
+          <span>Footer Shape &amp; Style:</span>
+          <span style="color: var(--accent-cyan); font-weight: 700;" id="activeShapeLabel">Wavy Ribbon</span>
+        </label>
+        <div class="footer-shape-grid" id="footerShapeGrid">
+          <button type="button" class="btn-shape-pill active" data-shape="wave">
+            <span>〰️</span> Wavy Ribbon
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="curved">
+            <span>⌒</span> Curved Arch
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="rectangle">
+            <span>▰</span> Rectangle
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="diagonal">
+            <span>◰</span> Diagonal Cut
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="rounded">
+            <span>⬭</span> Rounded
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="double">
+            <span>═</span> Double Trim
+          </button>
+        </div>
+      </div>
+
       <!-- Standard Brand Details -->
       <div class="form-group grid-2">
         <div>
@@ -1025,6 +1094,7 @@ let logoImageObj = new Image();
 logoImageObj.crossOrigin = "anonymous";
 logoImageObj.src = "/static/assets/sample_crown.png";
 let activeFrameColor = "#fbbf24";
+let selectedFooterShape = "wave";
 let currentPosterDataUrl = "/static/assets/diwali_poster.png";
 let renderTimer = null;
 
@@ -1175,6 +1245,19 @@ function getCustomFieldsData() {
   });
   return fields;
 }
+
+// -------------------------------------------------------------
+// Footer Shape Selector Handlers
+// -------------------------------------------------------------
+$$('#footerShapeGrid .btn-shape-pill').forEach(btn => {
+  btn.onclick = () => {
+    $$('#footerShapeGrid .btn-shape-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedFooterShape = btn.getAttribute('data-shape');
+    $('#activeShapeLabel').textContent = btn.textContent.trim().replace(/^.+?\s/, '');
+    schedulePosterUpdate();
+  };
+});
 
 // -------------------------------------------------------------
 // Aspect Ratio, Style & Inputs
@@ -1514,29 +1597,101 @@ function renderLivePoster() {
 
   const fy = H - frameInset - ribbonHeight;
 
-  // Dynamic harmonized ribbon background gradient
+  // Dynamic Logo-Harmonized Footer Gradient (Visibly shifts to match logo colors)
   const fGrad = ctx.createLinearGradient(0, fy, W, fy);
-  fGrad.addColorStop(0, `rgba(${Math.round(rgb.r * 0.22)}, ${Math.round(rgb.g * 0.12)}, ${Math.round(rgb.b * 0.18)}, 0.95)`);
-  fGrad.addColorStop(0.5, `rgba(${Math.round(rgb.r * 0.38)}, ${Math.round(rgb.g * 0.22)}, ${Math.round(rgb.b * 0.2)}, 0.98)`);
-  fGrad.addColorStop(1, `rgba(${Math.round(rgb.r * 0.22)}, ${Math.round(rgb.g * 0.12)}, ${Math.round(rgb.b * 0.18)}, 0.95)`);
+  fGrad.addColorStop(0, `rgba(${Math.round(rgb.r * 0.35 + 14)}, ${Math.round(rgb.g * 0.2 + 8)}, ${Math.round(rgb.b * 0.28 + 12)}, 0.96)`);
+  fGrad.addColorStop(0.5, `rgba(${Math.round(rgb.r * 0.58 + 22)}, ${Math.round(rgb.g * 0.38 + 16)}, ${Math.round(rgb.b * 0.44 + 18)}, 0.98)`);
+  fGrad.addColorStop(1, `rgba(${Math.round(rgb.r * 0.35 + 14)}, ${Math.round(rgb.g * 0.2 + 8)}, ${Math.round(rgb.b * 0.28 + 12)}, 0.96)`);
   ctx.fillStyle = fGrad;
-
-  // Wavy Banner Shape
-  ctx.beginPath();
-  ctx.moveTo(frameInset + 8, fy);
-  ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, W - frameInset - 8, fy);
-  ctx.lineTo(W - frameInset - 8, H - frameInset - 8);
-  ctx.lineTo(frameInset + 8, H - frameInset - 8);
-  ctx.closePath();
-  ctx.fill();
-
-  // Wavy accent top border
   ctx.strokeStyle = themeHex;
-  ctx.lineWidth = 2.8;
-  ctx.beginPath();
-  ctx.moveTo(frameInset + 8, fy);
-  ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, W - frameInset - 8, fy);
-  ctx.stroke();
+  ctx.lineWidth = 3;
+
+  const x1 = frameInset + 8;
+  const x2 = W - frameInset - 8;
+  const bottomY = H - frameInset - 8;
+
+  // Draw Selected Footer Shape
+  if (selectedFooterShape === 'curved') {
+    // Elegant Curved Arch
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 18);
+    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 18);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 18);
+    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 18);
+    ctx.stroke();
+  } else if (selectedFooterShape === 'rectangle') {
+    // Crisp Full-Width Rectangle
+    ctx.beginPath();
+    ctx.rect(x1, fy, x2 - x1, bottomY - fy);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.lineTo(x2, fy);
+    ctx.stroke();
+  } else if (selectedFooterShape === 'diagonal') {
+    // Dynamic Modern Diagonal Cut
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 24);
+    ctx.lineTo(x2, fy - 14);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 24);
+    ctx.lineTo(x2, fy - 14);
+    ctx.stroke();
+  } else if (selectedFooterShape === 'rounded') {
+    // Rounded Floating Capsule
+    ctx.beginPath();
+    ctx.roundRect(x1 + 4, fy, (x2 - x1) - 8, bottomY - fy, [18, 18, 12, 12]);
+    ctx.fill();
+    ctx.stroke();
+  } else if (selectedFooterShape === 'double') {
+    // Double Layer Trim
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.stroke();
+
+    // Secondary inner trim line
+    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(x1 + 6, fy + 10);
+    ctx.bezierCurveTo(W * 0.35, fy - 6, W * 0.65, fy + 26, x2 - 6, fy + 10);
+    ctx.stroke();
+  } else {
+    // Default: Wavy Ribbon
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.stroke();
+  }
 
   // Draw Logo in Footer (or center crest)
   const hasLogo = logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0;
@@ -1702,7 +1857,7 @@ async function generateNewPoster() {
         website: $('#brandWeb').value || 'https://yourbrand.com',
         email: $('#brandEmail').value || 'hello@yourbrand.com',
         cta: $('#brandExtra').value || 'Celebrate with us',
-        footer_style: 'wave',
+        footer_style: selectedFooterShape || 'wave',
         footer_position: 'bottom',
         logo_base64: uploadedLogoB64 ? uploadedLogoB64.split(',')[1] : null,
         poster_bytes: uploadedBgB64 ? uploadedBgB64.split(',')[1] : null
