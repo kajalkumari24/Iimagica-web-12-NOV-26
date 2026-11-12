@@ -3,660 +3,271 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>imagica — AI Poster, Frame and Footer Studio</title>
+<title>iimagica — AI Poster Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0b0914;
-  --sidebar-bg: #100d1e;
-  --card-bg: rgba(22, 18, 38, 0.78);
+  --bg: #090714;
+  --card-bg: rgba(18, 14, 34, 0.88);
   --card-border: rgba(139, 92, 246, 0.16);
-  --card-border-hover: rgba(168, 85, 247, 0.35);
-  --input-bg: #151127;
+  --card-border-hover: rgba(6, 182, 212, 0.35);
+  --input-bg: #140f28;
   --input-border: rgba(255, 255, 255, 0.08);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-sub: #64748b;
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --primary-grad: linear-gradient(135deg, #8b5cf6, #6366f1);
-  --accent-pink: #ec4899;
-  --accent-grad: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
-  --glow: 0 0 20px rgba(139, 92, 246, 0.35);
+  --accent-cyan: #22d3ee;
+  --accent-blue: #0284c7;
+  --primary-purple: #8b5cf6;
+  --btn-cyan-grad: linear-gradient(90deg, #22d3ee 0%, #0284c7 100%);
   --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-script: 'Great Vibes', cursive;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: var(--bg) radial-gradient(1200px 800px at 20% 0%, rgba(139, 92, 246, 0.12), transparent 70%);
+  background: var(--bg) radial-gradient(1400px 900px at 50% 0%, rgba(139, 92, 246, 0.12), transparent 75%);
   color: var(--text-main);
   font-family: var(--font-main);
   font-size: 13px;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 180px;
-  background: var(--sidebar-bg);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  padding: 20px 14px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  flex-shrink: 0;
-}
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 28px;
-  padding-left: 6px;
-}
-.brand-logo svg {
-  width: 26px;
-  height: 26px;
-}
-.nav-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid transparent;
-}
-.nav-item:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.03);
-}
-.nav-item.active {
-  background: var(--accent-grad);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
-}
-.sidebar-promo {
-  background: linear-gradient(145deg, #1f143d 0%, #110b24 100%);
-  border: 1px solid rgba(168, 85, 247, 0.25);
-  border-radius: 14px;
-  padding: 16px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.sidebar-promo svg {
-  margin-bottom: 8px;
-}
-.sidebar-promo h4 {
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-.sidebar-promo p {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.sidebar-promo::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  background: linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.4));
-  border-radius: 0 0 14px 14px;
-}
-
-/* Main Container */
-.main-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.top-nav {
-  height: 60px;
+/* Top App Header */
+.app-header {
+  padding: 16px 36px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
-.top-nav h2 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-.top-actions {
+.app-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.2px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
 }
-.theme-toggle-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: 0.2s;
-}
-.theme-toggle-btn:hover { color: var(--text-main); }
-.user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #a855f7, #6366f1);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  font-size: 13px;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Workspace Grid */
-.workspace {
-  padding: 16px 24px 32px;
-  display: grid;
-  grid-template-columns: minmax(420px, 1.12fr) minmax(380px, 1fr);
-  gap: 20px;
-  align-items: start;
-  max-width: 1560px;
+/* Main 2-Column Desktop Container */
+.main-container {
   width: 100%;
+  max-width: 1420px;
   margin: 0 auto;
-}
-.col-left {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-}
-.col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-  position: sticky;
-  top: 14px;
-  max-height: calc(100vh - 28px);
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-.col-right::-webkit-scrollbar {
-  display: none;
+  padding: 20px 32px 30px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 22px;
+  align-items: start;
+  flex: 1;
 }
 
-/* Cards */
-.panel-card {
+.col-left, .col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 0;
+}
+
+/* Card Styling */
+.card-box {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 15px 18px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  padding: 14px 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
   transition: border-color 0.2s;
 }
-  backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  transition: border-color 0.2s;
-}
-.panel-card:hover {
+.card-box:hover {
   border-color: var(--card-border-hover);
 }
-.card-header {
+.card-heading {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.card-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-main);
-}
-.icon-badge {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(168, 85, 247, 0.16);
-  color: #c084fc;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-}
-.ai-powered-pill {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 99px;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2));
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  color: #d8b4fe;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-/* Inputs & Forms */
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 14px;
-}
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  color: #f8fafc;
   margin-bottom: 12px;
 }
-.form-field:last-child { margin-bottom: 0; }
+.card-heading svg {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 10px;
+}
+.form-group:last-child {
+  margin-bottom: 0;
+}
 .form-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 5px;
 }
-.form-label .char-count {
-  font-size: 11px;
+.char-count {
+  font-size: 10.5px;
   color: var(--text-sub);
 }
-.input-control, select.input-control {
+.input-field {
   width: 100%;
   background: var(--input-bg);
   border: 1px solid var(--input-border);
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 7px 11px;
   color: var(--text-main);
-  padding: 9px 12px;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12.5px;
   outline: none;
   transition: all 0.2s;
 }
-.input-control:focus, select.input-control:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+.input-field:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
 }
-textarea.input-control {
+textarea.input-field {
   resize: vertical;
-  min-height: 60px;
-}
-select.input-control {
-  cursor: pointer;
+  min-height: 52px;
+  line-height: 1.4;
 }
 
-/* Style Pills */
-.style-pills-row {
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Style & Theme Pills */
+.pill-row {
   display: flex;
-  gap: 8px;
-  margin-top: 10px;
   flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 6px;
+  align-items: center;
 }
 .style-pill {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 .style-pill:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: var(--text-main);
+  color: #fff;
 }
 .style-pill.active {
-  background: var(--accent-grad);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.35);
+  background: rgba(6, 182, 212, 0.16);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
 }
-
-/* Image Upload Grid */
-.upload-layout-grid {
-  display: grid;
-  grid-template-columns: 80px 1.4fr 1.1fr;
-  gap: 14px;
-  align-items: stretch;
-}
-.thumb-preview-box {
-  width: 80px;
-  height: 80px;
-  border-radius: 12px;
-  border: 1px solid var(--card-border);
-  overflow: hidden;
-  background: #19142e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.thumb-preview-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.drop-zone-box {
-  border: 1.5px dashed rgba(168, 85, 247, 0.3);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.015);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.drop-zone-box:hover {
-  border-color: var(--primary);
-  background: rgba(139, 92, 246, 0.05);
-}
-.drop-zone-box svg {
-  color: #c084fc;
-  margin-bottom: 6px;
-}
-.btn-choose {
-  background: var(--accent-grad);
-  color: #fff;
-  border: none;
-  padding: 4px 12px;
+.select-compact {
+  background: var(--input-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 4px 8px;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
-  margin-top: 4px;
+  outline: none;
   cursor: pointer;
-}
-.drop-hint {
-  font-size: 10px;
-  color: var(--text-sub);
-  margin-top: 4px;
-}
-.select-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
-/* Footer Carousel */
-.footer-pos-toggle {
+/* Aspect Ratio Radio Options */
+.ratio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 4px;
+}
+.ratio-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-.seg-btn-group {
-  display: flex;
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: 8px;
-  padding: 2px;
-}
-.seg-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.seg-btn.active {
-  background: var(--primary);
-  color: #fff;
-}
-.tabs-row {
-  display: flex;
-  gap: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 12px;
-  padding-bottom: 6px;
-}
-.tab-link {
+  gap: 7px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
-  padding-bottom: 4px;
-  border-bottom: 2px solid transparent;
 }
-.tab-link.active {
-  color: #d8b4fe;
-  border-bottom-color: var(--primary);
-}
-.carousel-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.carousel-nav-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
+.ratio-label input[type="radio"] {
+  accent-color: var(--accent-cyan);
   cursor: pointer;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  transition: 0.2s;
 }
-.carousel-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-.carousel-items {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  padding: 4px 2px;
-}
-.carousel-items::-webkit-scrollbar { display: none; }
-.footer-template-card {
-  width: 90px;
-  height: 48px;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  background-size: cover;
-  background-position: center;
-}
-.footer-template-card:hover {
-  transform: translateY(-2px);
-}
-.footer-template-card.active {
-  border-color: #a855f7;
-  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-}
-.template-check {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 14px;
-  height: 14px;
-  background: #a855f7;
-  border-radius: 50%;
-  display: none;
-  place-items: center;
-  font-size: 9px;
-  color: #fff;
-}
-.footer-template-card.active .template-check { display: grid; }
-
-/* Brand & Contact Grid */
-.brand-contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.logo-upload-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-.logo-box {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
-  background: #18132e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  font-size: 24px;
-}
-.btn-sm-action {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.ratio-label.active {
   color: var(--text-main);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 11.5px;
+}
+
+/* Upload Dropzone */
+.dropzone-box {
+  border: 1.5px dashed rgba(139, 92, 246, 0.25);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.015);
+  padding: 16px;
+  text-align: center;
   cursor: pointer;
   transition: 0.2s;
 }
-.btn-sm-action:hover {
-  background: rgba(255, 255, 255, 0.1);
+.dropzone-box:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(6, 182, 212, 0.03);
 }
-.btn-trash {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  color: #f87171;
+.dropzone-box svg {
+  color: var(--accent-cyan);
+  margin-bottom: 5px;
 }
-
-/* Generate CTA */
-.generate-action-bar {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  margin-top: 4px;
+.dropzone-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f1f5f9;
 }
-.btn-generate-hero {
-  flex: 1;
-  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
-  border: none;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 13px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45);
-  transition: all 0.25s;
-}
-.btn-generate-hero:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
-  filter: brightness(1.08);
-}
-.btn-generate-hero:active {
-  transform: translateY(0);
+.dropzone-hint {
+  font-size: 10px;
+  color: var(--text-sub);
+  margin-top: 3px;
 }
 
-/* Poster Preview Card (Right Column) */
+/* Right Column: Poster Preview */
 .preview-card {
-  display: flex;
-  flex-direction: column;
+  padding: 14px 16px;
 }
-.device-toggles {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.device-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.device-btn:hover, .device-btn.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-.btn-fullscreen {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-/* Canvas Area */
 .poster-viewport {
   width: 100%;
-  max-width: 440px;
-  max-height: 440px;
   aspect-ratio: 4 / 4.7;
-  border-radius: 14px;
+  max-height: 440px;
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
   background: #110d24;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-  margin: 0 auto 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+  margin: 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: max-width 0.25s ease-out;
 }
 .poster-viewport img {
   width: 100%;
@@ -673,605 +284,386 @@ select.input-control {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   z-index: 10;
 }
 .canvas-loader.active { display: flex; }
 .spinner-ring {
-  width: 38px;
-  height: 38px;
-  border: 3px solid rgba(168, 85, 247, 0.2);
-  border-top-color: #c084fc;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(6, 182, 212, 0.2);
+  border-top-color: var(--accent-cyan);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Selected Footer Card */
-.selected-footer-card {
+/* Ready Status Card */
+.ready-card {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-}
-.sf-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.sf-preview {
-  width: 80px;
-  height: 36px;
-  border-radius: 6px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.sf-info h5 {
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-.sf-info p {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.btn-outline-pill {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-main);
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-size: 11px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: 0.2s;
-}
-.btn-outline-pill:hover { background: rgba(255, 255, 255, 0.08); }
-
-/* Model & Project Info (Glowing Violet Card) */
-.info-glow-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, rgba(35, 22, 66, 0.85) 0%, rgba(18, 12, 38, 0.85) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
-  border-radius: 16px;
-  position: relative;
-}
-.info-col h5 {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-.meta-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  margin-bottom: 4px;
-}
-.badge-pill {
-  background: rgba(168, 85, 247, 0.2);
-  color: #c084fc;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-size: 10.5px;
-  font-weight: 600;
-}
-
-/* Success Download Bar */
-.action-status-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 14px 18px;
-}
-.status-msg-wrap {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
+  padding: 14px 16px;
 }
-.check-circle {
-  width: 32px;
-  height: 32px;
+.ready-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check-badge {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #22c55e;
   color: #052e16;
   display: grid;
   place-items: center;
-  font-size: 16px;
   font-weight: 800;
+  font-size: 13px;
   flex-shrink: 0;
 }
-.status-text h4 {
-  font-size: 13px;
+.ready-title {
+  font-size: 15px;
   font-weight: 700;
-  color: #4ade80;
+  color: #ffffff;
 }
-.status-text p {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.action-buttons-group {
+.action-buttons-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.btn-download-primary {
-  background: var(--primary-grad);
-  border: none;
-  color: #fff;
-  padding: 9px 18px;
-  border-radius: 10px;
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
-  transition: 0.2s;
-  text-decoration: none;
+  align-items: center;
 }
-.btn-download-primary:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.1);
-}
-.btn-share {
-  background: rgba(255, 255, 255, 0.05);
+.btn-action-sm {
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-main);
-  padding: 9px 16px;
-  border-radius: 10px;
-  font-size: 12px;
+  color: #f1f5f9;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: 0.2s;
+  gap: 5px;
+  transition: all 0.2s;
+  text-decoration: none;
 }
-.btn-share:hover { background: rgba(255, 255, 255, 0.1); }
+.btn-action-sm:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
 
-/* Responsive adjustments */
-@media (max-width: 960px) {
-  .workspace { grid-template-columns: 1fr; }
-  .col-right { position: static; max-height: none; }
+/* AI Model & API Info Card */
+.model-info-card {
+  padding: 12px 16px;
+  font-size: 12px;
 }
-@media (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { width: 100%; height: auto; position: static; }
-  .form-grid-2, .brand-contact-grid, .upload-layout-grid { grid-template-columns: 1fr; }
-  .info-glow-card { grid-template-columns: 1fr; }
+.model-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.model-info-row:last-child { margin-bottom: 0; }
+.model-pill {
+  background: #581c87;
+  border: 1px solid #9333ea;
+  color: #e9d5ff;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 11.5px;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+/* Hero Cyan Gradient Button */
+.btn-generate-hero {
+  background: var(--btn-cyan-grad);
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #042f2e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
+  transition: all 0.2s;
+  width: 100%;
+}
+.btn-generate-hero:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.45);
+}
+.btn-generate-hero:active {
+  transform: translateY(0);
+}
+
+/* App Footer */
+.app-footer {
+  text-align: center;
+  padding: 14px 0 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.app-footer strong {
+  color: var(--accent-cyan);
+}
+
+@media (max-width: 960px) {
+  .main-container {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- Left Fixed Sidebar -->
-<aside class="sidebar">
-  <div class="brand-logo">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" fill="url(#pGrad)"/>
-      <defs>
-        <linearGradient id="pGrad" x1="3" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#c084fc"/>
-          <stop offset="1" stop-color="#6366f1"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    imagica
+<!-- Header -->
+<header class="app-header">
+  <div class="app-title">
+    <span>iimagica — AI Poster Studio</span>
+  </div>
+</header>
+
+<!-- Main Desktop 2-Column Grid -->
+<main class="main-container">
+  <!-- Left Column: Controls & Configuration -->
+  <div class="col-left">
+
+    <!-- 1. Project Details -->
+    <section class="card-box">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Project Details
+      </div>
+      <div class="form-group grid-2">
+        <div>
+          <label class="form-label">Poster Title *</label>
+          <input class="input-field" id="posterTitle" value="Happy Diwali Special">
+        </div>
+        <div>
+          <label class="form-label">&nbsp;</label>
+          <input class="input-field" id="posterSecondary" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          Description
+          <span class="char-count" id="descCount">46/300</span>
+        </label>
+        <textarea class="input-field" id="posterDesc" rows="2">Celebrate the festival of lights with prosperity, joy, and peace!</textarea>
+      </div>
+    </section>
+
+    <!-- 2. AI Prompt & Creative Direction -->
+    <section class="card-box">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        AI Prompt &amp; Creative Direction
+      </div>
+      <div class="form-group">
+        <label class="form-label">Describe the poster you want</label>
+        <textarea class="input-field" id="aiPrompt" rows="3">Traditional terracotta diya on a vibrant mandala rangoli floor pattern with festive lights and golden bokeh.</textarea>
+      </div>
+      <div class="form-group" style="margin-top: 10px;">
+        <label class="form-label">Style &amp; Theme</label>
+        <div class="pill-row" id="stylePills">
+          <span class="style-pill active" data-style="golden_glow">Golden Glow</span>
+          <span class="style-pill" data-style="festive">Festive</span>
+          <span class="style-pill" data-style="modern_minimal">Modern Minimal</span>
+          <span class="style-pill" data-style="boho_chic">Boho Chic</span>
+          <select class="select-compact" id="styleSelect">
+            <option value="modern" selected>✨ Style: Modern</option>
+            <option value="elegant">✨ Style: Elegant</option>
+            <option value="luxury">✨ Style: Luxury</option>
+          </select>
+        </div>
+        <div class="pill-row" style="margin-top: 8px;">
+          <select class="select-compact" id="themeSelect">
+            <option value="boho">Boho Chic ⌵</option>
+            <option value="mandala" selected>Mandala Rangoli ⌵</option>
+            <option value="celebration">Celebration ⌵</option>
+          </select>
+          <span class="style-pill" data-style="retro_pop">Retro Pop</span>
+          <span class="style-pill" data-style="cyberpunk">Cyberpunk</span>
+          <select class="select-compact" id="sizeSelect">
+            <option value="1080x1350" selected>📐 1080x1350 (Portrait)</option>
+            <option value="1080x1080">📐 1080x1080 (Square)</option>
+            <option value="1920x1080">📐 1920x1080 (Landscape)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Aspect Ratio & Proportion -->
+    <section class="card-box">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Aspect Ratio &amp; Proportion
+      </div>
+      <div class="ratio-group">
+        <label class="ratio-label active">
+          <input type="radio" name="ratioRadio" value="1080x1350" checked>
+          Portrait (1080x1350)
+        </label>
+        <label class="ratio-label">
+          <input type="radio" name="ratioRadio" value="1080x1080">
+          Square (1080x1080)
+        </label>
+        <label class="ratio-label">
+          <input type="radio" name="ratioRadio" value="1920x1080">
+          Landscape (1920x1080)
+        </label>
+      </div>
+    </section>
+
+    <!-- 4. Image Upload (Optional) -->
+    <section class="card-box">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Image Upload (Optional)
+      </div>
+      <div class="dropzone-box" id="dropZone">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        <div class="dropzone-title">Drag and drop an image/logo</div>
+        <div class="dropzone-hint">Supports: JPG, PNG, WEBP</div>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </div>
+    </section>
+
+    <!-- 5. Brand Details & Footer Options -->
+    <section class="card-box">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Brand Details &amp; Footer Options
+      </div>
+      <div class="form-group grid-2">
+        <div>
+          <label class="form-label">Brand Website</label>
+          <input class="input-field" id="brandWeb" value="https://yourbrand.com">
+        </div>
+        <div>
+          <label class="form-label">Brand Email</label>
+          <input class="input-field" id="brandEmail" value="hello@yourbrand.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Brand Phone / Contact</label>
+        <input class="input-field" id="brandPhone" value="+91 98765 43210">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tagline/Footer Text</label>
+        <input class="input-field" id="brandExtra" value="Celebrate with us | YourBrand.com">
+      </div>
+    </section>
+
   </div>
 
-  <nav class="nav-menu">
-    <a class="nav-item active" href="/">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      Create Poster
-    </a>
-    <a class="nav-item" href="/dashboard">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      My Projects
-    </a>
-    <a class="nav-item" href="#footerCarousel" onclick="document.getElementById('footerCarousel').scrollIntoView({behavior:'smooth'})">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-      Templates
-    </a>
-    <a class="nav-item" href="/model-lab">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Settings
-    </a>
-    <a class="nav-item" href="/docs">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Help
-    </a>
-  </nav>
+  <!-- Right Column: Poster Preview & Actions -->
+  <div class="col-right">
 
-  <div class="sidebar-promo">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L15 8L21 11L15 14L12 20L9 14L3 11L9 8L12 2Z" fill="#a855f7"/>
-    </svg>
-    <h4>Create Stunning Posters with AI ✨</h4>
-    <p>Free-tier powered</p>
+    <!-- Poster Preview Card -->
+    <section class="card-box preview-card">
+      <div class="card-heading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Poster Preview
+      </div>
+      <div class="poster-viewport" id="posterViewport">
+        <img id="previewImage" src="/static/assets/diwali_poster.png" alt="Poster Preview">
+        <div class="canvas-loader" id="canvasLoader">
+          <div class="spinner-ring"></div>
+          <div style="font-size: 13px; font-weight: 600; color: #22d3ee;">Generating with Pollinations FLUX...</div>
+          <div style="font-size: 11px; color: var(--text-muted);">Composing artwork, rangoli &amp; typography</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ready Status Card -->
+    <section class="card-box ready-card" id="readyCard">
+      <div class="ready-header">
+        <div class="check-badge">✓</div>
+        <div class="ready-title">Your poster is ready!</div>
+      </div>
+      <div class="action-buttons-row">
+        <button type="button" class="btn-action-sm" id="downloadPngBtn">
+          <span>⬇</span> Download PNG
+        </button>
+        <button type="button" class="btn-action-sm" id="downloadJpgBtn">
+          <span>⬇</span> Download JPG
+        </button>
+        <button type="button" class="btn-action-sm" id="downloadPdfBtn">
+          <span>📄</span> Download PDF
+        </button>
+        <button type="button" class="btn-action-sm" id="shareBtn">
+          <span>🔗</span> Share
+        </button>
+      </div>
+    </section>
+
+    <!-- AI Model & API Info Card -->
+    <section class="card-box model-info-card">
+      <div class="card-heading" style="margin-bottom: 8px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        AI Model &amp; API Info
+      </div>
+      <div class="model-info-row">
+        <span style="color:var(--text-muted);">AI Model Used:</span>
+        <span class="model-pill" id="cardModelBadge">FLUX 1-schnell</span>
+      </div>
+      <div class="model-info-row">
+        <span style="color:var(--text-muted);">API Provider:</span>
+        <strong style="color: #e2e8f0;" id="cardProviderName">Pollinations.ai</strong>
+      </div>
+      <div class="model-info-row">
+        <span style="color:var(--text-muted);">UI Status:</span>
+        <span class="status-indicator" id="cardApiStatus">
+          <span class="status-dot"></span>
+          Connected — Free Tier
+        </span>
+      </div>
+    </section>
+
+    <!-- Cyan Hero Button -->
+    <button type="button" class="btn-generate-hero" id="generateHeroBtn">
+      <span>✨</span> Generate New Poster
+    </button>
+
   </div>
-</aside>
+</main>
 
-<!-- Main Area -->
-<div class="main-wrapper">
-  <!-- Top Bar -->
-  <header class="top-nav">
-    <h2>AI Poster, Frame and Footer Studio</h2>
-    <div class="top-actions">
-      <button class="theme-toggle-btn" title="Toggle theme">🌙</button>
-      <div class="user-avatar" title="Kajal Kumari">K</div>
-    </div>
-  </header>
-
-  <!-- Workspace 2-Column Grid -->
-  <main class="workspace">
-    <!-- Left Column: Controls & Configuration -->
-    <div class="col-left">
-      <!-- 1. Project Details -->
-      <section class="panel-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon-badge">★</span>
-            Project Details
-          </div>
-        </div>
-        <div class="form-grid-2">
-          <div class="form-field">
-            <label class="form-label">Poster Title *</label>
-            <input class="input-control" id="posterTitle" value="Happy Birthday" placeholder="e.g. Happy Birthday">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Category</label>
-            <select class="input-control" id="categorySelect">
-              <option value="birthday">🎁 Birthday</option>
-              <option value="festival">🪔 Festival / Diwali</option>
-              <option value="sale">🏷️ Sale Announcement</option>
-              <option value="business">💼 Grand Opening</option>
-              <option value="event">🎉 Event & Party</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-field">
-          <label class="form-label">
-            Description
-            <span class="char-count" id="descCount">24/200</span>
-          </label>
-          <input class="input-control" id="posterDesc" value="Celebrate your special day with love and joy!" placeholder="Short description or tagline...">
-        </div>
-      </section>
-
-      <!-- 2. AI Prompt & Creative Direction -->
-      <section class="panel-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon-badge">✦</span>
-            AI Prompt &amp; Creative Direction
-          </div>
-          <span class="ai-powered-pill">✨ AI Powered</span>
-        </div>
-        <div class="form-grid-2">
-          <div class="form-field">
-            <label class="form-label">
-              Describe the poster you want
-              <span class="char-count" id="promptCount">56/500</span>
-            </label>
-            <textarea class="input-control" id="aiPrompt" rows="3">Create a beautiful birthday celebration poster with balloons, cake and warm lighting.</textarea>
-            <div class="style-pills-row" id="stylePills">
-              <button type="button" class="style-pill active" data-style="elegant">Elegant</button>
-              <button type="button" class="style-pill" data-style="festive">Festive</button>
-              <button type="button" class="style-pill" data-style="minimal">Minimal</button>
-              <button type="button" class="style-pill" data-style="modern">Modern</button>
-              <button type="button" class="style-pill" data-style="luxury">Luxury</button>
-            </div>
-          </div>
-          <div>
-            <div class="form-field">
-              <label class="form-label">Negative Prompt (Optional) <span class="char-count">0/200</span></label>
-              <input class="input-control" id="negPrompt" placeholder="Blurry, low quality, watermark...">
-            </div>
-            <div class="form-field" style="margin-top: 10px;">
-              <label class="form-label">AI Model &amp; Provider</label>
-              <select class="input-control" id="modelProviderSelect" style="border-color: rgba(168, 85, 247, 0.4); background: #1a1435; font-weight: 600;">
-                <option value="pollinations_flux" selected>⚡ Pollinations (FLUX.1) — Free Tier</option>
-                <option value="writer">✍️ Writer AI (Palmyra-X) — Enterprise</option>
-                <option value="stability">🎨 Stability AI (SDXL 1.0) — Trial</option>
-                <option value="cloudflare">☁️ Cloudflare Workers AI (FLUX) — Free</option>
-                <option value="gemini">♊ Google Gemini (2.5 Flash) — Free</option>
-                <option value="mock">🧪 Offline / Local Engine</option>
-              </select>
-            </div>
-            <div class="form-field" style="margin-top: 10px;">
-              <label class="form-label">Generation Settings</label>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <select class="input-control" id="genCount">
-                  <option value="1">1 image</option>
-                  <option value="2">2 images</option>
-                  <option value="4" selected>4 images</option>
-                </select>
-                <select class="input-control" id="genQuality">
-                  <option value="standard">Standard</option>
-                  <option value="high" selected>High</option>
-                  <option value="ultra">Ultra (2K)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. Image Upload (Optional) -->
-      <section class="panel-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon-badge">↑</span>
-            Image Upload (Optional)
-          </div>
-        </div>
-        <div class="upload-layout-grid">
-          <div class="thumb-preview-box" id="thumbPreview">
-            <img id="thumbImg" src="/static/assets/sample_bouquet.png" alt="Bouquet preview" style="width:100%; height:100%; object-fit:cover;">
-          </div>
-          <div class="drop-zone-box" id="dropZone">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <div style="font-size: 11px; font-weight: 600;">Drag and drop an image here or</div>
-            <button type="button" class="btn-choose" id="chooseFileBtn">Choose File</button>
-            <div class="drop-hint">Supports: JPG, PNG, WEBP</div>
-            <input type="file" id="fileInput" accept="image/*" hidden>
-          </div>
-          <div class="select-stack">
-            <select class="input-control" id="styleSelect">
-              <option value="elegant">🎨 Style: Elegant</option>
-              <option value="festive">🪔 Style: Festive</option>
-              <option value="modern">📐 Style: Modern</option>
-              <option value="luxury">👑 Style: Luxury</option>
-            </select>
-            <select class="input-control" id="themeSelect">
-              <option value="floral">🌸 Theme: Floral</option>
-              <option value="balloons">🎈 Theme: Celebration</option>
-              <option value="gold">✨ Theme: Golden Glow</option>
-              <option value="minimal">⚪ Theme: Minimalist</option>
-            </select>
-            <select class="input-control" id="sizeSelect">
-              <option value="1080x1350" selected>📐 1080 x 1350 (Portrait)</option>
-              <option value="1080x1080">📐 1080 x 1080 (Square)</option>
-              <option value="1350x1080">📐 1350 x 1080 (Landscape)</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. Footer Options -->
-      <section class="panel-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon-badge">▤</span>
-            Footer Options
-          </div>
-          <div class="footer-pos-toggle">
-            <span style="font-size: 11px; color: var(--text-muted);">Footer Position:</span>
-            <div class="seg-btn-group">
-              <button type="button" class="seg-btn active" id="posBottom">Bottom</button>
-              <button type="button" class="seg-btn" id="posTop">Top</button>
-            </div>
-          </div>
-        </div>
-        <div class="tabs-row">
-          <span class="tab-link active">Templates</span>
-          <span class="tab-link">Upload Your Own</span>
-        </div>
-        <div class="carousel-wrapper">
-          <button type="button" class="carousel-nav-btn" id="prevFooter">‹</button>
-          <div class="carousel-items" id="footerCarousel">
-            <div class="footer-template-card active" data-style="royal_purple" style="background-image: url('/static/assets/tmpl_1.png'); background-size: cover; background-position: center; border: 1.5px solid #a855f7;">
-              <span class="template-check">✓</span>
-            </div>
-            <div class="footer-template-card" data-style="golden_ribbon" style="background-image: url('/static/assets/tmpl_2.png'); background-size: cover; background-position: center;">
-              <span class="template-check">✓</span>
-            </div>
-            <div class="footer-template-card" data-style="floral_pink" style="background-image: url('/static/assets/tmpl_3.png'); background-size: cover; background-position: center;">
-              <span class="template-check">✓</span>
-            </div>
-            <div class="footer-template-card" data-style="midnight_gold" style="background-image: url('/static/assets/tmpl_4.png'); background-size: cover; background-position: center;">
-              <span class="template-check">✓</span>
-            </div>
-            <div class="footer-template-card" data-style="botanical_green" style="background-image: url('/static/assets/tmpl_5.png'); background-size: cover; background-position: center;">
-              <span class="template-check">✓</span>
-            </div>
-          </div>
-          <button type="button" class="carousel-nav-btn" id="nextFooter">›</button>
-        </div>
-      </section>
-
-      <!-- 5. Brand Details & Contact Info -->
-      <section class="panel-card">
-        <div class="brand-contact-grid">
-          <div>
-            <div class="card-title" style="margin-bottom: 12px; font-size: 13px;">
-              👑 Brand Details
-            </div>
-            <div class="form-label">Logo Upload</div>
-            <div class="logo-upload-wrap">
-              <div class="logo-box" id="logoBox" style="background: url('/static/assets/sample_crown.png') center/cover no-repeat; border-radius: 8px;">
-              </div>
-              <button type="button" class="btn-sm-action" id="changeLogoBtn">Change</button>
-              <button type="button" class="btn-sm-action btn-trash" id="removeLogoBtn">🗑</button>
-              <input type="file" id="logoFileInput" accept="image/*" hidden>
-            </div>
-            <div class="form-field">
-              <label class="form-label">Website</label>
-              <input class="input-control" id="brandWeb" value="https://yourbrand.com">
-            </div>
-            <div class="form-field">
-              <label class="form-label">Email</label>
-              <input class="input-control" id="brandEmail" value="hello@yourbrand.com">
-            </div>
-          </div>
-          <div>
-            <div class="card-title" style="margin-bottom: 12px; font-size: 13px;">
-              📞 Contact Details (Optional)
-            </div>
-            <div class="form-field">
-              <label class="form-label">Mobile</label>
-              <input class="input-control" id="brandPhone" value="+91 98765 43210">
-            </div>
-            <div class="form-field">
-              <label class="form-label">Additional Info</label>
-              <input class="input-control" id="brandExtra" value="Best Wishes!">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-field" style="margin-top: 14px;">
-          <label class="form-label">Additional Instructions (Optional)</label>
-          <input class="input-control" id="brandNotes" placeholder="Any special instructions for the poster...">
-        </div>
-
-        <div class="generate-action-bar">
-          <button type="button" class="btn-generate-hero" id="generateHeroBtn">
-            <span>✨</span> Generate
-          </button>
-        </div>
-      </section>
-    </div>
-
-    <!-- Right Column: Poster Preview & Actions -->
-    <div class="col-right">
-      <section class="panel-card preview-card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon-badge">👁</span>
-            Poster Preview
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <div class="device-toggles">
-              <button type="button" class="device-btn active" id="btnDevDesktop" title="Desktop">💻</button>
-              <button type="button" class="device-btn" id="btnDevTablet" title="Tablet">📱</button>
-              <button type="button" class="device-btn" id="btnDevMobile" title="Mobile">📲</button>
-            </div>
-            <button type="button" class="btn-fullscreen" id="btnFullscreen">⛶ Full Screen</button>
-          </div>
-        </div>
-
-        <!-- Large Poster Viewport -->
-        <div class="poster-viewport" id="posterViewport">
-          <canvas id="posterCanvas" width="1080" height="1350" style="display:none;"></canvas>
-          <img id="previewImage" src="/static/assets/sample_poster.png" alt="Poster Preview">
-          <div class="canvas-loader" id="canvasLoader">
-            <div class="spinner-ring"></div>
-            <div style="font-size: 13px; font-weight: 600; color: #c084fc;">Painting with Pollinations FLUX &amp; Gemini...</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Composing artwork, typography &amp; royal banner</div>
-          </div>
-        </div>
-
-        <!-- Selected Footer Banner Widget -->
-        <div class="selected-footer-card">
-          <div class="sf-left">
-            <div class="sf-preview" id="sfPreviewThumb" style="background: url('/static/assets/selected_footer.png') center/cover no-repeat; border: 1px solid rgba(255,255,255,0.15);">
-            </div>
-            <div class="sf-info">
-              <h5>Elegant Footer Banner</h5>
-              <p>Stylish footer with crown and tagline</p>
-            </div>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn-outline-pill" id="btnPreviewFooter">👁 Preview</button>
-            <button type="button" class="btn-outline-pill" id="btnChangeFooter">🔄 Change Footer</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Model & Project Info (Glowing Violet Card) -->
-      <section class="info-glow-card">
-        <div class="info-col">
-          <h5><span style="color:#c084fc;">⚙</span> Model &amp; API Info</h5>
-          <div class="meta-row">
-            <span>Model Used:</span>
-            <span class="badge-pill" id="cardModelBadge" style="background:#581c87; color:#e9d5ff; border:1px solid #9333ea;">FLUX-1</span>
-          </div>
-          <div class="meta-row">
-            <span>AI Provider:</span>
-            <span id="cardProviderName" style="display:inline-flex; align-items:center; gap:5px; font-weight:700; color:#e2e8f0;">
-              Pollinations.ai
-            </span>
-          </div>
-          <div class="meta-row">
-            <span>API Status:</span>
-            <span id="cardApiStatus" style="font-size:11px; font-weight:600; color:#4ade80;">
-              🟢 Connected • Free Tier
-            </span>
-          </div>
-        </div>
-        <div class="info-col">
-          <h5><span style="color:#c084fc;">👤</span> About This Project</h5>
-          <div class="meta-row">
-            <span>Created By:</span>
-            <strong style="color: #facc15;">Kajal Kumari 👑</strong>
-          </div>
-          <div class="meta-row" style="color: var(--text-muted); font-size: 11px;">
-            Python Developer &amp; AI Enthusiast
-          </div>
-        </div>
-      </section>
-
-      <!-- Success Notification & Actions Bar (HIDDEN until generated) -->
-      <section class="action-status-bar" id="posterReadyBar" style="display: none;">
-        <div class="status-msg-wrap">
-          <div class="check-circle">✓</div>
-          <div class="status-text">
-            <h4>Your poster is ready!</h4>
-            <p>Download or share your beautiful poster.</p>
-          </div>
-        </div>
-        <div class="action-buttons-group">
-          <button type="button" class="btn-download-primary" id="downloadPngBtn">
-            <span>⬇</span> PNG
-          </button>
-          <button type="button" class="btn-download-primary" id="downloadJpgBtn" style="background: linear-gradient(135deg, #7c3aed, #6366f1);">
-            <span>⬇</span> JPG
-          </button>
-          <button type="button" class="btn-download-primary" id="downloadPdfBtn" style="background: linear-gradient(135deg, #6366f1, #3b82f6);">
-            <span>📄</span> PDF
-          </button>
-          <button type="button" class="btn-share" id="shareBtn">
-            <span>🔗</span> Share
-          </button>
-        </div>
-      </section>
-    </div>
-  </main>
-</div>
+<!-- Bottom Footer -->
+<footer class="app-footer">
+  Created By: <strong>Kajal Kumari</strong> 🛠
+</footer>
 
 <script>
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
-let selectedStyle = "elegant";
-let footerPos = "bottom";
-let activeFooterStyle = "royal_purple";
-let uploadedLogoB64 = null;
+let selectedStyle = "golden_glow";
 let uploadedBgB64 = null;
 let bgImageObj = null;
-let logoImageObj = null;
-let currentPosterDataUrl = "";
+let currentPosterDataUrl = "/static/assets/diwali_poster.png";
 let renderTimer = null;
 
 function schedulePosterUpdate() {
@@ -1279,32 +671,27 @@ function schedulePosterUpdate() {
   renderTimer = setTimeout(renderLivePoster, 60);
 }
 
-// Device Viewport Toggles (Desktop / Tablet / Mobile)
-$('#btnDevDesktop').onclick = () => {
-  $$('.device-btn').forEach(b => b.classList.remove('active'));
-  $('#btnDevDesktop').classList.add('active');
-  $('#posterViewport').style.maxWidth = '100%';
-};
-$('#btnDevTablet').onclick = () => {
-  $$('.device-btn').forEach(b => b.classList.remove('active'));
-  $('#btnDevTablet').classList.add('active');
-  $('#posterViewport').style.maxWidth = '360px';
-};
-$('#btnDevMobile').onclick = () => {
-  $$('.device-btn').forEach(b => b.classList.remove('active'));
-  $('#btnDevMobile').classList.add('active');
-  $('#posterViewport').style.maxWidth = '260px';
-};
-
-// Fullscreen Toggle
-$('#btnFullscreen').onclick = () => {
-  const elem = $('#posterViewport');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
+// Aspect Ratio Radios
+$$('input[name="ratioRadio"]').forEach(radio => {
+  radio.onchange = (e) => {
+    $$('.ratio-label').forEach(l => l.classList.remove('active'));
+    radio.closest('.ratio-label').classList.add('active');
+    $('#sizeSelect').value = e.target.value;
+    schedulePosterUpdate();
+  };
+});
+$('#sizeSelect').onchange = (e) => {
+  const val = e.target.value;
+  const matchRadio = $(`input[name="ratioRadio"][value="${val}"]`);
+  if (matchRadio) {
+    $$('.ratio-label').forEach(l => l.classList.remove('active'));
+    matchRadio.checked = true;
+    matchRadio.closest('.ratio-label').classList.add('active');
   }
+  schedulePosterUpdate();
 };
 
-// Style pills selection
+// Style pills
 $$('#stylePills .style-pill').forEach(btn => {
   btn.onclick = () => {
     $$('#stylePills .style-pill').forEach(b => b.classList.remove('active'));
@@ -1314,87 +701,39 @@ $$('#stylePills .style-pill').forEach(btn => {
   };
 });
 
-// Category selection auto-updates form fields and immediately redraws poster
-$('#categorySelect').onchange = (e) => {
-  const cat = e.target.value;
-  if (cat === "birthday") {
-    $('#posterTitle').value = "Happy Birthday";
-    $('#posterDesc').value = "Celebrate your special day with love and joy!";
-    $('#aiPrompt').value = "Create a beautiful birthday celebration poster with balloons, cake, flowers and warm golden lighting.";
-    $('#brandExtra').value = "— Dream Big • Stay Happy • Keep Smiling —";
-  } else if (cat === "festival") {
-    $('#posterTitle').value = "शुभ दीपावली (Happy Diwali)";
-    $('#posterDesc').value = "Wishing you and your family abundant peace, light and joy!";
-    $('#aiPrompt').value = "A premium festive Diwali poster with glowing oil diyas, marigold garlands, and golden rangoli.";
-    $('#brandExtra').value = "Festive Special Sweets & Dry Fruit Hampers";
-  } else if (cat === "sale") {
-    $('#posterTitle').value = "MEGA SALE 50% OFF";
-    $('#posterDesc').value = "Exclusive limited-time offer on all premium collections!";
-    $('#aiPrompt').value = "A modern luxury promotional shopping poster with vibrant discount badges and elegant gift packaging.";
-    $('#brandExtra').value = "Flash Sale • Limited Stock • Shop Online Now";
-  } else if (cat === "business") {
-    $('#posterTitle').value = "Grand Opening";
-    $('#posterDesc').value = "We are thrilled to welcome you to our brand new store!";
-    $('#aiPrompt').value = "Grand opening ceremony poster with royal blue ribbon, gold confetti, and architectural lighting.";
-    $('#brandExtra').value = "Visit Us Today • Exciting Welcome Gifts For All";
-  }
-  updateCharCounts();
-  renderLivePoster();
+// Char counts
+$('#posterDesc').oninput = () => {
+  $('#descCount').textContent = `${$('#posterDesc').value.length}/300`;
+  schedulePosterUpdate();
 };
-
-function updateCharCounts() {
-  $('#descCount').textContent = `${$('#posterDesc').value.length}/200`;
-  $('#promptCount').textContent = `${$('#aiPrompt').value.length}/500`;
-}
-$('#posterDesc').oninput = () => { updateCharCounts(); schedulePosterUpdate(); };
-$('#aiPrompt').oninput = updateCharCounts;
 $('#posterTitle').oninput = schedulePosterUpdate;
 $('#brandPhone').oninput = schedulePosterUpdate;
 $('#brandWeb').oninput = schedulePosterUpdate;
 $('#brandEmail').oninput = schedulePosterUpdate;
 $('#brandExtra').oninput = schedulePosterUpdate;
-$('#styleSelect').onchange = schedulePosterUpdate;
 $('#themeSelect').onchange = schedulePosterUpdate;
-$('#sizeSelect').onchange = schedulePosterUpdate;
+$('#styleSelect').onchange = schedulePosterUpdate;
 
-// Footer Position Toggle
-$('#posBottom').onclick = () => {
-  $('#posBottom').classList.add('active');
-  $('#posTop').classList.remove('active');
-  footerPos = "bottom";
-  schedulePosterUpdate();
+// Upload & Drag-and-Drop
+const dropZone = $('#dropZone');
+dropZone.onclick = () => $('#fileInput').click();
+$('#fileInput').onchange = (e) => handleImageFile(e.target.files[0]);
+
+dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#22d3ee'; };
+dropZone.ondragleave = () => { dropZone.style.borderColor = 'rgba(139, 92, 246, 0.25)'; };
+dropZone.ondrop = (e) => {
+  e.preventDefault();
+  dropZone.style.borderColor = 'rgba(139, 92, 246, 0.25)';
+  if (e.dataTransfer && e.dataTransfer.files.length) {
+    handleImageFile(e.dataTransfer.files[0]);
+  }
 };
-$('#posTop').onclick = () => {
-  $('#posTop').classList.add('active');
-  $('#posBottom').classList.remove('active');
-  footerPos = "top";
-  schedulePosterUpdate();
-};
 
-// Footer Template Selection
-$$('.footer-template-card').forEach(card => {
-  card.onclick = () => {
-    $$('.footer-template-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    activeFooterStyle = card.getAttribute('data-style') || 'royal_purple';
-    const bgStyle = card.style.backgroundImage || card.style.background;
-    $('#sfPreviewThumb').style.background = bgStyle;
-    $('#sfPreviewThumb').style.backgroundSize = "cover";
-    schedulePosterUpdate();
-  };
-});
-$('#nextFooter').onclick = () => { $('#footerCarousel').scrollLeft += 100; };
-$('#prevFooter').onclick = () => { $('#footerCarousel').scrollLeft -= 100; };
-$('#btnChangeFooter').onclick = () => { $('#footerCarousel').scrollIntoView({ behavior: 'smooth' }); };
-$('#btnPreviewFooter').onclick = () => { $('#posterViewport').scrollIntoView({ behavior: 'smooth' }); };
-
-// Image Upload & Drag-and-Drop
 function handleImageFile(f) {
   if (!f) return;
   const reader = new FileReader();
   reader.onload = () => {
     uploadedBgB64 = reader.result;
-    $('#thumbImg').src = reader.result;
     const img = new Image();
     img.onload = () => {
       bgImageObj = img;
@@ -1405,51 +744,7 @@ function handleImageFile(f) {
   reader.readAsDataURL(f);
 }
 
-$('#chooseFileBtn').onclick = () => $('#fileInput').click();
-$('#fileInput').onchange = (e) => handleImageFile(e.target.files[0]);
-
-const dropZone = $('#dropZone');
-if (dropZone) {
-  dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#c084fc'; };
-  dropZone.ondragleave = () => { dropZone.style.borderColor = 'rgba(168, 85, 247, 0.3)'; };
-  dropZone.ondrop = (e) => {
-    e.preventDefault();
-    dropZone.style.borderColor = 'rgba(168, 85, 247, 0.3)';
-    if (e.dataTransfer && e.dataTransfer.files.length) {
-      handleImageFile(e.dataTransfer.files[0]);
-    }
-  };
-}
-
-// Logo Upload
-$('#changeLogoBtn').onclick = () => $('#logoFileInput').click();
-$('#logoFileInput').onchange = (e) => {
-  const f = e.target.files[0];
-  if (!f) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    uploadedLogoB64 = reader.result;
-    $('#logoBox').innerHTML = `<img src="${reader.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
-    const img = new Image();
-    img.onload = () => {
-      logoImageObj = img;
-      renderLivePoster();
-    };
-    img.src = reader.result;
-  };
-  reader.readAsDataURL(f);
-};
-$('#removeLogoBtn').onclick = () => {
-  uploadedLogoB64 = null;
-  logoImageObj = null;
-  $('#logoBox').innerHTML = "👑";
-  schedulePosterUpdate();
-};
-
-// =========================================================
-// Real-Time Dynamic Poster Renderer
-// Dynamically alters graphics, typography & footer as per inputs
-// =========================================================
+// Dynamic Client Poster Renderer
 function renderLivePoster() {
   const canvas = document.createElement('canvas');
   const sizeVal = $('#sizeSelect').value || '1080x1350';
@@ -1458,626 +753,219 @@ function renderLivePoster() {
   canvas.height = H || 1350;
   const ctx = canvas.getContext('2d');
 
-  const title = $('#posterTitle').value.trim() || 'Happy Birthday';
-  const desc = $('#posterDesc').value.trim() || 'Celebrate your special day with love and joy!';
-  const cat = $('#categorySelect').value;
-  const phone = $('#brandPhone').value.trim() || '+91 98765 43210';
-  const web = $('#brandWeb').value.trim() || 'https://yourbrand.com';
-  const extra = $('#brandExtra').value.trim() || '— Dream Big • Stay Happy • Keep Smiling —';
+  const title = $('#posterTitle').value.trim() || 'Happy Diwali';
+  const desc = $('#posterDesc').value.trim() || 'Celebrate the festival of lights with prosperity, joy, and peace!';
+  const extra = $('#brandExtra').value.trim() || 'Celebrate with us | YourBrand.com';
 
   // 1. Draw Background
   if (bgImageObj) {
-    // Custom user uploaded background photo
     const scale = Math.max(W / bgImageObj.width, H / bgImageObj.height);
     const sw = bgImageObj.width * scale;
     const sh = bgImageObj.height * scale;
-    const sx = (W - sw) / 2;
-    const sy = (H - sh) / 2;
-    ctx.drawImage(bgImageObj, sx, sy, sw, sh);
+    ctx.drawImage(bgImageObj, (W - sw) / 2, (H - sh) / 2, sw, sh);
 
-    // Subtle dark gradient vignette for readable typography
     const vig = ctx.createLinearGradient(0, 0, 0, H);
-    vig.addColorStop(0, 'rgba(0,0,0,0.55)');
-    vig.addColorStop(0.35, 'rgba(0,0,0,0.25)');
-    vig.addColorStop(0.7, 'rgba(0,0,0,0.4)');
+    vig.addColorStop(0, 'rgba(0,0,0,0.5)');
+    vig.addColorStop(0.5, 'rgba(0,0,0,0.25)');
     vig.addColorStop(1, 'rgba(0,0,0,0.75)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, W, H);
-  } else if (cat === "festival") {
-    // -----------------------------------------------------------
-    // FESTIVAL (Diwali / Festive Celebration)
-    // -----------------------------------------------------------
-    const festGrad = ctx.createRadialGradient(W*0.5, H*0.45, 120, W*0.5, H*0.5, 850);
-    festGrad.addColorStop(0, '#581c1c');
-    festGrad.addColorStop(0.4, '#2d0612');
-    festGrad.addColorStop(1, '#0e0208');
-    ctx.fillStyle = festGrad;
+  } else {
+    // Deep royal festive Diwali background
+    const bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.45, 100, W * 0.5, H * 0.5, 800);
+    bgGrad.addColorStop(0, '#380a1c');
+    bgGrad.addColorStop(0.4, '#1a0512');
+    bgGrad.addColorStop(1, '#090208');
+    ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // Golden sparkles / star dust
+    // Warm golden bokeh particles
     ctx.fillStyle = "#fef08a";
-    for (let i = 0; i < 45; i++) {
-      const rx = (i * 97) % W;
-      const ry = (i * 73) % (H * 0.7);
-      ctx.globalAlpha = 0.3 + ((i % 5) * 0.14);
+    for (let i = 0; i < 40; i++) {
+      const rx = (i * 101) % W;
+      const ry = (i * 79) % (H * 0.65);
+      ctx.globalAlpha = 0.2 + ((i % 5) * 0.12);
       ctx.beginPath();
-      ctx.arc(rx, ry, (i % 3) + 1.5, 0, Math.PI * 2);
+      ctx.arc(rx, ry, (i % 4) + 1.5, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1.0;
 
-    // Hanging Marigold Garlands at Top
-    for (let x = 30; x < W; x += 38) {
-      const drop = 40 + Math.sin(x / 110) * 25;
-      for (let y = 0; y < drop; y += 22) {
-        ctx.fillStyle = (y % 44 === 0) ? "#f59e0b" : "#fbbf24";
+    // Hanging Festive Oil Diyas
+    function drawHangingDiya(hx, hy) {
+      ctx.strokeStyle = "rgba(251, 191, 36, 0.4)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(hx, 0);
+      ctx.lineTo(hx, hy);
+      ctx.stroke();
+
+      ctx.fillStyle = "#fbbf24";
+      ctx.beginPath();
+      ctx.ellipse(hx, hy, 16, 7, 0, 0, Math.PI);
+      ctx.fill();
+
+      // Flame
+      ctx.fillStyle = "#fef08a";
+      ctx.shadowColor = "#fde047";
+      ctx.shadowBlur = 14;
+      ctx.beginPath();
+      ctx.ellipse(hx, hy - 8, 4, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    drawHangingDiya(W * 0.18, H * 0.22);
+    drawHangingDiya(W * 0.82, H * 0.22);
+
+    // Vibrant Floral Mandala Rangoli Floor Pattern
+    const cx = W / 2, cy = H * 0.64;
+    function drawRangoli(rcx, rcy, rad) {
+      ctx.save();
+      ctx.translate(rcx, rcy);
+      for (let p = 0; p < 16; p++) {
+        ctx.rotate((Math.PI * 2) / 16);
+        // Outer petal
+        ctx.fillStyle = (p % 2 === 0) ? "rgba(217, 119, 6, 0.6)" : "rgba(225, 29, 72, 0.6)";
         ctx.beginPath();
-        ctx.arc(x, y + 10, 11, 0, Math.PI * 2);
+        ctx.ellipse(0, rad * 0.7, rad * 0.18, rad * 0.4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // Inner petal
+        ctx.fillStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.ellipse(0, rad * 0.45, rad * 0.1, rad * 0.25, 0, 0, Math.PI * 2);
         ctx.fill();
       }
-      // Hanging golden bell at bottom of garland
-      ctx.fillStyle = "#fde047";
-      ctx.beginPath();
-      ctx.arc(x, drop + 10, 6, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.restore();
     }
+    drawRangoli(cx, cy, 190);
 
-    // Glowing Clay Oil Diyas at bottom center
-    const diyaY = footerPos === 'top' ? H * 0.76 : H * 0.68;
-    function drawDiya(dx, dy, scale) {
-      // Warm radiant glow halo
-      const halo = ctx.createRadialGradient(dx, dy - 20*scale, 5, dx, dy - 20*scale, 90*scale);
-      halo.addColorStop(0, 'rgba(254, 240, 138, 0.9)');
-      halo.addColorStop(0.3, 'rgba(245, 158, 11, 0.45)');
-      halo.addColorStop(1, 'rgba(245, 158, 11, 0)');
-      ctx.fillStyle = halo;
-      ctx.beginPath();
-      ctx.arc(dx, dy - 20*scale, 90*scale, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Terracotta / Brass Diya Base
-      ctx.fillStyle = "#d97706";
-      ctx.beginPath();
-      ctx.ellipse(dx, dy, 55*scale, 20*scale, 0, 0, Math.PI);
-      ctx.fill();
-      ctx.fillStyle = "#78350f";
-      ctx.beginPath();
-      ctx.ellipse(dx, dy, 50*scale, 14*scale, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "#f59e0b";
-      ctx.beginPath();
-      ctx.ellipse(dx, dy - 2*scale, 42*scale, 10*scale, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Glowing flame with flickering teardrop
-      ctx.fillStyle = "#fef08a";
-      ctx.shadowColor = "#fde047";
-      ctx.shadowBlur = 24;
-      ctx.beginPath();
-      ctx.moveTo(dx, dy - 42*scale);
-      ctx.bezierCurveTo(dx + 16*scale, dy - 25*scale, dx + 12*scale, dy - 4*scale, dx, dy - 4*scale);
-      ctx.bezierCurveTo(dx - 12*scale, dy - 4*scale, dx - 16*scale, dy - 25*scale, dx, dy - 42*scale);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-
-    drawDiya(W * 0.5, diyaY, 1.3);
-    drawDiya(W * 0.28, diyaY + 20, 0.95);
-    drawDiya(W * 0.72, diyaY + 20, 0.95);
-
-  } else if (cat === "sale") {
-    // -----------------------------------------------------------
-    // SALE (High Impact Promotional)
-    // -----------------------------------------------------------
-    const saleGrad = ctx.createLinearGradient(0, 0, W, H);
-    saleGrad.addColorStop(0, '#7f1d1d');
-    saleGrad.addColorStop(0.4, '#1e1b4b');
-    saleGrad.addColorStop(1, '#09090b');
-    ctx.fillStyle = saleGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // Diagonal speed ribbons
-    ctx.fillStyle = "rgba(239, 68, 68, 0.15)";
+    // Center Terracotta Diya with Radiant Golden Flame
+    const halo = ctx.createRadialGradient(cx, cy - 25, 10, cx, cy - 25, 160);
+    halo.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+    halo.addColorStop(0.3, 'rgba(245, 158, 11, 0.5)');
+    halo.addColorStop(1, 'rgba(245, 158, 11, 0)');
+    ctx.fillStyle = halo;
     ctx.beginPath();
-    ctx.moveTo(0, H * 0.2);
-    ctx.lineTo(W, H * 0.05);
-    ctx.lineTo(W, H * 0.18);
-    ctx.lineTo(0, H * 0.33);
+    ctx.arc(cx, cy - 25, 160, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "rgba(245, 158, 11, 0.18)";
+    // Terracotta Diya Bowl
+    ctx.fillStyle = "#d97706";
     ctx.beginPath();
-    ctx.moveTo(0, H * 0.5);
-    ctx.lineTo(W, H * 0.35);
-    ctx.lineTo(W, H * 0.48);
-    ctx.lineTo(0, H * 0.63);
+    ctx.ellipse(cx, cy, 75, 28, 0, 0, Math.PI);
+    ctx.fill();
+    ctx.fillStyle = "#78350f";
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 70, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#f59e0b";
+    ctx.beginPath();
+    ctx.ellipse(cx, cy - 2, 60, 12, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Floating Discount Badge
-    const badgeY = footerPos === 'top' ? H * 0.72 : H * 0.62;
-    ctx.fillStyle = "#ef4444";
-    ctx.shadowColor = "rgba(239, 68, 68, 0.5)";
-    ctx.shadowBlur = 24;
-    ctx.beginPath();
-    ctx.roundRect(W * 0.32, badgeY, W * 0.36, 68, 34);
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "800 28px 'Plus Jakarta Sans', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("FLAT 50% OFF", W * 0.5, badgeY + 44);
-
-  } else if (cat === "business") {
-    // -----------------------------------------------------------
-    // BUSINESS / GRAND OPENING
-    // -----------------------------------------------------------
-    const bizGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 850);
-    bizGrad.addColorStop(0, '#1e293b');
-    bizGrad.addColorStop(0.5, '#0f172a');
-    bizGrad.addColorStop(1, '#020617');
-    ctx.fillStyle = bizGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // Architectural Gold Framing Accents
-    ctx.strokeStyle = "rgba(245, 158, 11, 0.3)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(W * 0.05, H * 0.05, W * 0.9, H * 0.9);
-    ctx.strokeRect(W * 0.065, H * 0.065, W * 0.87, H * 0.87);
-
-    // Subtle bokeh circles
-    for (let b = 0; b < 18; b++) {
-      ctx.fillStyle = "rgba(148, 163, 184, 0.05)";
-      ctx.beginPath();
-      ctx.arc((b * 123) % W, (b * 191) % H, 40 + (b * 4), 0, Math.PI * 2);
-      ctx.fill();
-    }
-  } else {
-    // -----------------------------------------------------------
-    // BIRTHDAY (Celebratory with Cake & Balloons)
-    // -----------------------------------------------------------
-    const bgGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 800);
-    bgGrad.addColorStop(0, '#fef08a');
-    bgGrad.addColorStop(0.3, '#fde047');
-    bgGrad.addColorStop(0.7, '#f472b6');
-    bgGrad.addColorStop(1, '#be185d');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // Soft glow vignette
-    ctx.fillStyle = "rgba(40, 10, 30, 0.35)";
-    ctx.fillRect(0, 0, W, H);
-
-    // Fairy lights garland at top
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(0, 80);
-    ctx.bezierCurveTo(300, 150, 780, 50, 1080, 120);
-    ctx.stroke();
-
-    for (let x = 60; x < W; x += 90) {
-      const y = 80 + Math.sin(x / 140) * 40;
-      ctx.fillStyle = "#fef08a";
-      ctx.shadowColor = "#fef08a";
-      ctx.shadowBlur = 18;
-      ctx.beginPath();
-      ctx.arc(x, y + 25, 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-
-    // Celebratory Balloons
-    function drawBalloon(bx, by, rad, color) {
-      ctx.fillStyle = color;
-      ctx.shadowColor = "rgba(0,0,0,0.3)";
-      ctx.shadowBlur = 16;
-      ctx.beginPath();
-      ctx.ellipse(bx, by, rad, rad * 1.25, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "rgba(255,255,255,0.4)";
-      ctx.beginPath();
-      ctx.ellipse(bx - rad * 0.35, by - rad * 0.45, rad * 0.25, rad * 0.45, -0.4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-    drawBalloon(120, 260, 80, "#f43f5e");
-    drawBalloon(180, 200, 75, "#fbbf24");
-    drawBalloon(960, 210, 80, "#f43f5e");
-    drawBalloon(920, 280, 70, "#fbbf24");
-
-    // Multi-tiered Birthday Cake
-    const cx = W / 2, cy = footerPos === 'top' ? H * 0.72 : H * 0.65;
-    ctx.fillStyle = "rgba(255,255,255,0.95)";
-    ctx.shadowColor = "rgba(0,0,0,0.35)";
-    ctx.shadowBlur = 20;
-    ctx.beginPath();
-    ctx.ellipse(cx, cy + 90, 260, 45, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Cake Tier 1
-    ctx.fillStyle = "#fff1f2";
-    ctx.beginPath();
-    ctx.roundRect(cx - 210, cy - 40, 420, 110, 20);
-    ctx.fill();
-    for (let i = -180; i <= 180; i += 36) {
-      ctx.fillStyle = (i % 2 === 0) ? "#e11d48" : "#831843";
-      ctx.beginPath();
-      ctx.arc(cx + i, cy - 40, 12, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // Cake Tier 2
-    ctx.fillStyle = "#ffe4e6";
-    ctx.beginPath();
-    ctx.roundRect(cx - 150, cy - 120, 300, 90, 16);
-    ctx.fill();
-
-    // Lit Candles with Flames
-    for (let c = -100; c <= 100; c += 40) {
-      ctx.fillStyle = "#c084fc";
-      ctx.fillRect(cx + c - 4, cy - 180, 8, 60);
-      ctx.fillStyle = "#facc15";
-      ctx.shadowColor = "#fde047";
-      ctx.shadowBlur = 18;
-      ctx.beginPath();
-      ctx.ellipse(cx + c, cy - 192, 6, 12, 0, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-
-    // Wrapped Gift Boxes
-    function drawGift(gx, gy, gw, gh, col, rib) {
-      ctx.fillStyle = col;
-      ctx.shadowColor = "rgba(0,0,0,0.3)";
-      ctx.shadowBlur = 12;
-      ctx.fillRect(gx, gy, gw, gh);
-      ctx.fillStyle = rib;
-      ctx.fillRect(gx + gw*0.4, gy, gw*0.2, gh);
-      ctx.fillRect(gx, gy + gh*0.35, gw, gh*0.2);
-      ctx.shadowBlur = 0;
-    }
-    drawGift(140, H * 0.72, 110, 90, "#f43f5e", "#fde047");
-    drawGift(820, H * 0.68, 120, 110, "#fbbf24", "#f43f5e");
-  }
-
-  // -----------------------------------------------------------
-  // 2. Main Typography (Title & Subtitle)
-  // -----------------------------------------------------------
-  const textCenterY = footerPos === 'top' ? H * 0.36 : H * 0.28;
-  ctx.textAlign = "center";
-
-  // Check if title has Devanagari / Hindi characters
-  const isHindi = /[\u0900-\u097F]/.test(title);
-
-  ctx.shadowColor = "rgba(0,0,0,0.7)";
-  ctx.shadowBlur = 18;
-
-  if (cat === "festival") {
-    // Golden radiant festival title
+    // Golden Radiant Flame
     ctx.fillStyle = "#fef08a";
-    ctx.font = isHindi ? "700 78px 'Noto Sans Devanagari', sans-serif" : "italic 700 86px 'Great Vibes', serif";
-    ctx.fillText(title, W / 2, textCenterY);
-
-    ctx.fillStyle = "#fed7aa";
-    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(desc, W / 2, textCenterY + 70);
-
-    ctx.fillStyle = "#facc15";
-    ctx.font = "32px sans-serif";
-    ctx.fillText("🪔  ✨  🪔", W / 2, textCenterY + 125);
-  } else if (cat === "sale") {
-    // Punchy bold sale title
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "900 88px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(title, W / 2, textCenterY);
-
-    ctx.fillStyle = "#fef08a";
-    ctx.font = "700 32px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(desc, W / 2, textCenterY + 68);
-
-    ctx.fillStyle = "#ef4444";
-    ctx.font = "28px sans-serif";
-    ctx.fillText("⚡  ⚡  ⚡", W / 2, textCenterY + 120);
-  } else if (cat === "business") {
-    // Clean corporate title
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "800 80px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(title, W / 2, textCenterY);
-
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(desc, W / 2, textCenterY + 65);
-
-    ctx.fillStyle = "#fbbf24";
-    ctx.font = "28px sans-serif";
-    ctx.fillText("✦  ✦  ✦", W / 2, textCenterY + 115);
-  } else {
-    // Classic script Birthday title
-    ctx.fillStyle = "#2e1065";
-    ctx.shadowColor = "rgba(255,255,255,0.85)";
-    ctx.shadowBlur = 12;
-    ctx.font = isHindi ? "700 78px 'Noto Sans Devanagari', sans-serif" : "italic 700 96px 'Great Vibes', cursive, serif";
-    ctx.fillText(title, W / 2, textCenterY);
-
-    ctx.fillStyle = "#3b0764";
-    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText(desc, W / 2, textCenterY + 78);
-
-    ctx.fillStyle = "#be185d";
-    ctx.font = "32px sans-serif";
-    ctx.fillText("♥", W / 2, textCenterY + 36);
-  }
-  ctx.shadowBlur = 0;
-
-  // -----------------------------------------------------------
-  // 3. Dynamic Royal Frame & Logo Crest
-  // -----------------------------------------------------------
-  // Template Color Scheme
-  let trimColor = "#fbbf24";
-  let bannerIcon = "👑";
-
-  if (activeFooterStyle === "golden_ribbon") {
-    trimColor = '#fef08a';
-    bannerIcon = "✨";
-  } else if (activeFooterStyle === "floral_pink") {
-    trimColor = '#fbcfe8';
-    bannerIcon = "🌸";
-  } else if (activeFooterStyle === "midnight_gold") {
-    trimColor = '#f59e0b';
-    bannerIcon = "💎";
-  } else if (activeFooterStyle === "botanical_green") {
-    trimColor = '#a7f3d0';
-    bannerIcon = "🌿";
-  } else {
-    trimColor = '#fbbf24';
-    bannerIcon = "👑";
+    ctx.shadowColor = "#fde047";
+    ctx.shadowBlur = 30;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 65);
+    ctx.bezierCurveTo(cx + 22, cy - 35, cx + 18, cy - 6, cx, cy - 6);
+    ctx.bezierCurveTo(cx - 18, cy - 6, cx - 22, cy - 35, cx, cy - 65);
+    ctx.fill();
+    ctx.shadowBlur = 0;
   }
 
-  // 3A. Outer Ornamental Frame Enclosing Poster
-  const frameInset = 24;
-  ctx.strokeStyle = trimColor;
-  ctx.lineWidth = 3.5;
+  // 2. Ornamental Golden Frame
+  const frameInset = 26;
+  ctx.strokeStyle = "#fbbf24";
+  ctx.lineWidth = 3;
   ctx.shadowColor = "rgba(0,0,0,0.55)";
-  ctx.shadowBlur = 14;
+  ctx.shadowBlur = 12;
   ctx.beginPath();
-  ctx.roundRect(frameInset, frameInset, W - frameInset * 2, H - frameInset * 2, 22);
+  ctx.roundRect(frameInset, frameInset, W - frameInset * 2, H - frameInset * 2, 20);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  // Inner Accent Hairline Frame
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.roundRect(frameInset + 8, frameInset + 8, W - (frameInset + 8) * 2, H - (frameInset + 8) * 2, 16);
-  ctx.stroke();
-
-  // 4 Corner Filigree Brackets on the Frame
-  function drawCornerFiligree(cx, cy, dirX, dirY) {
-    ctx.strokeStyle = trimColor;
+  // Frame corner filigree
+  function drawFiligree(fx, fy, dx, dy) {
+    ctx.strokeStyle = "#fbbf24";
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(cx, cy + dirY * 34);
-    ctx.lineTo(cx, cy);
-    ctx.lineTo(cx + dirX * 34, cy);
+    ctx.moveTo(fx, fy + dy * 32);
+    ctx.lineTo(fx, fy);
+    ctx.lineTo(fx + dx * 32, fy);
     ctx.stroke();
-    // Gold diamond dot
-    ctx.fillStyle = trimColor;
-    ctx.beginPath();
-    ctx.arc(cx + dirX * 10, cy + dirY * 10, 3.5, 0, Math.PI * 2);
-    ctx.fill();
   }
-  drawCornerFiligree(frameInset + 14, frameInset + 14, 1, 1);
-  drawCornerFiligree(W - frameInset - 14, frameInset + 14, -1, 1);
-  drawCornerFiligree(frameInset + 14, H - frameInset - 14, 1, -1);
-  drawCornerFiligree(W - frameInset - 14, H - frameInset - 14, -1, -1);
+  drawFiligree(frameInset + 12, frameInset + 12, 1, 1);
+  drawFiligree(W - frameInset - 12, frameInset + 12, -1, 1);
+  drawFiligree(frameInset + 12, H - frameInset - 12, 1, -1);
+  drawFiligree(W - frameInset - 12, H - frameInset - 12, -1, -1);
 
-  // 3B. Dynamic Banner Integrated with the Frame
-  const bannerY = (footerPos === 'top') ? (frameInset + 14) : (H - frameInset - 104);
-  const bannerW = W * 0.86;
-  const bannerH = 90;
-  const bannerX = (W - bannerW) / 2;
+  // 3. Typography
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#fef08a";
+  ctx.shadowColor = "rgba(0,0,0,0.8)";
+  ctx.shadowBlur = 18;
+  ctx.font = "italic 700 84px 'Great Vibes', serif";
+  ctx.fillText(title, W / 2, H * 0.17);
 
-  // Banner Background Gradient
-  let bGrad = ctx.createLinearGradient(bannerX, 0, bannerX + bannerW, 0);
-  if (activeFooterStyle === "golden_ribbon") {
-    bGrad.addColorStop(0, '#78350f');
-    bGrad.addColorStop(0.5, '#d97706');
-    bGrad.addColorStop(1, '#78350f');
-  } else if (activeFooterStyle === "floral_pink") {
-    bGrad.addColorStop(0, '#831843');
-    bGrad.addColorStop(0.5, '#db2777');
-    bGrad.addColorStop(1, '#831843');
-  } else if (activeFooterStyle === "midnight_gold") {
-    bGrad.addColorStop(0, '#090d16');
-    bGrad.addColorStop(0.5, '#1e3a8a');
-    bGrad.addColorStop(1, '#090d16');
-  } else if (activeFooterStyle === "botanical_green") {
-    bGrad.addColorStop(0, '#064e3b');
-    bGrad.addColorStop(0.5, '#059669');
-    bGrad.addColorStop(1, '#064e3b');
-  } else {
-    bGrad.addColorStop(0, '#1e0b3d');
-    bGrad.addColorStop(0.5, '#3b0764');
-    bGrad.addColorStop(1, '#1e0b3d');
-  }
+  ctx.fillStyle = "#fbbf24";
+  ctx.font = "700 36px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText("Special", W / 2, H * 0.24);
 
-  ctx.fillStyle = bGrad;
-  ctx.shadowColor = "rgba(0,0,0,0.6)";
-  ctx.shadowBlur = 24;
+  ctx.fillStyle = "#fed7aa";
+  ctx.font = "500 24px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText(desc, W / 2, H * 0.32);
+  ctx.shadowBlur = 0;
+
+  // 4. Wavy Golden Footer Ribbon
+  const fy = H - 126;
+  const fGrad = ctx.createLinearGradient(0, fy, W, fy);
+  fGrad.addColorStop(0, '#581c1c');
+  fGrad.addColorStop(0.5, '#78350f');
+  fGrad.addColorStop(1, '#581c1c');
+  ctx.fillStyle = fGrad;
   ctx.beginPath();
-  ctx.roundRect(bannerX, bannerY, bannerW, bannerH, 16);
+  ctx.moveTo(frameInset + 10, fy);
+  ctx.bezierCurveTo(W * 0.35, fy - 18, W * 0.65, fy + 18, W - frameInset - 10, fy);
+  ctx.lineTo(W - frameInset - 10, H - frameInset - 8);
+  ctx.lineTo(frameInset + 10, H - frameInset - 8);
+  ctx.closePath();
   ctx.fill();
 
-  // Banner Border Trim
-  ctx.strokeStyle = trimColor;
+  ctx.strokeStyle = "#fbbf24";
   ctx.lineWidth = 2.5;
   ctx.beginPath();
-  ctx.roundRect(bannerX, bannerY, bannerW, bannerH, 16);
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  // 3C. Dedicated Emblem Medallion Accounting for the Logo
-  const crestX = bannerX + 54;
-  const crestY = bannerY + bannerH / 2;
-  const crestR = 33;
-
-  // Circular Medallion Backing
-  ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = "rgba(0,0,0,0.45)";
-  ctx.shadowBlur = 10;
-  ctx.beginPath();
-  ctx.arc(crestX, crestY, crestR, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.shadowBlur = 0;
-
-  // Gold Ring Trim on Medallion
-  ctx.strokeStyle = trimColor;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.arc(crestX, crestY, crestR, 0, Math.PI * 2);
+  ctx.moveTo(frameInset + 10, fy);
+  ctx.bezierCurveTo(W * 0.35, fy - 18, W * 0.65, fy + 18, W - frameInset - 10, fy);
   ctx.stroke();
 
-  // Inner accent ring
-  ctx.strokeStyle = "rgba(0,0,0,0.14)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.arc(crestX, crestY, crestR - 3, 0, Math.PI * 2);
-  ctx.stroke();
+  // Footer Tagline Text
+  ctx.fillStyle = "#fef08a";
+  ctx.font = "600 22px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText(extra, W / 2, H - frameInset - 38);
 
-  // Render the Logo cleanly centered inside the Frame's Medallion
-  if (logoImageObj) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(crestX, crestY, crestR - 4, 0, Math.PI * 2);
-    ctx.clip();
-    const lw = (crestR - 4) * 2;
-    ctx.drawImage(logoImageObj, crestX - (crestR - 4), crestY - (crestR - 4), lw, lw);
-    ctx.restore();
-  } else {
-    // Default Emblem Icon inside Medallion
-    ctx.fillStyle = "#d97706";
-    ctx.font = "30px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(bannerIcon, crestX, crestY);
-  }
-
-  // Banner Text Content Beside the Logo Medallion
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "700 23px 'Plus Jakarta Sans', sans-serif";
-  const extraText = extra || "— Dream Big • Stay Happy • Keep Smiling —";
-  ctx.fillText(extraText, bannerX + 104, bannerY + 39);
-
-  ctx.fillStyle = trimColor;
-  ctx.font = "500 17px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText(`📞 ${phone}   |   🌐 ${web}`, bannerX + 104, bannerY + 67);
-
-  // Export and update preview & download
   const dataUrl = canvas.toDataURL('image/png');
   currentPosterDataUrl = dataUrl;
   $('#previewImage').src = dataUrl;
-  $('#downloadPosterBtn').href = dataUrl;
   return dataUrl;
 }
 
-// Model & Provider Registry Metadata
-const PROVIDER_METADATA = {
-  "writer": {
-    model: "Palmyra-X",
-    provider: "Writer AI",
-    status: "🟢 Active • Configurable (WRITER_API_KEY)",
-    statusColor: "#4ade80",
-    badgeBg: "#431407",
-    badgeBorder: "#ea580c"
-  },
-  "pollinations_flux": {
-    model: "FLUX-1",
-    provider: "Pollinations.ai",
-    status: "🟢 Connected • Free Tier",
-    statusColor: "#4ade80",
-    badgeBg: "#581c87",
-    badgeBorder: "#9333ea"
-  },
-  "stability": {
-    model: "SDXL 1.0",
-    provider: "Stability AI",
-    status: "🟢 Connected • Trial (18.7 Credits)",
-    statusColor: "#60a5fa",
-    badgeBg: "#1e1b4b",
-    badgeBorder: "#4f46e5"
-  },
-  "cloudflare": {
-    model: "FLUX-1 schnell",
-    provider: "Cloudflare Workers AI",
-    status: "🟡 Free Tier (10k Neurons/day)",
-    statusColor: "#fbbf24",
-    badgeBg: "#451a03",
-    badgeBorder: "#d97706"
-  },
-  "gemini": {
-    model: "Gemini 2.5 Flash",
-    provider: "Google Cloud",
-    status: "🟢 Connected • Free Quota",
-    statusColor: "#4ade80",
-    badgeBg: "#064e3b",
-    badgeBorder: "#059669"
-  },
-  "mock": {
-    model: "Mock-1",
-    provider: "Local Engine",
-    status: "⚪ Offline / Standalone",
-    statusColor: "#94a3b8",
-    badgeBg: "#1e293b",
-    badgeBorder: "#475569"
-  }
-};
-
-function updateModelProviderInfo(providerKey) {
-  const meta = PROVIDER_METADATA[providerKey] || PROVIDER_METADATA["pollinations_flux"];
-  $('#cardModelBadge').textContent = meta.model;
-  $('#cardModelBadge').style.background = meta.badgeBg;
-  $('#cardModelBadge').style.borderColor = meta.badgeBorder;
-  $('#cardProviderName').textContent = meta.provider;
-  $('#cardApiStatus').textContent = meta.status;
-  $('#cardApiStatus').style.color = meta.statusColor;
-}
-
-$('#modelProviderSelect').onchange = async (e) => {
-  const chosen = e.target.value;
-  updateModelProviderInfo(chosen);
-  try {
-    await fetch('/switch', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ provider: chosen })
-    });
-  } catch (err) {
-    console.warn("Could not switch backend provider:", err);
-  }
-};
-
-// Generate Poster Action
-async function generatePoster() {
+// Generate New Poster Action
+async function generateNewPoster() {
   $('#canvasLoader').classList.add('active');
-  $('#posterReadyBar').style.display = 'none';
 
-  const title = $('#posterTitle').value.trim() || 'Happy Birthday';
-  const desc = $('#posterDesc').value.trim() || 'Celebrate your special day with love and joy!';
+  const title = $('#posterTitle').value.trim() || 'Happy Diwali Special';
+  const desc = $('#posterDesc').value.trim();
   const prompt = $('#aiPrompt').value.trim();
-  const [w, h] = $('#sizeSelect').value.split('x').map(Number);
-  const selectedProvider = $('#modelProviderSelect').value;
+  const [w, h] = ($('#sizeSelect').value || '1080x1350').split('x').map(Number);
 
-  // 1. First attempt to call the live Python FastAPI backend
   try {
     const res = await fetch('/compose', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: prompt + `, ${selectedStyle} style, high quality poster artwork`,
+        prompt: prompt + `, ${selectedStyle} style, high quality artwork`,
         headline: title,
         subheading: desc,
         business: "Brand",
@@ -2087,10 +975,9 @@ async function generatePoster() {
         phone: $('#brandPhone').value || '+91 98765 43210',
         website: $('#brandWeb').value || 'https://yourbrand.com',
         email: $('#brandEmail').value || 'hello@yourbrand.com',
-        cta: $('#brandExtra').value || 'Best Wishes!',
+        cta: $('#brandExtra').value || 'Celebrate with us',
         footer_style: 'wave',
-        footer_position: footerPos,
-        logo_base64: uploadedLogoB64 ? uploadedLogoB64.split(',')[1] : null,
+        footer_position: 'bottom',
         poster_bytes: uploadedBgB64 ? uploadedBgB64.split(',')[1] : null
       })
     });
@@ -2101,31 +988,26 @@ async function generatePoster() {
         currentPosterDataUrl = 'data:image/png;base64,' + data.final_image_base64;
         $('#previewImage').src = currentPosterDataUrl;
         $('#canvasLoader').classList.remove('active');
-        $('#posterReadyBar').style.display = 'flex';
-        $('#posterReadyBar').scrollIntoView({ behavior: 'smooth' });
         return;
       }
     }
   } catch (err) {
-    console.warn("Backend API unavailable or timed out, rendering live canvas:", err);
+    console.warn("Backend API call paused, rendering live artwork:", err);
   }
 
-  // 2. High-fidelity client canvas fallback
   setTimeout(() => {
     renderLivePoster();
     $('#canvasLoader').classList.remove('active');
-    $('#posterReadyBar').style.display = 'flex';
-    $('#posterReadyBar').scrollIntoView({ behavior: 'smooth' });
   }, 1000);
 }
 
-$('#generateHeroBtn').onclick = generatePoster;
+$('#generateHeroBtn').onclick = generateNewPoster;
 
-// Multi-Format Downloads (PNG, JPG, PDF)
+// Exports (PNG, JPG, PDF, Share)
 $('#downloadPngBtn').onclick = () => {
   const a = document.createElement('a');
   a.href = currentPosterDataUrl;
-  a.download = 'imagica-poster.png';
+  a.download = 'iimagica-poster.png';
   a.click();
 };
 
@@ -2143,7 +1025,7 @@ $('#downloadJpgBtn').onclick = () => {
     const jpgUrl = cv.toDataURL('image/jpeg', 0.95);
     const a = document.createElement('a');
     a.href = jpgUrl;
-    a.download = 'imagica-poster.jpg';
+    a.download = 'iimagica-poster.jpg';
     a.click();
   };
   img.src = currentPosterDataUrl;
@@ -2153,29 +1035,23 @@ $('#downloadPdfBtn').onclick = () => {
   const [w, h] = ($('#sizeSelect').value || '1080x1350').split('x').map(Number);
   if (window.jspdf && window.jspdf.jsPDF) {
     const { jsPDF } = window.jspdf;
-    const orient = (h >= w) ? 'portrait' : 'landscape';
-    const pdf = new jsPDF({
-      orientation: orient,
+    const doc = new jsPDF({
+      orientation: (h >= w) ? 'portrait' : 'landscape',
       unit: 'px',
       format: [w, h]
     });
-    pdf.addImage(currentPosterDataUrl, 'PNG', 0, 0, w, h);
-    pdf.save('imagica-poster.pdf');
+    doc.addImage(currentPosterDataUrl, 'PNG', 0, 0, w, h);
+    doc.save('iimagica-poster.pdf');
   } else {
-    const win = window.open('');
-    win.document.write(`<img src="${currentPosterDataUrl}" style="width:100%;height:auto;">`);
-    win.document.close();
-    win.focus();
-    win.print();
+    window.print();
   }
 };
 
-// Share button
 $('#shareBtn').onclick = () => {
   if (navigator.share && currentPosterDataUrl) {
     navigator.share({
       title: $('#posterTitle').value || 'AI Poster',
-      text: $('#posterDesc').value || 'Created with imagica',
+      text: $('#posterDesc').value || 'Created with iimagica',
       url: window.location.href
     }).catch(() => {});
   } else {
@@ -2184,11 +1060,8 @@ $('#shareBtn').onclick = () => {
   }
 };
 
-// Initial Setup
-updateModelProviderInfo('pollinations_flux');
+// Initial Render
 renderLivePoster();
-// Ensure poster ready bar is hidden until user generates poster
-$('#posterReadyBar').style.display = 'none';
 </script>
 </body>
 </html>
