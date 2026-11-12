@@ -1,4 +1,4 @@
-default_provider: gemini_text
+default_provider: pollinations_flux
 providers:
   writer:
     class: providers.writer_provider.WriterProvider

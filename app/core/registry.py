@@ -68,15 +68,33 @@ class ProviderRegistry:
     def _resolve_feature_provider(self, feature: str) -> BaseProvider:
         chosen = self.features.get(feature) or self.default_provider
         provider = self.providers.get(chosen)
+        if provider is not None and provider.supports(feature):
+            return provider
+
+        # Graceful fallback: If chosen model is specialized (e.g. Writer/Gemini text LLM for images,
+        # or FLUX generator for text layout), route to an active registered provider that supports it.
+        priority_fallbacks = {
+            "generate_image": ["pollinations_flux", "cloudflare_flux_schnell", "stability", "mock"],
+            "enhance_prompt": ["writer", "gemini_text", "groq", "mock"],
+            "suggest_layout": ["writer", "gemini_text", "mock"],
+            "analyze_image": ["gemini_text", "writer", "mock"]
+        }
+        for fb_name in priority_fallbacks.get(feature, []):
+            fb_prov = self.providers.get(fb_name)
+            if fb_prov and fb_prov.supports(feature):
+                return fb_prov
+
+        for cand_prov in self.providers.values():
+            if cand_prov.supports(feature):
+                return cand_prov
+
         if provider is None:
             raise UnknownProviderError(
                 f"Provider '{chosen}' (feature '{feature}') is not registered. "
                 f"Registered: {sorted(self.providers)}")
-        if not provider.supports(feature):
-            raise FeatureNotSupportedError(
-                f"Provider '{chosen}' does not support '{feature}'. "
-                f"Capabilities: {sorted(provider.capabilities)}")
-        return provider
+        raise FeatureNotSupportedError(
+            f"Provider '{chosen}' does not support '{feature}'. "
+            f"Capabilities: {sorted(provider.capabilities)}")
 
     def run(self, feature: str, method_kwargs: dict) -> "GenerationResult":
         """Execute a feature through the selected provider, normalized."""
