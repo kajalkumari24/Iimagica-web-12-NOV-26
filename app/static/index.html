@@ -150,6 +150,188 @@ textarea.input-field {
   line-height: 1.4;
 }
 
+/* Logo Upload & Dynamic Frame Color */
+.logo-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(139, 92, 246, 0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.logo-upload-container:hover {
+  border-color: var(--accent-cyan);
+}
+.logo-thumb-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #110d24;
+  border: 1.5px solid var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+}
+.logo-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 2px;
+}
+.logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.logo-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-logo-action {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f1f5f9;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+.btn-logo-action:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+}
+.btn-logo-delete {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+.btn-logo-delete:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+}
+.frame-color-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.color-dot-swatch-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.color-dot-swatch {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+  transition: transform 0.2s;
+}
+.color-dot-swatch:hover {
+  transform: scale(1.15);
+}
+
+/* Add More Section / Dynamic Custom Fields */
+.btn-add-section {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px dashed rgba(139, 92, 246, 0.4);
+  color: #c4b5fd;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+  transition: all 0.2s;
+}
+.btn-add-section:hover {
+  background: rgba(139, 92, 246, 0.24);
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+}
+.custom-field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.custom-field-select {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 6px;
+  outline: none;
+  width: 120px;
+  flex-shrink: 0;
+}
+.custom-field-input {
+  flex: 1;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: var(--text-main);
+  font-size: 11.5px;
+  outline: none;
+}
+.custom-field-input:focus {
+  border-color: var(--accent-cyan);
+}
+.btn-remove-field {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.btn-remove-field:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -557,6 +739,40 @@ textarea.input-field {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         Brand Details &amp; Footer Options
       </div>
+
+      <!-- Logo Upload Section with Auto Frame Color Adaptation -->
+      <div class="logo-upload-container">
+        <div class="logo-thumb-box" id="logoThumbBox" title="Current Logo (Click to change)">
+          <img id="logoPreviewImg" src="/static/assets/sample_crown.png" alt="Logo">
+        </div>
+        <div class="logo-actions">
+          <div style="font-size: 11.5px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
+            <span>Logo Upload</span>
+            <div class="frame-color-indicator">
+              <span>Frame Color:</span>
+              <label class="color-dot-swatch-wrapper" title="Click to fine-tune frame color">
+                <input type="color" id="frameColorInput" value="#fbbf24" style="position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;">
+                <span class="color-dot-swatch" id="frameColorDot" style="background: #fbbf24;"></span>
+              </label>
+              <span id="frameColorHex" style="font-family: monospace; font-size: 10.5px; color: #fbbf24; font-weight: 700;">#fbbf24</span>
+              <span style="font-size: 9.5px; color: var(--text-sub);">(Auto from Logo)</span>
+            </div>
+          </div>
+          <div class="logo-btn-row">
+            <button type="button" class="btn-logo-action" id="changeLogoBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Change Logo
+            </button>
+            <button type="button" class="btn-logo-delete" id="removeLogoBtn" title="Reset to default logo">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+            <span style="font-size: 10.5px; color: var(--text-sub);">Auto-extracts frame color &amp; scales footer</span>
+          </div>
+        </div>
+        <input type="file" id="logoFileInput" accept="image/*" hidden>
+      </div>
+
+      <!-- Standard Brand Details -->
       <div class="form-group grid-2">
         <div>
           <label class="form-label">Brand Website</label>
@@ -567,14 +783,25 @@ textarea.input-field {
           <input class="input-field" id="brandEmail" value="hello@yourbrand.com">
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Brand Phone / Contact</label>
-        <input class="input-field" id="brandPhone" value="+91 98765 43210">
+      <div class="form-group grid-2">
+        <div>
+          <label class="form-label">Brand Phone / Contact</label>
+          <input class="input-field" id="brandPhone" value="+91 98765 43210">
+        </div>
+        <div>
+          <label class="form-label">Tagline/Footer Text</label>
+          <input class="input-field" id="brandExtra" value="Celebrate with us | YourBrand.com">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Tagline/Footer Text</label>
-        <input class="input-field" id="brandExtra" value="Celebrate with us | YourBrand.com">
-      </div>
+
+      <!-- Dynamic Custom Fields Container -->
+      <div id="customFieldsContainer"></div>
+
+      <!-- Add More Section Button -->
+      <button type="button" class="btn-add-section" id="addSectionBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        + Add More Section / Field
+      </button>
     </section>
 
   </div>
@@ -663,15 +890,165 @@ const $$ = s => document.querySelectorAll(s);
 let selectedStyle = "golden_glow";
 let uploadedBgB64 = null;
 let bgImageObj = null;
+let uploadedLogoB64 = null;
+let logoImageObj = new Image();
+logoImageObj.crossOrigin = "anonymous";
+logoImageObj.src = "/static/assets/sample_crown.png";
+let activeFrameColor = "#fbbf24";
 let currentPosterDataUrl = "/static/assets/diwali_poster.png";
 let renderTimer = null;
 
 function schedulePosterUpdate() {
   clearTimeout(renderTimer);
-  renderTimer = setTimeout(renderLivePoster, 60);
+  renderTimer = setTimeout(renderLivePoster, 50);
 }
 
-// Aspect Ratio Radios
+// -------------------------------------------------------------
+// Logo Upload & Dynamic Frame Color Extraction
+// -------------------------------------------------------------
+function extractDominantColor(img) {
+  try {
+    const cv = document.createElement('canvas');
+    const size = 64;
+    cv.width = size; cv.height = size;
+    const ctx = cv.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+    const data = ctx.getImageData(0, 0, size, size).data;
+    let colorBins = {};
+    let bestColor = [251, 191, 36];
+    let maxWeight = 0;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+      if (a < 120) continue; // skip transparent
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      const lum = (max + min) / 2;
+      const sat = max === 0 ? 0 : (max - min) / max;
+      if (lum < 25 || lum > 245) continue; // skip pure black or white
+      
+      const weight = (sat * 2.2 + 0.4) * (1 - Math.abs(lum - 128) / 128);
+      const qr = Math.round(r / 20) * 20;
+      const qg = Math.round(g / 20) * 20;
+      const qb = Math.round(b / 20) * 20;
+      const key = `${qr},${qg},${qb}`;
+      colorBins[key] = (colorBins[key] || 0) + weight;
+
+      if (colorBins[key] > maxWeight) {
+        maxWeight = colorBins[key];
+        bestColor = [qr, qg, qb];
+      }
+    }
+
+    const hex = '#' + bestColor.map(c => Math.min(255, Math.max(0, c)).toString(16).padStart(2, '0')).join('');
+    return hex;
+  } catch (err) {
+    console.warn("Color extraction fallback:", err);
+    return '#fbbf24';
+  }
+}
+
+function setFrameColor(hex) {
+  activeFrameColor = hex;
+  $('#frameColorDot').style.background = hex;
+  $('#frameColorDot').style.boxShadow = `0 0 10px ${hex}`;
+  $('#frameColorHex').textContent = hex;
+  $('#frameColorHex').style.color = hex;
+  $('#frameColorInput').value = hex;
+  schedulePosterUpdate();
+}
+
+function handleLogoFile(f) {
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedLogoB64 = reader.result;
+    const img = new Image();
+    img.onload = () => {
+      logoImageObj = img;
+      $('#logoPreviewImg').src = reader.result;
+      const detectedColor = extractDominantColor(img);
+      setFrameColor(detectedColor);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function resetDefaultLogo() {
+  uploadedLogoB64 = null;
+  logoImageObj = new Image();
+  logoImageObj.src = "/static/assets/sample_crown.png";
+  $('#logoPreviewImg').src = "/static/assets/sample_crown.png";
+  setFrameColor('#fbbf24');
+}
+
+$('#changeLogoBtn').onclick = () => $('#logoFileInput').click();
+$('#logoThumbBox').onclick = () => $('#logoFileInput').click();
+$('#logoFileInput').onchange = (e) => handleLogoFile(e.target.files[0]);
+$('#removeLogoBtn').onclick = resetDefaultLogo;
+$('#frameColorDot').onclick = () => $('#frameColorInput').click();
+$('#frameColorInput').oninput = (e) => setFrameColor(e.target.value);
+
+// -------------------------------------------------------------
+// Add More Section / Dynamic Custom Fields
+// -------------------------------------------------------------
+const FIELD_PRESETS = [
+  { label: "📍 Address", placeholder: "e.g. 123 Main Street, Suite 400" },
+  { label: "💬 WhatsApp", placeholder: "e.g. +91 98765 00000" },
+  { label: "📷 Instagram", placeholder: "e.g. @yourbrand_official" },
+  { label: "🏷️ Promo Offer", placeholder: "e.g. Flat 40% Festive Discount!" },
+  { label: "⭐ Special Feature", placeholder: "e.g. 100% Handcrafted & Organic" },
+  { label: "📝 Custom Note", placeholder: "Enter custom details..." }
+];
+
+let customFieldCount = 0;
+$('#addSectionBtn').onclick = () => {
+  customFieldCount++;
+  const row = document.createElement('div');
+  row.className = 'custom-field-row';
+  row.id = `customField_${customFieldCount}`;
+
+  let optionsHtml = FIELD_PRESETS.map((p, idx) => 
+    `<option value="${p.label}" ${idx === (customFieldCount - 1) % FIELD_PRESETS.length ? 'selected' : ''}>${p.label}</option>`
+  ).join('');
+
+  row.innerHTML = `
+    <select class="custom-field-select">${optionsHtml}</select>
+    <input class="custom-field-input" placeholder="${FIELD_PRESETS[(customFieldCount - 1) % FIELD_PRESETS.length].placeholder}">
+    <button type="button" class="btn-remove-field" title="Remove Field">✕</button>
+  `;
+
+  row.querySelector('.custom-field-select').onchange = (e) => {
+    const matched = FIELD_PRESETS.find(p => p.label === e.target.value);
+    if (matched) row.querySelector('.custom-field-input').placeholder = matched.placeholder;
+    schedulePosterUpdate();
+  };
+  row.querySelector('.custom-field-input').oninput = schedulePosterUpdate;
+  row.querySelector('.btn-remove-field').onclick = () => {
+    row.remove();
+    schedulePosterUpdate();
+  };
+
+  $('#customFieldsContainer').appendChild(row);
+  row.querySelector('.custom-field-input').focus();
+  schedulePosterUpdate();
+};
+
+function getCustomFieldsData() {
+  const fields = [];
+  $$('#customFieldsContainer .custom-field-row').forEach(row => {
+    const label = row.querySelector('.custom-field-select').value;
+    const value = row.querySelector('.custom-field-input').value.trim();
+    if (value) {
+      fields.push({ label, value });
+    }
+  });
+  return fields;
+}
+
+// -------------------------------------------------------------
+// Aspect Ratio, Style & Inputs
+// -------------------------------------------------------------
 $$('input[name="ratioRadio"]').forEach(radio => {
   radio.onchange = (e) => {
     $$('.ratio-label').forEach(l => l.classList.remove('active'));
@@ -701,12 +1078,13 @@ $$('#stylePills .style-pill').forEach(btn => {
   };
 });
 
-// Char counts
+// Inputs
 $('#posterDesc').oninput = () => {
   $('#descCount').textContent = `${$('#posterDesc').value.length}/300`;
   schedulePosterUpdate();
 };
 $('#posterTitle').oninput = schedulePosterUpdate;
+$('#posterSecondary').oninput = schedulePosterUpdate;
 $('#brandPhone').oninput = schedulePosterUpdate;
 $('#brandWeb').oninput = schedulePosterUpdate;
 $('#brandEmail').oninput = schedulePosterUpdate;
@@ -744,7 +1122,36 @@ function handleImageFile(f) {
   reader.readAsDataURL(f);
 }
 
-// Dynamic Client Poster Renderer
+// -------------------------------------------------------------
+// Dynamic Client Poster Renderer with Content-Adaptive Layout
+// -------------------------------------------------------------
+function wrapLines(ctx, text, maxWidth) {
+  const words = text.split(/\s+/);
+  const lines = [];
+  let currentLine = words[0] || '';
+  for (let i = 1; i < words.length; i++) {
+    const word = words[i];
+    const width = ctx.measureText(currentLine + " " + word).width;
+    if (width < maxWidth) {
+      currentLine += " " + word;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+function hexToRgb(hex) {
+  const c = hex.replace('#', '');
+  return {
+    r: parseInt(c.substring(0, 2), 16) || 251,
+    g: parseInt(c.substring(2, 4), 16) || 191,
+    b: parseInt(c.substring(4, 6), 16) || 36
+  };
+}
+
 function renderLivePoster() {
   const canvas = document.createElement('canvas');
   const sizeVal = $('#sizeSelect').value || '1080x1350';
@@ -754,8 +1161,16 @@ function renderLivePoster() {
   const ctx = canvas.getContext('2d');
 
   const title = $('#posterTitle').value.trim() || 'Happy Diwali';
+  const secondaryTitle = $('#posterSecondary').value.trim() || 'Special';
   const desc = $('#posterDesc').value.trim() || 'Celebrate the festival of lights with prosperity, joy, and peace!';
   const extra = $('#brandExtra').value.trim() || 'Celebrate with us | YourBrand.com';
+  const brandWeb = $('#brandWeb').value.trim();
+  const brandEmail = $('#brandEmail').value.trim();
+  const brandPhone = $('#brandPhone').value.trim();
+  const customFields = getCustomFieldsData();
+
+  const themeHex = activeFrameColor || '#fbbf24';
+  const rgb = hexToRgb(themeHex);
 
   // 1. Draw Background
   if (bgImageObj) {
@@ -765,49 +1180,49 @@ function renderLivePoster() {
     ctx.drawImage(bgImageObj, (W - sw) / 2, (H - sh) / 2, sw, sh);
 
     const vig = ctx.createLinearGradient(0, 0, 0, H);
-    vig.addColorStop(0, 'rgba(0,0,0,0.5)');
-    vig.addColorStop(0.5, 'rgba(0,0,0,0.25)');
-    vig.addColorStop(1, 'rgba(0,0,0,0.75)');
+    vig.addColorStop(0, 'rgba(0,0,0,0.55)');
+    vig.addColorStop(0.5, 'rgba(0,0,0,0.3)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.85)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, W, H);
   } else {
-    // Deep royal festive Diwali background
-    const bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.45, 100, W * 0.5, H * 0.5, 800);
-    bgGrad.addColorStop(0, '#380a1c');
-    bgGrad.addColorStop(0.4, '#1a0512');
-    bgGrad.addColorStop(1, '#090208');
+    // Deep royal festive background tinted harmoniously with theme color
+    const bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.45, 100, W * 0.5, H * 0.5, 820);
+    bgGrad.addColorStop(0, `rgb(${Math.round(rgb.r * 0.24)}, ${Math.round(rgb.g * 0.08)}, ${Math.round(rgb.b * 0.14)})`);
+    bgGrad.addColorStop(0.45, '#140510');
+    bgGrad.addColorStop(1, '#070208');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // Warm golden bokeh particles
-    ctx.fillStyle = "#fef08a";
-    for (let i = 0; i < 40; i++) {
+    // Warm sparkling bokeh particles
+    ctx.fillStyle = themeHex;
+    for (let i = 0; i < 42; i++) {
       const rx = (i * 101) % W;
       const ry = (i * 79) % (H * 0.65);
-      ctx.globalAlpha = 0.2 + ((i % 5) * 0.12);
+      ctx.globalAlpha = 0.15 + ((i % 5) * 0.1);
       ctx.beginPath();
       ctx.arc(rx, ry, (i % 4) + 1.5, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1.0;
 
-    // Hanging Festive Oil Diyas
+    // Hanging Festive Oil Diyas with themed accents
     function drawHangingDiya(hx, hy) {
-      ctx.strokeStyle = "rgba(251, 191, 36, 0.4)";
+      ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(hx, 0);
       ctx.lineTo(hx, hy);
       ctx.stroke();
 
-      ctx.fillStyle = "#fbbf24";
+      ctx.fillStyle = themeHex;
       ctx.beginPath();
       ctx.ellipse(hx, hy, 16, 7, 0, 0, Math.PI);
       ctx.fill();
 
       // Flame
       ctx.fillStyle = "#fef08a";
-      ctx.shadowColor = "#fde047";
+      ctx.shadowColor = themeHex;
       ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.ellipse(hx, hy - 8, 4, 8, 0, 0, Math.PI * 2);
@@ -824,13 +1239,12 @@ function renderLivePoster() {
       ctx.translate(rcx, rcy);
       for (let p = 0; p < 16; p++) {
         ctx.rotate((Math.PI * 2) / 16);
-        // Outer petal
-        ctx.fillStyle = (p % 2 === 0) ? "rgba(217, 119, 6, 0.6)" : "rgba(225, 29, 72, 0.6)";
+        ctx.fillStyle = (p % 2 === 0) ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.65)` : "rgba(225, 29, 72, 0.6)";
         ctx.beginPath();
         ctx.ellipse(0, rad * 0.7, rad * 0.18, rad * 0.4, 0, 0, Math.PI * 2);
         ctx.fill();
-        // Inner petal
-        ctx.fillStyle = "#fbbf24";
+
+        ctx.fillStyle = themeHex;
         ctx.beginPath();
         ctx.ellipse(0, rad * 0.45, rad * 0.1, rad * 0.25, 0, 0, Math.PI * 2);
         ctx.fill();
@@ -839,11 +1253,11 @@ function renderLivePoster() {
     }
     drawRangoli(cx, cy, 190);
 
-    // Center Terracotta Diya with Radiant Golden Flame
+    // Center Terracotta Diya with Radiant Flame
     const halo = ctx.createRadialGradient(cx, cy - 25, 10, cx, cy - 25, 160);
     halo.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
-    halo.addColorStop(0.3, 'rgba(245, 158, 11, 0.5)');
-    halo.addColorStop(1, 'rgba(245, 158, 11, 0)');
+    halo.addColorStop(0.3, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`);
+    halo.addColorStop(1, 'transparent');
     ctx.fillStyle = halo;
     ctx.beginPath();
     ctx.arc(cx, cy - 25, 160, 0, Math.PI * 2);
@@ -858,14 +1272,14 @@ function renderLivePoster() {
     ctx.beginPath();
     ctx.ellipse(cx, cy, 70, 18, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "#f59e0b";
+    ctx.fillStyle = themeHex;
     ctx.beginPath();
     ctx.ellipse(cx, cy - 2, 60, 12, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // Golden Radiant Flame
     ctx.fillStyle = "#fef08a";
-    ctx.shadowColor = "#fde047";
+    ctx.shadowColor = themeHex;
     ctx.shadowBlur = 30;
     ctx.beginPath();
     ctx.moveTo(cx, cy - 65);
@@ -875,75 +1289,167 @@ function renderLivePoster() {
     ctx.shadowBlur = 0;
   }
 
-  // 2. Ornamental Golden Frame
+  // -----------------------------------------------------------
+  // 2. Ornamental Adaptive Frame (Color dynamically matches logo)
+  // -----------------------------------------------------------
   const frameInset = 26;
-  ctx.strokeStyle = "#fbbf24";
-  ctx.lineWidth = 3;
-  ctx.shadowColor = "rgba(0,0,0,0.55)";
-  ctx.shadowBlur = 12;
+  ctx.strokeStyle = themeHex;
+  ctx.lineWidth = 3.5;
+  ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.4)`;
+  ctx.shadowBlur = 14;
   ctx.beginPath();
   ctx.roundRect(frameInset, frameInset, W - frameInset * 2, H - frameInset * 2, 20);
   ctx.stroke();
+
+  // Subtle inner decorative border
+  ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.35)`;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(frameInset + 8, frameInset + 8, W - (frameInset + 8) * 2, H - (frameInset + 8) * 2, 14);
+  ctx.stroke();
   ctx.shadowBlur = 0;
 
-  // Frame corner filigree
+  // Frame corner filigree flourishes
   function drawFiligree(fx, fy, dx, dy) {
-    ctx.strokeStyle = "#fbbf24";
+    ctx.strokeStyle = themeHex;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(fx, fy + dy * 32);
+    ctx.moveTo(fx, fy + dy * 34);
     ctx.lineTo(fx, fy);
-    ctx.lineTo(fx + dx * 32, fy);
+    ctx.lineTo(fx + dx * 34, fy);
     ctx.stroke();
+
+    ctx.fillStyle = themeHex;
+    ctx.beginPath();
+    ctx.arc(fx + dx * 10, fy + dy * 10, 3, 0, Math.PI * 2);
+    ctx.fill();
   }
   drawFiligree(frameInset + 12, frameInset + 12, 1, 1);
   drawFiligree(W - frameInset - 12, frameInset + 12, -1, 1);
   drawFiligree(frameInset + 12, H - frameInset - 12, 1, -1);
   drawFiligree(W - frameInset - 12, H - frameInset - 12, -1, -1);
 
-  // 3. Typography
+  // -----------------------------------------------------------
+  // 3. Dynamic Typography (Auto-resizes as per text length)
+  // -----------------------------------------------------------
   ctx.textAlign = "center";
-  ctx.fillStyle = "#fef08a";
-  ctx.shadowColor = "rgba(0,0,0,0.8)";
+
+  // Title: Auto-scale font size dynamically to fit width
+  let titleFontSize = Math.min(88, Math.max(36, Math.floor(W / (title.length * 0.42 + 4))));
+  ctx.font = `italic 700 ${titleFontSize}px 'Great Vibes', serif`;
+  const maxTitleW = W - 140;
+  while (ctx.measureText(title).width > maxTitleW && titleFontSize > 32) {
+    titleFontSize -= 2;
+    ctx.font = `italic 700 ${titleFontSize}px 'Great Vibes', serif`;
+  }
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = "rgba(0,0,0,0.9)";
   ctx.shadowBlur = 18;
-  ctx.font = "italic 700 84px 'Great Vibes', serif";
-  ctx.fillText(title, W / 2, H * 0.17);
+  ctx.fillText(title, W / 2, H * 0.165);
 
-  ctx.fillStyle = "#fbbf24";
-  ctx.font = "700 36px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText("Special", W / 2, H * 0.24);
+  // Secondary Title
+  if (secondaryTitle) {
+    ctx.fillStyle = themeHex;
+    ctx.font = "700 34px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(secondaryTitle, W / 2, H * 0.235);
+  }
 
+  // Description: Auto-wrap to multiple lines if needed
   ctx.fillStyle = "#fed7aa";
-  ctx.font = "500 24px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText(desc, W / 2, H * 0.32);
+  ctx.font = "500 23px 'Plus Jakarta Sans', sans-serif";
+  const descLines = wrapLines(ctx, desc, W - 180);
+  const startDescY = secondaryTitle ? (H * 0.29) : (H * 0.25);
+  descLines.slice(0, 3).forEach((line, idx) => {
+    ctx.fillText(line, W / 2, startDescY + (idx * 30));
+  });
   ctx.shadowBlur = 0;
 
-  // 4. Wavy Golden Footer Ribbon
-  const fy = H - 126;
+  // -----------------------------------------------------------
+  // 4. Content-Adaptive Footer Ribbon & Branding
+  // -----------------------------------------------------------
+  // Collect all contact items
+  const contactItems = [];
+  if (brandWeb) contactItems.push(`🌐 ${brandWeb.replace(/^https?:\/\//, '')}`);
+  if (brandPhone) contactItems.push(`📞 ${brandPhone}`);
+  if (brandEmail) contactItems.push(`✉ ${brandEmail}`);
+  customFields.forEach(cf => {
+    contactItems.push(`${cf.label.split(' ')[0]} ${cf.value}`);
+  });
+
+  // Calculate dynamic ribbon height based on items
+  let ribbonHeight = 110;
+  if (contactItems.length >= 5) ribbonHeight = 170;
+  else if (contactItems.length >= 3) ribbonHeight = 140;
+  else if (contactItems.length >= 1) ribbonHeight = 120;
+
+  const fy = H - frameInset - ribbonHeight;
+
+  // Dynamic harmonized ribbon background gradient
   const fGrad = ctx.createLinearGradient(0, fy, W, fy);
-  fGrad.addColorStop(0, '#581c1c');
-  fGrad.addColorStop(0.5, '#78350f');
-  fGrad.addColorStop(1, '#581c1c');
+  fGrad.addColorStop(0, `rgba(${Math.round(rgb.r * 0.22)}, ${Math.round(rgb.g * 0.12)}, ${Math.round(rgb.b * 0.18)}, 0.95)`);
+  fGrad.addColorStop(0.5, `rgba(${Math.round(rgb.r * 0.38)}, ${Math.round(rgb.g * 0.22)}, ${Math.round(rgb.b * 0.2)}, 0.98)`);
+  fGrad.addColorStop(1, `rgba(${Math.round(rgb.r * 0.22)}, ${Math.round(rgb.g * 0.12)}, ${Math.round(rgb.b * 0.18)}, 0.95)`);
   ctx.fillStyle = fGrad;
+
+  // Wavy Banner Shape
   ctx.beginPath();
-  ctx.moveTo(frameInset + 10, fy);
-  ctx.bezierCurveTo(W * 0.35, fy - 18, W * 0.65, fy + 18, W - frameInset - 10, fy);
-  ctx.lineTo(W - frameInset - 10, H - frameInset - 8);
-  ctx.lineTo(frameInset + 10, H - frameInset - 8);
+  ctx.moveTo(frameInset + 8, fy);
+  ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, W - frameInset - 8, fy);
+  ctx.lineTo(W - frameInset - 8, H - frameInset - 8);
+  ctx.lineTo(frameInset + 8, H - frameInset - 8);
   ctx.closePath();
   ctx.fill();
 
-  ctx.strokeStyle = "#fbbf24";
-  ctx.lineWidth = 2.5;
+  // Wavy accent top border
+  ctx.strokeStyle = themeHex;
+  ctx.lineWidth = 2.8;
   ctx.beginPath();
-  ctx.moveTo(frameInset + 10, fy);
-  ctx.bezierCurveTo(W * 0.35, fy - 18, W * 0.65, fy + 18, W - frameInset - 10, fy);
+  ctx.moveTo(frameInset + 8, fy);
+  ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, W - frameInset - 8, fy);
   ctx.stroke();
 
-  // Footer Tagline Text
-  ctx.fillStyle = "#fef08a";
-  ctx.font = "600 22px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText(extra, W / 2, H - frameInset - 38);
+  // Draw Logo in Footer (or center crest)
+  const hasLogo = logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0;
+  if (hasLogo) {
+    const logoSize = Math.min(54, ribbonHeight * 0.42);
+    const logoX = W * 0.16;
+    const logoY = fy + (ribbonHeight * 0.46) - (logoSize / 2);
+
+    // Medallion circle for logo
+    ctx.fillStyle = "rgba(17, 13, 36, 0.9)";
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, (logoSize / 2) + 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.drawImage(logoImageObj, logoX, logoY, logoSize, logoSize);
+  }
+
+  // Tagline text
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "700 21px 'Plus Jakarta Sans', sans-serif";
+  const taglineY = fy + 38;
+  ctx.fillText(extra, W / 2, taglineY);
+
+  // Contact details & custom fields layout (adaptive rows)
+  if (contactItems.length > 0) {
+    ctx.fillStyle = themeHex;
+    ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+
+    if (contactItems.length <= 3) {
+      const lineText = contactItems.join("   •   ");
+      ctx.fillText(lineText, W / 2, fy + 72);
+    } else {
+      // Multi-row adaptive display
+      const half = Math.ceil(contactItems.length / 2);
+      const row1 = contactItems.slice(0, half).join("   •   ");
+      const row2 = contactItems.slice(half).join("   •   ");
+      ctx.fillText(row1, W / 2, fy + 68);
+      ctx.fillText(row2, W / 2, fy + 98);
+    }
+  }
 
   const dataUrl = canvas.toDataURL('image/png');
   currentPosterDataUrl = dataUrl;
@@ -951,7 +1457,9 @@ function renderLivePoster() {
   return dataUrl;
 }
 
+// -------------------------------------------------------------
 // Generate New Poster Action
+// -------------------------------------------------------------
 async function generateNewPoster() {
   $('#canvasLoader').classList.add('active');
 
@@ -978,6 +1486,7 @@ async function generateNewPoster() {
         cta: $('#brandExtra').value || 'Celebrate with us',
         footer_style: 'wave',
         footer_position: 'bottom',
+        logo_base64: uploadedLogoB64 ? uploadedLogoB64.split(',')[1] : null,
         poster_bytes: uploadedBgB64 ? uploadedBgB64.split(',')[1] : null
       })
     });
@@ -1061,6 +1570,7 @@ $('#shareBtn').onclick = () => {
 };
 
 // Initial Render
+logoImageObj.onload = renderLivePoster;
 renderLivePoster();
 </script>
 </body>
