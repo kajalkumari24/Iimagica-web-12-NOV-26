@@ -183,25 +183,33 @@ body {
 
 /* Workspace Grid */
 .workspace {
-  padding: 24px 28px;
+  padding: 20px 24px;
   display: grid;
-  grid-template-columns: 1.18fr 1fr;
-  gap: 24px;
+  grid-template-columns: minmax(440px, 1.15fr) minmax(380px, 1fr);
+  gap: 20px;
   align-items: start;
+  max-width: 1600px;
+  width: 100%;
 }
 .col-left {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   min-width: 0;
 }
 .col-right {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  position: sticky;
-  top: 24px;
+  gap: 16px;
   min-width: 0;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.col-right::-webkit-scrollbar {
+  display: none;
 }
 
 /* Cards */
@@ -630,14 +638,15 @@ select.input-control {
 /* Canvas Area */
 .poster-viewport {
   width: 100%;
-  max-width: 100%;
+  max-width: 480px;
+  max-height: 480px;
   aspect-ratio: 4 / 4.7;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
   background: #110d24;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
@@ -647,7 +656,7 @@ select.input-control {
 .poster-viewport img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 .canvas-loader {
@@ -847,9 +856,9 @@ select.input-control {
 .btn-share:hover { background: rgba(255, 255, 255, 0.1); }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 960px) {
   .workspace { grid-template-columns: 1fr; }
-  .col-right { position: static; }
+  .col-right { position: static; max-height: none; }
 }
 @media (max-width: 768px) {
   body { flex-direction: column; }
@@ -1144,7 +1153,7 @@ select.input-control {
 
         <div class="generate-action-bar">
           <button type="button" class="btn-generate-hero" id="generateHeroBtn">
-            <span>✨</span> Generate Poster →
+            <span>✨</span> Generate
           </button>
         </div>
       </section>
@@ -1810,53 +1819,99 @@ function renderLivePoster() {
   ctx.shadowBlur = 0;
 
   // -----------------------------------------------------------
-  // 3. Dynamic Royal Banner (Top or Bottom)
+  // 3. Dynamic Royal Frame & Logo Crest
   // -----------------------------------------------------------
-  const bannerY = (footerPos === 'top') ? 36 : (H - 124);
-  const bannerW = W * 0.88;
-  const bannerH = 88;
-  const bannerX = (W - bannerW) / 2;
-
-  // Banner Background Gradient by selected template
-  let bGrad = ctx.createLinearGradient(bannerX, 0, bannerX + bannerW, 0);
+  // Template Color Scheme
   let trimColor = "#fbbf24";
   let bannerIcon = "👑";
 
   if (activeFooterStyle === "golden_ribbon") {
-    bGrad.addColorStop(0, '#78350f');
-    bGrad.addColorStop(0.5, '#d97706');
-    bGrad.addColorStop(1, '#78350f');
     trimColor = '#fef08a';
     bannerIcon = "✨";
   } else if (activeFooterStyle === "floral_pink") {
-    bGrad.addColorStop(0, '#831843');
-    bGrad.addColorStop(0.5, '#db2777');
-    bGrad.addColorStop(1, '#831843');
     trimColor = '#fbcfe8';
     bannerIcon = "🌸";
   } else if (activeFooterStyle === "midnight_gold") {
-    bGrad.addColorStop(0, '#090d16');
-    bGrad.addColorStop(0.5, '#1e3a8a');
-    bGrad.addColorStop(1, '#090d16');
     trimColor = '#f59e0b';
     bannerIcon = "💎";
   } else if (activeFooterStyle === "botanical_green") {
-    bGrad.addColorStop(0, '#064e3b');
-    bGrad.addColorStop(0.5, '#059669');
-    bGrad.addColorStop(1, '#064e3b');
     trimColor = '#a7f3d0';
     bannerIcon = "🌿";
   } else {
-    // Default Royal Purple
-    bGrad.addColorStop(0, '#1e0b3d');
-    bGrad.addColorStop(0.5, '#3b0764');
-    bGrad.addColorStop(1, '#1e0b3d');
     trimColor = '#fbbf24';
     bannerIcon = "👑";
   }
 
-  ctx.fillStyle = bGrad;
+  // 3A. Outer Ornamental Frame Enclosing Poster
+  const frameInset = 24;
+  ctx.strokeStyle = trimColor;
+  ctx.lineWidth = 3.5;
   ctx.shadowColor = "rgba(0,0,0,0.55)";
+  ctx.shadowBlur = 14;
+  ctx.beginPath();
+  ctx.roundRect(frameInset, frameInset, W - frameInset * 2, H - frameInset * 2, 22);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Inner Accent Hairline Frame
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(frameInset + 8, frameInset + 8, W - (frameInset + 8) * 2, H - (frameInset + 8) * 2, 16);
+  ctx.stroke();
+
+  // 4 Corner Filigree Brackets on the Frame
+  function drawCornerFiligree(cx, cy, dirX, dirY) {
+    ctx.strokeStyle = trimColor;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + dirY * 34);
+    ctx.lineTo(cx, cy);
+    ctx.lineTo(cx + dirX * 34, cy);
+    ctx.stroke();
+    // Gold diamond dot
+    ctx.fillStyle = trimColor;
+    ctx.beginPath();
+    ctx.arc(cx + dirX * 10, cy + dirY * 10, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  drawCornerFiligree(frameInset + 14, frameInset + 14, 1, 1);
+  drawCornerFiligree(W - frameInset - 14, frameInset + 14, -1, 1);
+  drawCornerFiligree(frameInset + 14, H - frameInset - 14, 1, -1);
+  drawCornerFiligree(W - frameInset - 14, H - frameInset - 14, -1, -1);
+
+  // 3B. Dynamic Banner Integrated with the Frame
+  const bannerY = (footerPos === 'top') ? (frameInset + 14) : (H - frameInset - 104);
+  const bannerW = W * 0.86;
+  const bannerH = 90;
+  const bannerX = (W - bannerW) / 2;
+
+  // Banner Background Gradient
+  let bGrad = ctx.createLinearGradient(bannerX, 0, bannerX + bannerW, 0);
+  if (activeFooterStyle === "golden_ribbon") {
+    bGrad.addColorStop(0, '#78350f');
+    bGrad.addColorStop(0.5, '#d97706');
+    bGrad.addColorStop(1, '#78350f');
+  } else if (activeFooterStyle === "floral_pink") {
+    bGrad.addColorStop(0, '#831843');
+    bGrad.addColorStop(0.5, '#db2777');
+    bGrad.addColorStop(1, '#831843');
+  } else if (activeFooterStyle === "midnight_gold") {
+    bGrad.addColorStop(0, '#090d16');
+    bGrad.addColorStop(0.5, '#1e3a8a');
+    bGrad.addColorStop(1, '#090d16');
+  } else if (activeFooterStyle === "botanical_green") {
+    bGrad.addColorStop(0, '#064e3b');
+    bGrad.addColorStop(0.5, '#059669');
+    bGrad.addColorStop(1, '#064e3b');
+  } else {
+    bGrad.addColorStop(0, '#1e0b3d');
+    bGrad.addColorStop(0.5, '#3b0764');
+    bGrad.addColorStop(1, '#1e0b3d');
+  }
+
+  ctx.fillStyle = bGrad;
+  ctx.shadowColor = "rgba(0,0,0,0.6)";
   ctx.shadowBlur = 24;
   ctx.beginPath();
   ctx.roundRect(bannerX, bannerY, bannerW, bannerH, 16);
@@ -1870,26 +1925,63 @@ function renderLivePoster() {
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  // Banner Logo or Icon
+  // 3C. Dedicated Emblem Medallion Accounting for the Logo
+  const crestX = bannerX + 54;
+  const crestY = bannerY + bannerH / 2;
+  const crestR = 33;
+
+  // Circular Medallion Backing
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = "rgba(0,0,0,0.45)";
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(crestX, crestY, crestR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Gold Ring Trim on Medallion
+  ctx.strokeStyle = trimColor;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(crestX, crestY, crestR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Inner accent ring
+  ctx.strokeStyle = "rgba(0,0,0,0.14)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(crestX, crestY, crestR - 3, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Render the Logo cleanly centered inside the Frame's Medallion
   if (logoImageObj) {
-    ctx.drawImage(logoImageObj, bannerX + 20, bannerY + 16, 56, 56);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(crestX, crestY, crestR - 4, 0, Math.PI * 2);
+    ctx.clip();
+    const lw = (crestR - 4) * 2;
+    ctx.drawImage(logoImageObj, crestX - (crestR - 4), crestY - (crestR - 4), lw, lw);
+    ctx.restore();
   } else {
-    ctx.fillStyle = trimColor;
-    ctx.font = "32px sans-serif";
+    // Default Emblem Icon inside Medallion
+    ctx.fillStyle = "#d97706";
+    ctx.font = "30px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(bannerIcon, bannerX + 48, bannerY + 54);
+    ctx.textBaseline = "middle";
+    ctx.fillText(bannerIcon, crestX, crestY);
   }
 
-  // Banner Text Content
+  // Banner Text Content Beside the Logo Medallion
   ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "700 22px 'Plus Jakarta Sans', sans-serif";
+  ctx.font = "700 23px 'Plus Jakarta Sans', sans-serif";
   const extraText = extra || "— Dream Big • Stay Happy • Keep Smiling —";
-  ctx.fillText(extraText, bannerX + 90, bannerY + 38);
+  ctx.fillText(extraText, bannerX + 104, bannerY + 39);
 
   ctx.fillStyle = trimColor;
   ctx.font = "500 17px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText(`📞 ${phone}   |   🌐 ${web}`, bannerX + 90, bannerY + 66);
+  ctx.fillText(`📞 ${phone}   |   🌐 ${web}`, bannerX + 104, bannerY + 67);
 
   // Export and update preview & download
   const dataUrl = canvas.toDataURL('image/png');
