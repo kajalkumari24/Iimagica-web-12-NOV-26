@@ -534,11 +534,105 @@ textarea.input-field {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* AI Model & API Info Card */
+/* Header Developer Badge */
+.author-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  padding: 5px 13px;
+  border-radius: 20px;
+}
+.author-role-pill {
+  background: #581c87;
+  color: #e9d5ff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* AI Model & API Info Card with Developer Credit */
 .model-info-card {
-  padding: 12px 16px;
+  padding: 13px 16px;
   font-size: 12px;
 }
+.model-dev-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 680px) {
+  .model-dev-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.author-card-col {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (max-width: 680px) {
+  .author-card-col {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 0;
+    padding-top: 12px;
+  }
+}
+.author-name-text {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.author-role-text {
+  font-size: 11px;
+  color: #c4b5fd;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.author-signature-display {
+  font-family: 'Great Vibes', cursive;
+  font-size: 27px;
+  color: #c084fc;
+  text-shadow: 0 0 14px rgba(192, 132, 252, 0.45);
+  margin-top: 4px;
+  line-height: 1.2;
+}
+
+/* Toast Notice */
+.toast-notice {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e1b4b;
+  border: 1px solid var(--accent-cyan);
+  color: #f8fafc;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(60px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast-notice.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 .model-info-row {
   display: flex;
   align-items: center;
@@ -624,6 +718,13 @@ textarea.input-field {
 <header class="app-header">
   <div class="app-title">
     <span>iimagica — AI Poster Studio</span>
+  </div>
+  <div class="header-right">
+    <div class="author-header-badge">
+      <span style="color: #94a3b8; font-size: 11px;">Created By:</span>
+      <strong style="color: #f1f5f9; font-weight: 700; font-size: 12px;">Kajal Kumari 👑</strong>
+      <span class="author-role-pill">Python Developer</span>
+    </div>
   </div>
 </header>
 
@@ -825,8 +926,8 @@ textarea.input-field {
       </div>
     </section>
 
-    <!-- Ready Status Card -->
-    <section class="card-box ready-card" id="readyCard">
+    <!-- Ready Status Card (Hidden until poster is ready) -->
+    <section class="card-box ready-card" id="readyCard" style="display: none;">
       <div class="ready-header">
         <div class="check-badge">✓</div>
         <div class="ready-title">Your poster is ready!</div>
@@ -847,26 +948,66 @@ textarea.input-field {
       </div>
     </section>
 
-    <!-- AI Model & API Info Card -->
+    <!-- AI Model & API Info + Developer Credit (About This Project) -->
     <section class="card-box model-info-card">
-      <div class="card-heading" style="margin-bottom: 8px;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        AI Model &amp; API Info
-      </div>
-      <div class="model-info-row">
-        <span style="color:var(--text-muted);">AI Model Used:</span>
-        <span class="model-pill" id="cardModelBadge">FLUX 1-schnell</span>
-      </div>
-      <div class="model-info-row">
-        <span style="color:var(--text-muted);">API Provider:</span>
-        <strong style="color: #e2e8f0;" id="cardProviderName">Pollinations.ai</strong>
-      </div>
-      <div class="model-info-row">
-        <span style="color:var(--text-muted);">UI Status:</span>
-        <span class="status-indicator" id="cardApiStatus">
-          <span class="status-dot"></span>
-          Connected — Free Tier
-        </span>
+      <div class="model-dev-grid">
+        <!-- Left Column: Interactive Model Switcher & Status -->
+        <div>
+          <div class="card-heading" style="margin-bottom: 8px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            AI Model &amp; API Info
+          </div>
+
+          <!-- Interactive Model & Provider Dropdown -->
+          <div class="form-group" style="margin-bottom: 7px;">
+            <label class="form-label" style="font-size: 10.5px; color: var(--accent-cyan);">
+              Select AI Model / Provider:
+            </label>
+            <select class="input-field" id="modelSelectDropdown" style="padding: 5px 8px; font-size: 11px; font-weight: 600; color: #22d3ee; border-color: rgba(6, 182, 212, 0.45); cursor: pointer;">
+              <option value="pollinations_flux" selected>⚡ Pollinations — FLUX 1-schnell (Free Tier)</option>
+              <option value="writer">🖋️ Writer AI — Palmyra-x-004 (Writer SDK)</option>
+              <option value="cloudflare_flux_schnell">☁️ Cloudflare — FLUX 1-schnell (10k Neurons)</option>
+              <option value="cloudflare_sdxl">☁️ Cloudflare — SDXL Base 1.0 (Free)</option>
+              <option value="stability">🎨 Stability AI — SDXL 1024-v1.0 (Trial Credits)</option>
+              <option value="gemini_text">✨ Google Gemini — Gemini 2.5 Flash</option>
+              <option value="mock">🛠️ Local Mock — Instant Offline Generator</option>
+            </select>
+          </div>
+
+          <div class="model-info-row">
+            <span style="color:var(--text-muted); font-size: 11px;">Model Used:</span>
+            <span class="model-pill" id="cardModelBadge">FLUX 1-schnell</span>
+          </div>
+          <div class="model-info-row">
+            <span style="color:var(--text-muted); font-size: 11px;">AI Provider:</span>
+            <strong style="color: #e2e8f0; font-size: 11px;" id="cardProviderName">Pollinations.ai</strong>
+          </div>
+          <div class="model-info-row">
+            <span style="color:var(--text-muted); font-size: 11px;">API Status:</span>
+            <span class="status-indicator" id="cardApiStatus">
+              <span class="status-dot"></span>
+              Connected — Free Tier
+            </span>
+          </div>
+        </div>
+
+        <!-- Right Column: About This Project (Developer Credit Section) -->
+        <div class="author-card-col">
+          <div class="card-heading" style="margin-bottom: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            About This Project
+          </div>
+          <div style="font-size: 10.5px; color: var(--text-muted);">Created By:</div>
+          <div class="author-name-text">
+            <span>Kajal Kumari</span> 👑
+          </div>
+          <div class="author-role-text">
+            Python Developer &amp; AI Enthusiast
+          </div>
+          <div class="author-signature-display" title="Kajal Kumari">
+            Kajal Kumari 💜
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1458,6 +1599,94 @@ function renderLivePoster() {
 }
 
 // -------------------------------------------------------------
+// Interactive Model & Provider Switcher
+// -------------------------------------------------------------
+const MODEL_CONFIGS = {
+  "pollinations_flux": {
+    name: "FLUX 1-schnell",
+    provider: "Pollinations.ai",
+    statusText: "Connected — Free Tier",
+    statusDot: "#22c55e"
+  },
+  "writer": {
+    name: "Palmyra-x-004",
+    provider: "Writer AI",
+    statusText: "Connected — Writer SDK",
+    statusDot: "#a855f7"
+  },
+  "cloudflare_flux_schnell": {
+    name: "FLUX.1-schnell",
+    provider: "Cloudflare Workers AI",
+    statusText: "Connected — 10k Free Neurons",
+    statusDot: "#f97316"
+  },
+  "cloudflare_sdxl": {
+    name: "SDXL Base 1.0",
+    provider: "Cloudflare Workers AI",
+    statusText: "Connected — Free Daily Allowance",
+    statusDot: "#f97316"
+  },
+  "stability": {
+    name: "SDXL 1024-v1.0",
+    provider: "Stability AI",
+    statusText: "Configured — Trial Credits",
+    statusDot: "#38bdf8"
+  },
+  "gemini_text": {
+    name: "Gemini 2.5 Flash",
+    provider: "Google Gemini",
+    statusText: "Connected — Google Cloud",
+    statusDot: "#38bdf8"
+  },
+  "mock": {
+    name: "Local Mock Generator",
+    provider: "Local Offline",
+    statusText: "Ready — Offline Fast",
+    statusDot: "#22c55e"
+  }
+};
+
+let currentProvider = "pollinations_flux";
+
+$('#modelSelectDropdown').onchange = async (e) => {
+  const prov = e.target.value;
+  currentProvider = prov;
+  const cfg = MODEL_CONFIGS[prov] || { name: prov, provider: prov, statusText: "Connected", statusDot: "#22c55e" };
+
+  $('#cardModelBadge').textContent = cfg.name;
+  $('#cardProviderName').textContent = cfg.provider;
+  $('#cardApiStatus').innerHTML = `<span class="status-dot" style="background:${cfg.statusDot};box-shadow:0 0 6px ${cfg.statusDot}"></span> ${cfg.statusText}`;
+
+  showToast(`Switched model to ${cfg.name} (${cfg.provider})`);
+
+  try {
+    const res = await fetch('/switch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider: prov })
+    });
+    if (res.ok) {
+      console.log(`Backend switched default provider to: ${prov}`);
+    }
+  } catch (err) {
+    console.warn("Backend /switch call:", err);
+  }
+};
+
+function showToast(msg) {
+  let toast = $('#toastNotification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toastNotification';
+    toast.className = 'toast-notice';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<span>✨</span><span>${msg}</span>`;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+// -------------------------------------------------------------
 // Generate New Poster Action
 // -------------------------------------------------------------
 async function generateNewPoster() {
@@ -1497,6 +1726,8 @@ async function generateNewPoster() {
         currentPosterDataUrl = 'data:image/png;base64,' + data.final_image_base64;
         $('#previewImage').src = currentPosterDataUrl;
         $('#canvasLoader').classList.remove('active');
+        $('#readyCard').style.display = 'flex';
+        showToast("Poster ready to download!");
         return;
       }
     }
@@ -1507,6 +1738,8 @@ async function generateNewPoster() {
   setTimeout(() => {
     renderLivePoster();
     $('#canvasLoader').classList.remove('active');
+    $('#readyCard').style.display = 'flex';
+    showToast("Poster ready to download!");
   }, 1000);
 }
 
