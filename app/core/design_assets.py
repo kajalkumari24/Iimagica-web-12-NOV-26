@@ -114,3 +114,4 @@ def list_design_assets() -> Dict[str, Any]:
             "illustrations": GETILLUSTRATIONS_LIBRARY
         }
     }
+
