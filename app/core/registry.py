@@ -71,6 +71,14 @@ class ProviderRegistry:
         if provider is not None and provider.supports(feature):
             return provider
 
+        # If mock is explicitly chosen, don't silently fallback to external cloud providers
+        if chosen == "mock":
+            if provider is None:
+                raise UnknownProviderError("Provider 'mock' is not registered.")
+            raise FeatureNotSupportedError(
+                f"Provider 'mock' does not support '{feature}'. "
+                f"Capabilities: {sorted(provider.capabilities)}")
+
         # Graceful fallback: If chosen model is specialized (e.g. Writer/Gemini text LLM for images,
         # or FLUX generator for text layout), route to an active registered provider that supports it.
         priority_fallbacks = {
@@ -124,6 +132,7 @@ class ProviderRegistry:
             raise UnknownProviderError(
                 f"Unknown provider '{name}'. Registered: {sorted(self.providers)}")
         self.default_provider = name
+        self.features = {k: None for k in self.features}
         self._persist()
         return {"default_provider": name,
                 "model_id": self.providers[name].model_id}

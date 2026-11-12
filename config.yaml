@@ -1,4 +1,4 @@
-default_provider: pollinations_flux
+default_provider: mock
 providers:
   writer:
     class: providers.writer_provider.WriterProvider
@@ -101,10 +101,10 @@ providers:
     enabled: true
     daily_limit: null
 features:
-  generate_image: pollinations_flux
-  edit_image: stability
-  analyze_image: gemini_text
-  suggest_layout: gemini_text
-  enhance_prompt: gemini_text
+  generate_image: null
+  edit_image: null
+  analyze_image: null
+  suggest_layout: null
+  enhance_prompt: null
 output_dir: outputs
 auto_backup_hours: 24

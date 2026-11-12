@@ -564,9 +564,13 @@ def compose_poster(registry, prompt: str, business: str = "",
 
     # 3) layout suggestions (contact details are NOT sent to the model)
     hint = {"style": style, "poster_prompt": prompt, "palette": pal["all_colors"][:3]}
-    fl = _suggest(registry, "frame", business, hint) if style == "auto" else {}
-    ft = _suggest(registry, "footer", business, hint) if footer_style not in FOOTER_STYLES else {}
+    fl = _suggest(registry, "frame", business, hint)
+    ft = _suggest(registry, "footer", business, hint)
+    if fl is None or ft is None:
+        warnings.append("AI layout suggestion unavailable; used rule-based defaults.")
     fl, ft = fl or {}, ft or {}
+    if footer_style and footer_style != "auto":
+        ft["shape"] = footer_style
 
     base = min(width, height)
     f_shape = FRAME_SHAPE_MAP.get(str(fl.get("shape", "")).lower(), "double")

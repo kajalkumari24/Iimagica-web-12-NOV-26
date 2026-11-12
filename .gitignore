@@ -2,17 +2,29 @@
 .env
 *.env
 .env.*
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
 !.env.example
 
-# Python
+# Virtual environments
+.venv/
+.venv*/
+venv/
+env/
+ENV/
+.Python
+
+# Python bytecode & cache
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-env/
-venv/
-ENV/
 build/
 develop-eggs/
 dist/
