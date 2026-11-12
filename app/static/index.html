@@ -1992,17 +1992,21 @@ async function generateNewPoster() {
         showToast("Poster ready to download!");
         return;
       }
+    } else {
+      const errData = await res.json().catch(() => ({}));
+      const errMsg = errData.detail || errData.error || `HTTP ${res.status}: ${res.statusText}`;
+      console.error("Backend generation error:", errMsg);
+      $('#canvasLoader').classList.remove('active');
+      showToast("⚠️ " + errMsg);
+      alert("Image Generation Notice:\n\n" + errMsg + "\n\nTip: If hosted on Render, make sure your API keys (e.g. GEMINI_API_KEY, WRITER_API_KEY, CLOUDFLARE_API_TOKEN) are added under Render Dashboard -> Environment.");
+      return;
     }
   } catch (err) {
-    console.warn("Backend API call paused, rendering live artwork:", err);
-  }
-
-  setTimeout(() => {
-    renderLivePoster();
+    console.warn("Backend API call failed:", err);
     $('#canvasLoader').classList.remove('active');
-    $('#readyCard').style.display = 'flex';
-    showToast("Poster ready to download!");
-  }, 1000);
+    showToast("⚠️ Server connection error. Check Render service logs.");
+    return;
+  }
 }
 
 $('#generateHeroBtn').onclick = generateNewPoster;
