@@ -12,6 +12,7 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .core.colors import extract_brand_colors
@@ -35,6 +36,10 @@ app = FastAPI(
 # Reuse one registry across requests; allow an env-selected config file.
 registry = ProviderRegistry()
 store = JsonStore(os.path.join(registry.output_dir, "db.json"))
+
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.isdir(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 @app.get("/")

@@ -4,394 +4,1591 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>imagica — AI Poster, Frame and Footer Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a1116;--card:rgba(20,30,38,.72);--bd:rgba(255,255,255,.08);--in:#101a21;--tx:#f1f5f9;--mu:#8a9aa6;--ac:#2dd4bf;--glow:0 0 12px rgba(45,212,191,.5);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg) radial-gradient(900px 500px at 0% 0%,rgba(45,212,191,.12),transparent 60%);color:var(--tx);font-family:Inter,Poppins,system-ui,sans-serif;font-size:13px;min-height:100vh}
-.wrap{max-width:1400px;margin:0 auto;padding:16px 20px 0}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}
-.logo i{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#2dd4bf,#0e7490);display:block;box-shadow:var(--glow)}
-.status{text-align:right;color:#4ade80;font-size:12px}
-.pill{display:inline-flex;align-items:center;gap:6px;margin-top:3px;padding:2px 10px;border-radius:99px;border:1px solid var(--bd);background:rgba(255,255,255,.04)}
-.pill:before{content:"";width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e}
-.grid{display:grid;grid-template-columns:1.12fr 1fr;gap:20px;align-items:start}
-.col{display:grid;gap:20px;min-width:0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.35);min-width:0}
-h3{margin:0 0 10px;font-size:13px;font-weight:600}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-label.l{display:block;color:var(--mu);font-size:12px;margin:12px 0 5px}
-input,select{width:100%;background:var(--in);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:8px 10px;font:inherit;outline:0;transition:.2s}
-input::placeholder{color:var(--mu)}
-input:focus,select:focus{border-color:var(--ac);box-shadow:var(--glow)}
-select{margin-bottom:8px;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mu) 50%),linear-gradient(135deg,var(--mu) 50%,transparent 50%);background-position:calc(100% - 15px) 14px,calc(100% - 10px) 14px;background-size:5px 5px;background-repeat:no-repeat}
-.styles{display:flex;gap:8px}
-.sty{flex:1;text-align:center;font-size:10px;color:var(--mu);cursor:pointer}
-.sty div{aspect-ratio:1;border-radius:10px;border:2px solid transparent;margin-bottom:4px;transition:.2s}
-.sty.on div{border-color:var(--ac);box-shadow:var(--glow)}
-.sty.on{color:var(--tx)}
-.seg{display:flex;background:var(--in);border:1px solid var(--bd);border-radius:8px;padding:2px}
-.seg button{flex:1;background:0;border:0;color:var(--mu);padding:6px;border-radius:6px;font:inherit;cursor:pointer;transition:.2s}
-.seg button.on{background:rgba(45,212,191,.18);color:var(--tx);box-shadow:inset 0 0 0 1px rgba(45,212,191,.4)}
-.drop{aspect-ratio:1;border:1.5px dashed rgba(255,255,255,.22);border-radius:12px;display:grid;place-items:center;text-align:center;color:var(--tx);cursor:pointer;position:relative;overflow:hidden;background:rgba(255,255,255,.02);transition:.2s}
-.drop.over,.drop:hover{border-color:var(--ac);box-shadow:var(--glow)}
-.drop img,.bgp img,.strip img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.drop svg{display:block;margin:0 auto 6px}
-.crop{position:absolute;right:8px;bottom:8px;width:22px;height:22px;border:1px solid var(--bd);border-radius:6px;background:var(--in);display:grid;place-items:center;font-size:11px;color:var(--mu);z-index:2}
-.bgp{aspect-ratio:1;border-radius:12px;border:1px solid var(--bd);position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#1a252d 25%,#121b21 25% 50%,#1a252d 50% 75%,#121b21 75%);background-size:60px 60px}
-.strip{height:100px;margin-top:14px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.03);position:relative;overflow:hidden}
-.tg{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;color:var(--mu);font-size:12px}
-.sw{width:34px;height:18px;border-radius:99px;background:#2a3640;position:relative;cursor:pointer;transition:.2s}
-.sw:after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#cbd5e1;transition:.2s}
-.sw.on{background:var(--ac)}.sw.on:after{left:18px}
-.ci{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ci div{position:relative}
-.ci span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.7}
-.ci input{padding-left:32px}
-.ci2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.gen{display:flex;align-items:center;justify-content:center;gap:14px;height:calc(100% - 28px)}
-.btn{background:linear-gradient(180deg,#5eead4,#0d9488);border:0;color:#04201c;font-weight:600;font-size:14px;padding:12px 34px;border-radius:12px;cursor:pointer;box-shadow:0 0 18px rgba(45,212,191,.45),inset 0 1px 0 rgba(255,255,255,.5);transition:.2s;font-family:inherit}
-.btn:hover{filter:brightness(1.1)}
-.spin{width:20px;height:20px;border-radius:50%;border:2px dotted var(--mu);opacity:.7}
-.spin.go{border:2px solid rgba(45,212,191,.25);border-top-color:var(--ac);opacity:1;animation:r .8s linear infinite}
-@keyframes r{to{transform:rotate(360deg)}}
-.posters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.pc{border:1px solid var(--bd);border-radius:10px;overflow:hidden;position:relative;background:#0c141a}
-.pc img{display:block;width:100%}
-.pc a{position:absolute;right:6px;top:6px;width:22px;height:22px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:12px}
-.pc b{display:block;text-align:center;font-weight:400;font-size:10px;color:var(--mu);padding:5px;background:rgba(0,0,0,.35);text-decoration:none}
-.pc b a{position:static;display:inline;background:0;width:auto;color:var(--mu)}
-.pv{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;text-align:center;color:var(--mu);font-size:11px}
-.frame{border:4px solid #aab4bc;border-radius:6px;box-shadow:0 0 0 1px #000,0 8px 24px rgba(0,0,0,.5);margin-bottom:6px}
-.frame img,.phone img{display:block;width:100%}
-.phone{width:62%;margin:0 auto 6px;border:5px solid #1c252c;border-radius:20px;overflow:hidden;position:relative;outline:1px solid #46535d;background:#000;aspect-ratio:9/17}
-.phone:before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:34%;height:8px;border-radius:9px;background:#000;z-index:2}
-.phone img{height:100%;object-fit:cover}
-.three{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.bars{display:flex;align-items:flex-end;gap:4px;height:48px;margin:6px 0 8px}
-.bars i{flex:1;background:#2c3a44;border-radius:2px}.bars i.h{background:var(--ac);box-shadow:var(--glow)}
-.logs{max-height:120px;overflow:auto;font-size:11px;color:var(--mu);scrollbar-width:thin}
-.logs div{padding:5px 0;border-bottom:1px solid var(--bd)}.logs small{display:block;color:var(--mu);opacity:.7}
-.ai{grid-row:span 2;display:flex;flex-direction:column;min-height:300px}
-.chat{flex:1;display:flex;flex-direction:column;gap:8px;overflow:auto;max-height:260px;scrollbar-width:thin}
-.msg{background:rgba(255,255,255,.07);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:88%;align-self:flex-end}
-.msg.a{align-self:flex-start;background:rgba(45,212,191,.12)}
-.chip{cursor:pointer;border:0;color:var(--tx);font:inherit}
-.send{display:flex;gap:6px;margin-top:10px;position:relative}
-.fab{position:absolute;right:-4px;bottom:-12px;width:34px;height:34px;border-radius:50%;background:#aeb9c2;color:#0a1116;border:0;display:grid;place-items:center;cursor:pointer;font-size:16px}
-.ai .send{margin-bottom:14px}
-footer{text-align:center;color:var(--mu);margin-top:26px;font-size:12px}
-.bar{height:16px;margin-top:14px;background:linear-gradient(90deg,#3a444c,#c3ccd3 50%,#2a3239)}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.three,.ci2{grid-template-columns:1fr}.ai{grid-row:auto}}
-@media(max-width:520px){.row{grid-template-columns:1fr}.posters{grid-template-columns:1fr 1fr}.pv{grid-template-columns:1fr}.wrap{padding:12px}}
+:root {
+  --bg: #0b0914;
+  --sidebar-bg: #100d1e;
+  --card-bg: rgba(22, 18, 38, 0.78);
+  --card-border: rgba(139, 92, 246, 0.16);
+  --card-border-hover: rgba(168, 85, 247, 0.35);
+  --input-bg: #151127;
+  --input-border: rgba(255, 255, 255, 0.08);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-sub: #64748b;
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-grad: linear-gradient(135deg, #8b5cf6, #6366f1);
+  --accent-pink: #ec4899;
+  --accent-grad: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  --glow: 0 0 20px rgba(139, 92, 246, 0.35);
+  --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg) radial-gradient(1200px 800px at 20% 0%, rgba(139, 92, 246, 0.12), transparent 70%);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 13px;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 180px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 28px;
+  padding-left: 6px;
+}
+.brand-logo svg {
+  width: 26px;
+  height: 26px;
+}
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-item:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+}
+.nav-item.active {
+  background: var(--accent-grad);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+}
+.sidebar-promo {
+  background: linear-gradient(145deg, #1f143d 0%, #110b24 100%);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar-promo svg {
+  margin-bottom: 8px;
+}
+.sidebar-promo h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.sidebar-promo p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.sidebar-promo::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.4));
+  border-radius: 0 0 14px 14px;
+}
+
+/* Main Container */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.top-nav {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.top-nav h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.theme-toggle-btn:hover { color: var(--text-main); }
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
+}
+
+/* Workspace Grid */
+.workspace {
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1.18fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 24px;
+  min-width: 0;
+}
+
+/* Cards */
+.panel-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s;
+}
+.panel-card:hover {
+  border-color: var(--card-border-hover);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.icon-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.16);
+  color: #c084fc;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+.ai-powered-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2));
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #d8b4fe;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Inputs & Forms */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 14px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.form-field:last-child { margin-bottom: 0; }
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+.form-label .char-count {
+  font-size: 11px;
+  color: var(--text-sub);
+}
+.input-control, select.input-control {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  color: var(--text-main);
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+.input-control:focus, select.input-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+textarea.input-control {
+  resize: vertical;
+  min-height: 60px;
+}
+select.input-control {
+  cursor: pointer;
+}
+
+/* Style Pills */
+.style-pills-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.style-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.style-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+}
+.style-pill.active {
+  background: var(--accent-grad);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.35);
+}
+
+/* Image Upload Grid */
+.upload-layout-grid {
+  display: grid;
+  grid-template-columns: 80px 1.4fr 1.1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+.thumb-preview-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  background: #19142e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.drop-zone-box {
+  border: 1.5px dashed rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.015);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.drop-zone-box:hover {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.05);
+}
+.drop-zone-box svg {
+  color: #c084fc;
+  margin-bottom: 6px;
+}
+.btn-choose {
+  background: var(--accent-grad);
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.drop-hint {
+  font-size: 10px;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+.select-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Footer Carousel */
+.footer-pos-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.seg-btn-group {
+  display: flex;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 2px;
+}
+.seg-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.seg-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+.tabs-row {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+}
+.tab-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+.tab-link.active {
+  color: #d8b4fe;
+  border-bottom-color: var(--primary);
+}
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.carousel-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: 0.2s;
+}
+.carousel-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.carousel-items {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 4px 2px;
+}
+.carousel-items::-webkit-scrollbar { display: none; }
+.footer-template-card {
+  width: 90px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  background-size: cover;
+  background-position: center;
+}
+.footer-template-card:hover {
+  transform: translateY(-2px);
+}
+.footer-template-card.active {
+  border-color: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+.template-check {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  background: #a855f7;
+  border-radius: 50%;
+  display: none;
+  place-items: center;
+  font-size: 9px;
+  color: #fff;
+}
+.footer-template-card.active .template-check { display: grid; }
+
+/* Brand & Contact Grid */
+.brand-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.logo-upload-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.logo-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: #18132e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 24px;
+}
+.btn-sm-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-sm-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.btn-trash {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #f87171;
+}
+
+/* Generate CTA */
+.generate-action-bar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 4px;
+}
+.btn-generate-hero {
+  flex: 1;
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 13px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45);
+  transition: all 0.25s;
+}
+.btn-generate-hero:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
+  filter: brightness(1.08);
+}
+.btn-generate-hero:active {
+  transform: translateY(0);
+}
+
+/* Poster Preview Card (Right Column) */
+.preview-card {
+  display: flex;
+  flex-direction: column;
+}
+.device-toggles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.device-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.device-btn:hover, .device-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.btn-fullscreen {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Canvas Area */
+.poster-viewport {
+  width: 100%;
+  aspect-ratio: 4 / 4.7;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: #110d24;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poster-viewport img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.canvas-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 9, 20, 0.85);
+  backdrop-filter: blur(8px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 10;
+}
+.canvas-loader.active { display: flex; }
+.spinner-ring {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(168, 85, 247, 0.2);
+  border-top-color: #c084fc;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Selected Footer Card */
+.selected-footer-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+.sf-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sf-preview {
+  width: 80px;
+  height: 36px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.sf-info h5 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.sf-info p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.btn-outline-pill {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-main);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+.btn-outline-pill:hover { background: rgba(255, 255, 255, 0.08); }
+
+/* Model & Project Info (Glowing Violet Card) */
+.info-glow-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(35, 22, 66, 0.85) 0%, rgba(18, 12, 38, 0.85) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+  border-radius: 16px;
+  position: relative;
+}
+.info-col h5 {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.badge-pill {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.author-signature {
+  position: absolute;
+  right: 20px;
+  bottom: 12px;
+  font-family: var(--font-script);
+  font-size: 26px;
+  color: #e9d5ff;
+  letter-spacing: 0.5px;
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+/* Success Download Bar */
+.action-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+.status-msg-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.check-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #052e16;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.status-text h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4ade80;
+}
+.status-text p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.action-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-download-primary {
+  background: var(--primary-grad);
+  border: none;
+  color: #fff;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+  transition: 0.2s;
+  text-decoration: none;
+}
+.btn-download-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+.btn-share {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+.btn-share:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .workspace { grid-template-columns: 1fr; }
+  .col-right { position: static; }
+}
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; }
+  .form-grid-2, .brand-contact-grid, .upload-layout-grid { grid-template-columns: 1fr; }
+  .info-glow-card { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div class="logo"><i></i>imagica — AI Poster, Frame and Footer Studio</div>
-  <div class="status">Status: Online<br><span class="pill">Online</span></div>
-</header>
 
-<div class="grid">
-<div class="col">
-  <section class="card">
-    <div class="row">
-      <div>
-        <h3>Style &amp; Vibe</h3>
-        <div class="styles" id="styles">
-          <div class="sty on"><div style="background:linear-gradient(135deg,#0f2a30,#1e5560)"></div>Modern Minimal</div>
-          <div class="sty"><div style="background:radial-gradient(circle,#f6d6c0 30%,#e9948a 31% 55%,#f3c76a 56%)"></div>Boho Chic</div>
-          <div class="sty"><div style="background:conic-gradient(#ff5d8f,#ffd23f,#3bc9db,#ff5d8f)"></div>Retro Pop</div>
+<!-- Left Fixed Sidebar -->
+<aside class="sidebar">
+  <div class="brand-logo">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" fill="url(#pGrad)"/>
+      <defs>
+        <linearGradient id="pGrad" x1="3" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#c084fc"/>
+          <stop offset="1" stop-color="#6366f1"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    imagica
+  </div>
+
+  <nav class="nav-menu">
+    <a class="nav-item active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Create Poster
+    </a>
+    <a class="nav-item" href="/dashboard">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      My Projects
+    </a>
+    <a class="nav-item" href="/model-lab">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 18.5a2 2 0 0 0 1.69 2.5h11.24a2 2 0 0 0 1.69-2.5L14 9.31V2"/></svg>
+      Model Lab
+    </a>
+    <a class="nav-item" href="/editor">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Canvas Editor
+    </a>
+    <a class="nav-item" href="/docs">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      API Docs
+    </a>
+  </nav>
+
+  <div class="sidebar-promo">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L15 8L21 11L15 14L12 20L9 14L3 11L9 8L12 2Z" fill="#a855f7"/>
+    </svg>
+    <h4>Create Stunning Posters with AI ✨</h4>
+    <p>Free-tier powered</p>
+  </div>
+</aside>
+
+<!-- Main Area -->
+<div class="main-wrapper">
+  <!-- Top Bar -->
+  <header class="top-nav">
+    <h2>AI Poster, Frame and Footer Studio</h2>
+    <div class="top-actions">
+      <button class="theme-toggle-btn" title="Toggle theme">🌙</button>
+      <div class="user-avatar" title="Kajal Kumari">K</div>
+    </div>
+  </header>
+
+  <!-- Workspace 2-Column Grid -->
+  <main class="workspace">
+    <!-- Left Column: Controls & Configuration -->
+    <div class="col-left">
+      <!-- 1. Project Details -->
+      <section class="panel-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon-badge">★</span>
+            Project Details
+          </div>
         </div>
-        <label class="l">Occasion/Event</label>
-        <input id="occ" placeholder="Occasion/Event" value="Diwali">
-        <label class="l">Headline/English text</label>
-        <input id="head" placeholder="Headline/English text" value="Happy Diwali">
-      </div>
-      <div>
-        <h3>Occasion / Text</h3>
-        <select id="size"><option value="1080,1080">Square (1080x1080)</option><option value="1080,1350" selected>Portrait (1080x1350)</option><option value="1350,1080">Landscape (1350x1080)</option></select>
-        <select id="eventType"><option>Festival greeting</option><option>Sale announcement</option><option>Event invite</option></select>
-        <select id="lang"><option>English</option><option>Hindi</option></select>
-        <label class="l">Generation Count</label>
-        <div class="seg" id="count"><button>1</button><button class="on">2</button><button>3</button></div>
-        <label class="l">Platform Preferences</label>
-        <div class="seg" id="plat"><button class="on">Desktop</button><button>Mobile</button></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="row">
-      <div><h3>Logo Upload</h3>
-        <div class="drop" id="logoDrop"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>Logo Upload</div><span class="crop">⛶</span></div>
-      </div>
-      <div><h3>Background Image</h3><div class="bgp" id="bgDrop"></div></div>
-    </div>
-    <div class="strip" id="strip"></div>
-    <div class="tg"><div class="sw on" id="enh"></div>AI Enhance</div>
-    <input type="file" id="logoF" accept="image/*" hidden><input type="file" id="bgF" accept="image/*" hidden>
-  </section>
-
-  <section class="card">
-    <h3>Contact Info</h3>
-    <div class="ci">
-      <div><span>📞</span><input id="ciPhone" placeholder="Phone" value="+91 98765 43210"></div>
-      <div><span>💬</span><input id="ciWa" placeholder="WhatsApp" value="+91 98765 43210"></div>
-      <div><span>✉️</span><input id="ciEmail" placeholder="Email" value="info@sharmasweets.in"></div>
-      <div><span>🌐</span><input id="ciWeb" placeholder="Website" value="www.sharmasweets.in"></div>
-      <div><span>📍</span><input id="ciAddr" placeholder="Address" value="12 M.G. Road, Bangalore"></div>
-      <div><span>🔗</span><input id="ciSoc" placeholder="CTA Button" value="20% OFF ALL SWEETS"></div>
-    </div>
-  </section>
-
-  <div class="ci2">
-    <section class="card"><h3>Footer Settings</h3>
-      <select id="footerStyle"><option value="auto">Footer Design (Auto)</option><option value="wave">Wave</option><option value="curved">Curved</option><option value="double">Double</option><option value="rounded">Rounded</option><option value="minimal">Minimal bar</option></select>
-      <select><option>Modals (Popups)</option><option>Off</option><option>On</option></select>
-    </section>
-    <section class="card"><h3>Generate Poster</h3>
-      <div class="gen"><button class="btn" id="gen">Generate</button><div class="spin" id="spin"></div></div>
-    </section>
-  </div>
-</div>
-
-<div class="col">
-  <section class="card"><h3>Final Posters</h3><div class="posters" id="finals"></div></section>
-  <section class="card"><h3>Platform Versions</h3>
-    <div class="pv">
-      <div><div class="frame"><img id="pvD" alt="Desktop version"></div>Desktop</div>
-      <div><div class="phone"><img id="pvM" alt="Mobile version"></div>Mobile</div>
-    </div>
-  </section>
-  <div class="three">
-    <div class="col">
-      <section class="card"><h3>Database &amp; Analytics</h3>
-        <div style="color:var(--mu);font-size:11px">Storage Used</div>
-        <div class="bars" id="bars"></div>
-        <div style="color:var(--mu);font-size:11px;display:flex;justify-content:space-between">Latest Generation <span id="lg">—</span></div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label">Poster Title *</label>
+            <input class="input-control" id="posterTitle" value="Happy Birthday" placeholder="e.g. Happy Birthday">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Category</label>
+            <select class="input-control" id="categorySelect">
+              <option value="birthday">🎁 Birthday</option>
+              <option value="festival">🪔 Festival / Diwali</option>
+              <option value="sale">🏷️ Sale Announcement</option>
+              <option value="business">💼 Grand Opening</option>
+              <option value="event">🎉 Event & Party</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">
+            Description
+            <span class="char-count" id="descCount">24/200</span>
+          </label>
+          <input class="input-control" id="posterDesc" value="Celebrate your special day with love and joy!" placeholder="Short description or tagline...">
+        </div>
       </section>
-      <section class="card"><h3>Download Logs</h3><div class="logs" id="logs"></div></section>
+
+      <!-- 2. AI Prompt & Creative Direction -->
+      <section class="panel-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon-badge">✦</span>
+            AI Prompt &amp; Creative Direction
+          </div>
+          <span class="ai-powered-pill">✨ AI Powered</span>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label">
+              Describe the poster you want
+              <span class="char-count" id="promptCount">56/500</span>
+            </label>
+            <textarea class="input-control" id="aiPrompt" rows="3">Create a beautiful birthday celebration poster with balloons, cake and warm lighting.</textarea>
+            <div class="style-pills-row" id="stylePills">
+              <button type="button" class="style-pill active" data-style="elegant">Elegant</button>
+              <button type="button" class="style-pill" data-style="festive">Festive</button>
+              <button type="button" class="style-pill" data-style="minimal">Minimal</button>
+              <button type="button" class="style-pill" data-style="modern">Modern</button>
+              <button type="button" class="style-pill" data-style="luxury">Luxury</button>
+            </div>
+          </div>
+          <div>
+            <div class="form-field">
+              <label class="form-label">Negative Prompt (Optional) <span class="char-count">0/200</span></label>
+              <input class="input-control" id="negPrompt" placeholder="Blurry, low quality, watermark...">
+            </div>
+            <div class="form-field" style="margin-top: 10px;">
+              <label class="form-label">Generation Settings</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <select class="input-control" id="genCount">
+                  <option value="1">1 image</option>
+                  <option value="2">2 images</option>
+                  <option value="4" selected>4 images</option>
+                </select>
+                <select class="input-control" id="genQuality">
+                  <option value="standard">Standard</option>
+                  <option value="high" selected>High</option>
+                  <option value="ultra">Ultra (2K)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Image Upload (Optional) -->
+      <section class="panel-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon-badge">↑</span>
+            Image Upload (Optional)
+          </div>
+        </div>
+        <div class="upload-layout-grid">
+          <div class="thumb-preview-box" id="thumbPreview">
+            <img id="thumbImg" src="/static/assets/sample_bouquet.png" alt="Bouquet preview" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <div class="drop-zone-box" id="dropZone">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div style="font-size: 11px; font-weight: 600;">Drag and drop an image here or</div>
+            <button type="button" class="btn-choose" id="chooseFileBtn">Choose File</button>
+            <div class="drop-hint">Supports: JPG, PNG, WEBP</div>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+          </div>
+          <div class="select-stack">
+            <select class="input-control" id="styleSelect">
+              <option value="elegant">🎨 Style: Elegant</option>
+              <option value="festive">🪔 Style: Festive</option>
+              <option value="modern">📐 Style: Modern</option>
+              <option value="luxury">👑 Style: Luxury</option>
+            </select>
+            <select class="input-control" id="themeSelect">
+              <option value="floral">🌸 Theme: Floral</option>
+              <option value="balloons">🎈 Theme: Celebration</option>
+              <option value="gold">✨ Theme: Golden Glow</option>
+              <option value="minimal">⚪ Theme: Minimalist</option>
+            </select>
+            <select class="input-control" id="sizeSelect">
+              <option value="1080x1350" selected>📐 1080 x 1350 (Portrait)</option>
+              <option value="1080x1080">📐 1080 x 1080 (Square)</option>
+              <option value="1350x1080">📐 1350 x 1080 (Landscape)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Footer Options -->
+      <section class="panel-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon-badge">▤</span>
+            Footer Options
+          </div>
+          <div class="footer-pos-toggle">
+            <span style="font-size: 11px; color: var(--text-muted);">Footer Position:</span>
+            <div class="seg-btn-group">
+              <button type="button" class="seg-btn active" id="posBottom">Bottom</button>
+              <button type="button" class="seg-btn" id="posTop">Top</button>
+            </div>
+          </div>
+        </div>
+        <div class="tabs-row">
+          <span class="tab-link active">Templates</span>
+          <span class="tab-link">Upload Your Own</span>
+        </div>
+        <div class="carousel-wrapper">
+          <button type="button" class="carousel-nav-btn" id="prevFooter">‹</button>
+          <div class="carousel-items" id="footerCarousel">
+            <div class="footer-template-card active" data-style="royal_purple" style="background-image: url('/static/assets/tmpl_1.png'); background-size: cover; background-position: center; border: 1.5px solid #a855f7;">
+              <span class="template-check">✓</span>
+            </div>
+            <div class="footer-template-card" data-style="golden_ribbon" style="background-image: url('/static/assets/tmpl_2.png'); background-size: cover; background-position: center;">
+              <span class="template-check">✓</span>
+            </div>
+            <div class="footer-template-card" data-style="floral_pink" style="background-image: url('/static/assets/tmpl_3.png'); background-size: cover; background-position: center;">
+              <span class="template-check">✓</span>
+            </div>
+            <div class="footer-template-card" data-style="midnight_gold" style="background-image: url('/static/assets/tmpl_4.png'); background-size: cover; background-position: center;">
+              <span class="template-check">✓</span>
+            </div>
+            <div class="footer-template-card" data-style="botanical_green" style="background-image: url('/static/assets/tmpl_5.png'); background-size: cover; background-position: center;">
+              <span class="template-check">✓</span>
+            </div>
+          </div>
+          <button type="button" class="carousel-nav-btn" id="nextFooter">›</button>
+        </div>
+      </section>
+
+      <!-- 5. Brand Details & Contact Info -->
+      <section class="panel-card">
+        <div class="brand-contact-grid">
+          <div>
+            <div class="card-title" style="margin-bottom: 12px; font-size: 13px;">
+              👑 Brand Details
+            </div>
+            <div class="form-label">Logo Upload</div>
+            <div class="logo-upload-wrap">
+              <div class="logo-box" id="logoBox" style="background: url('/static/assets/sample_crown.png') center/cover no-repeat; border-radius: 8px;">
+              </div>
+              <button type="button" class="btn-sm-action" id="changeLogoBtn">Change</button>
+              <button type="button" class="btn-sm-action btn-trash" id="removeLogoBtn">🗑</button>
+              <input type="file" id="logoFileInput" accept="image/*" hidden>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Website</label>
+              <input class="input-control" id="brandWeb" value="https://yourbrand.com">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Email</label>
+              <input class="input-control" id="brandEmail" value="hello@yourbrand.com">
+            </div>
+          </div>
+          <div>
+            <div class="card-title" style="margin-bottom: 12px; font-size: 13px;">
+              📞 Contact Details (Optional)
+            </div>
+            <div class="form-field">
+              <label class="form-label">Mobile</label>
+              <input class="input-control" id="brandPhone" value="+91 98765 43210">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Additional Info</label>
+              <input class="input-control" id="brandExtra" value="Best Wishes!">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field" style="margin-top: 14px;">
+          <label class="form-label">Additional Instructions (Optional)</label>
+          <input class="input-control" id="brandNotes" placeholder="Any special instructions for the poster...">
+        </div>
+
+        <div class="generate-action-bar">
+          <button type="button" class="btn-generate-hero" id="generateHeroBtn">
+            <span>✨</span> Generate Poster →
+          </button>
+        </div>
+      </section>
     </div>
-    <section class="card ai"><h3>AI Assistant Panel</h3>
-      <div class="chat" id="chat">
-        <div class="msg a">AI: Occasion set to Diwali. Text is ready. Please upload assets.</div>
-        <button class="msg chip" type="button">Try festive color scheme?</button>
-        <button class="msg chip" type="button">Enhance prompt for Diwali?</button>
-      </div>
-      <div class="send"><input id="ciInput" placeholder="Message the assistant"><button class="fab" id="send" aria-label="Send">✦</button></div>
-    </section>
-  </div>
-</div>
-</div>
-<footer>© Kajal<div class="bar"></div></footer>
+
+    <!-- Right Column: Poster Preview & Actions -->
+    <div class="col-right">
+      <section class="panel-card preview-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon-badge">👁</span>
+            Poster Preview
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <div class="device-toggles">
+              <button type="button" class="device-btn active" title="Desktop">💻</button>
+              <button type="button" class="device-btn" title="Tablet">📱</button>
+              <button type="button" class="device-btn" title="Mobile">📲</button>
+            </div>
+            <button type="button" class="btn-fullscreen" id="btnFullscreen">⛶ Full Screen</button>
+          </div>
+        </div>
+
+        <!-- Large Poster Viewport -->
+        <div class="poster-viewport" id="posterViewport">
+          <canvas id="posterCanvas" width="1080" height="1350" style="display:none;"></canvas>
+          <img id="previewImage" src="/static/assets/sample_poster.png" alt="Poster Preview">
+          <div class="canvas-loader" id="canvasLoader">
+            <div class="spinner-ring"></div>
+            <div style="font-size: 13px; font-weight: 600; color: #c084fc;">Painting with Pollinations FLUX &amp; Gemini...</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Composing artwork, typography &amp; royal banner</div>
+          </div>
+        </div>
+
+        <!-- Selected Footer Banner Widget -->
+        <div class="selected-footer-card">
+          <div class="sf-left">
+            <div class="sf-preview" id="sfPreviewThumb" style="background: url('/static/assets/selected_footer.png') center/cover no-repeat; border: 1px solid rgba(255,255,255,0.15);">
+            </div>
+            <div class="sf-info">
+              <h5>Elegant Footer Banner</h5>
+              <p>Stylish footer with crown and tagline</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-outline-pill" id="btnPreviewFooter">👁 Preview</button>
+            <button type="button" class="btn-outline-pill" id="btnChangeFooter">🔄 Change Footer</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Model & Project Info (Glowing Violet Card) -->
+      <section class="info-glow-card">
+        <div class="info-col">
+          <h5><span style="color:#c084fc;">⚙</span> Model &amp; API Info</h5>
+          <div class="meta-row">
+            <span>Model Used:</span>
+            <span class="badge-pill" style="background:#581c87; color:#e9d5ff; border:1px solid #9333ea;">Writer</span>
+          </div>
+          <div class="meta-row">
+            <span>API Provider:</span>
+            <span style="display:inline-flex; align-items:center; gap:5px; font-weight:700; color:#e2e8f0;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22.28 9.87a5.98 5.98 0 0 0-.48-4.68 6.07 6.07 0 0 0-6.19-2.98 6.02 6.02 0 0 0-4.33-1.87 6 6 0 0 0-5.74 4.25 6.07 6.07 0 0 0-3.9 2.83 6.04 6.04 0 0 0 .74 6.78 6 6 0 0 0 .48 4.68 6.07 6.07 0 0 0 6.2 2.98 6.02 6.02 0 0 0 4.32 1.87 6 6 0 0 0 5.74-4.25 6.07 6.07 0 0 0 3.9-2.83 6.04 6.04 0 0 0-.74-6.78Zm-7.79 9.89a4.52 4.52 0 0 1-2.92-1.07l.14-.08 4.86-2.81a.76.76 0 0 0 .38-.66v-6.86l2.18 1.26a.07.07 0 0 1 .04.05v5.82a4.54 4.54 0 0 1-4.68 4.35ZM4.69 16.48a4.5 4.5 0 0 1-.58-3.07l.14.09 4.86 2.8a.78.78 0 0 0 .77 0l5.95-3.43v2.52a.08.08 0 0 1-.03.06l-5.04 2.91a4.54 4.54 0 0 1-6.11-1.88Zm-1.2-8.32a4.54 4.54 0 0 1 2.34-2l-.01.17v5.62a.77.77 0 0 0 .38.67l5.94 3.43-2.18 1.26a.08.08 0 0 1-.07 0l-5.04-2.91a4.54 4.54 0 0 1-1.36-6.24Zm13.56 2.92L11.1 7.65l2.18-1.26a.08.08 0 0 1 .07 0l5.04 2.91a4.54 4.54 0 0 1-1.29 8.24v-5.79a.77.77 0 0 0-.38-.67l.33.02Zm2.5-2.61-.14-.09-4.86-2.8a.78.78 0 0 0-.77 0l-5.95 3.43V6.49a.08.08 0 0 1 .03-.06l5.04-2.91a4.54 4.54 0 0 1 6.65 4.95v.01ZM10.5 13.73l-2.6-1.5 2.6-1.5 2.6 1.5-2.6 1.5Z"/></svg>
+              OpenAI
+            </span>
+          </div>
+        </div>
+        <div class="info-col">
+          <h5><span style="color:#c084fc;">👤</span> About This Project</h5>
+          <div class="meta-row">
+            <span>Created By:</span>
+            <strong style="color: #facc15;">Kajal Kumari 👑</strong>
+          </div>
+          <div class="meta-row" style="color: var(--text-muted); font-size: 11px;">
+            Python Developer &amp; AI Enthusiast
+          </div>
+        </div>
+        <div class="author-signature">Kajal Kumari <span style="font-size: 20px; color:#a855f7;">💜</span></div>
+      </section>
+
+      <!-- Success Notification & Actions Bar -->
+      <section class="action-status-bar">
+        <div class="status-msg-wrap">
+          <div class="check-circle">✓</div>
+          <div class="status-text">
+            <h4>Your poster is ready!</h4>
+            <p>Download or share your beautiful poster.</p>
+          </div>
+        </div>
+        <div class="action-buttons-group">
+          <a class="btn-download-primary" id="downloadPosterBtn" href="#" download="imagica-poster.png">
+            <span>⬇</span> Download
+          </a>
+          <button type="button" class="btn-share" id="shareBtn">
+            <span>🔗</span> Share
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
 </div>
 
 <script>
-const $=s=>document.querySelector(s);
-let style=0,logoImg=null,bgImg=null,logoB64=null,bgB64=null,posters=[],busy=false;
-const pal=[["#0f1c22","#2c4a54","#cfe3ea"],["#fbe3d0","#e9948a","#7a2e2e"],["#2b1055","#ff5d8f","#ffd23f"]];
-const styleNames=["Modern Minimal", "Boho Chic", "Retro Pop"];
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
 
-function sel(box,fn){[...box.children].forEach((b,i)=>b.onclick=()=>{[...box.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');fn&&fn(i)})}
-sel($('#styles'),i=>style=i);sel($('#count'));sel($('#plat'));
-$('#enh').onclick=e=>e.currentTarget.classList.toggle('on');
+let selectedStyle = "elegant";
+let footerPos = "bottom";
+let uploadedLogoB64 = null;
+let uploadedBgB64 = null;
+let currentPosterDataUrl = "";
 
-function drawCanvasFallback(w,h,text,v){
-  const c=document.createElement('canvas');c.width=w/2;c.height=h/2;const x=c.getContext('2d');const W=c.width,H=c.height;
-  const p=pal[style%pal.length];
-  if(bgImg){x.drawImage(bgImg,0,0,W,H);x.fillStyle="rgba(5,12,16,.6)";x.fillRect(0,0,W,H)}
-  else{const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,p[0]);g.addColorStop(1,p[1]);x.fillStyle=g;x.fillRect(0,0,W,H)}
-  x.strokeStyle=p[2];x.globalAlpha=.55;x.lineWidth=3;x.strokeRect(W*.08,H*.06,W*.84,H*.88);x.lineWidth=1;x.strokeRect(W*.11,H*.09,W*.78,H*.82);x.globalAlpha=1;
-  if(logoImg){const s=W*.14;x.drawImage(logoImg,W/2-s/2,H*.12,s,s)}
-  const words=text.trim().split(/\s+/);const top=words.length>1?words.slice(0,-1).join(' '):'';const main=words[words.length-1]||'';
-  x.fillStyle=p[2];x.textAlign='center';
-  x.font=`${W*.05}px sans-serif`;x.fillText(top.toUpperCase(),W/2,H*.40);
-  x.font=`italic ${W*.18}px Georgia,serif`;x.shadowColor=p[2];x.shadowBlur=14;x.fillText(main,W/2,H*.58);x.shadowBlur=0;
-  x.fillStyle=p[2];x.globalAlpha=.6;x.fillRect(W*.3,H*.66,W*.4,2);x.font=`${W*.035}px sans-serif`;x.fillText($('#occ').value||'',W/2,H*.74);x.globalAlpha=1;
-  return c.toDataURL('image/png');
-}
-
-function renderUI(){
-  const t=$('#head').value||'Happy Diwali';
-  $('#finals').innerHTML=posters.map((u,i)=>`<div class="pc"><img src="${u}" alt="Poster ${i+1}"><a href="${u}" download="imagica-poster-${i+1}.png">⬇</a><b><a href="${u}" download="imagica-poster-${i+1}.png">Download</a></b></div>`).join('');
-  $('#finals').querySelectorAll('a').forEach(a=>a.onclick=()=>log(a.getAttribute('download')));
-  if(posters[0]){
-    $('#pvD').src=posters[0];
-    $('#pvM').src=posters[0];
-  } else {
-    $('#pvD').src=drawCanvasFallback(1080,1080,t,0);
-    $('#pvM').src=drawCanvasFallback(1080,1920,t,0);
-  }
-}
-
-async function callBackendCompose(w, h, text, occ) {
-  const sty = styleNames[style] || 'festive';
-  const prompt = `${occ} celebration poster with glowing lamps, decorations and ambient lighting in ${sty} style`;
-  const body = {
-    prompt: prompt,
-    business: $('#head').value || 'Brand',
-    headline: text,
-    subheading: $('#occ').value || '',
-    style: sty.toLowerCase().replace(' ', '_'),
-    width: w,
-    height: h,
-    phone: $('#ciPhone') ? $('#ciPhone').value : '',
-    whatsapp: $('#ciWa') ? $('#ciWa').value : '',
-    email: $('#ciEmail') ? $('#ciEmail').value : '',
-    website: $('#ciWeb') ? $('#ciWeb').value : '',
-    address: $('#ciAddr') ? $('#ciAddr').value : '',
-    cta: $('#ciSoc') ? $('#ciSoc').value : '20% OFF',
-    footer_position: 'bottom',
-    footer_style: $('#footerStyle') ? $('#footerStyle').value : 'auto',
-    logo_base64: logoB64 ? logoB64.split(',')[1] : null,
-    poster_base64: bgB64 ? bgB64.split(',')[1] : null
+// Style pills selection
+$$('#stylePills .style-pill').forEach(btn => {
+  btn.onclick = () => {
+    $$('#stylePills .style-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedStyle = btn.getAttribute('data-style');
   };
+});
 
+// Category selection auto-update title & prompt
+$('#categorySelect').onchange = (e) => {
+  const cat = e.target.value;
+  if (cat === "birthday") {
+    $('#posterTitle').value = "Happy Birthday";
+    $('#posterDesc').value = "Celebrate your special day with love and joy!";
+    $('#aiPrompt').value = "Create a beautiful birthday celebration poster with balloons, cake, flowers and warm golden lighting.";
+  } else if (cat === "festival") {
+    $('#posterTitle').value = "Happy Diwali";
+    $('#posterDesc').value = "Wishing you light, joy and prosperity this festive season!";
+    $('#aiPrompt').value = "A premium festive Diwali poster with glowing oil diyas, marigold garlands, and golden rangoli.";
+  } else if (cat === "sale") {
+    $('#posterTitle').value = "Mega Sale 50% OFF";
+    $('#posterDesc').value = "Limited time offer on all premium collections!";
+    $('#aiPrompt').value = "A modern luxury promotional shopping poster with vibrant discount badges and elegant gift packaging.";
+  } else if (cat === "business") {
+    $('#posterTitle').value = "Grand Opening";
+    $('#posterDesc').value = "We are thrilled to welcome you to our new store!";
+    $('#aiPrompt').value = "Grand opening ceremony poster with royal blue ribbon, gold confetti, and architectural lighting.";
+  }
+  updateCharCounts();
+};
+
+function updateCharCounts() {
+  $('#descCount').textContent = `${$('#posterDesc').value.length}/200`;
+  $('#promptCount').textContent = `${$('#aiPrompt').value.length}/500`;
+}
+$('#posterDesc').oninput = updateCharCounts;
+$('#aiPrompt').oninput = updateCharCounts;
+
+// Footer Position Toggle
+$('#posBottom').onclick = () => {
+  $('#posBottom').classList.add('active');
+  $('#posTop').classList.remove('active');
+  footerPos = "bottom";
+};
+$('#posTop').onclick = () => {
+  $('#posTop').classList.add('active');
+  $('#posBottom').classList.remove('active');
+  footerPos = "top";
+};
+
+// Footer Template Selection
+$$('.footer-template-card').forEach(card => {
+  card.onclick = () => {
+    $$('.footer-template-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const bgStyle = card.style.background;
+    $('#sfPreviewThumb').style.background = bgStyle;
+  };
+});
+$('#nextFooter').onclick = () => { $('#footerCarousel').scrollLeft += 100; };
+$('#prevFooter').onclick = () => { $('#footerCarousel').scrollLeft -= 100; };
+$('#btnChangeFooter').onclick = () => { $('#footerCarousel').scrollIntoView({ behavior: 'smooth' }); };
+
+// File uploads
+$('#chooseFileBtn').onclick = () => $('#fileInput').click();
+$('#fileInput').onchange = (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedBgB64 = reader.result;
+    $('#thumbImg').src = reader.result;
+  };
+  reader.readAsDataURL(f);
+};
+
+$('#changeLogoBtn').onclick = () => $('#logoFileInput').click();
+$('#logoFileInput').onchange = (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedLogoB64 = reader.result;
+    $('#logoBox').innerHTML = `<img src="${reader.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+  };
+  reader.readAsDataURL(f);
+};
+$('#removeLogoBtn').onclick = () => {
+  uploadedLogoB64 = null;
+  $('#logoBox').innerHTML = "👑";
+};
+
+// Fullscreen
+$('#btnFullscreen').onclick = () => {
+  const elem = $('#posterViewport');
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  }
+};
+
+// Client Canvas Renderer (High-fidelity reference preview & instant fallback)
+function drawReferencePoster(title, desc, style) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1350;
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1350;
+
+  // 1. Soft warm festive background
+  const bgGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 800);
+  bgGrad.addColorStop(0, '#fef08a');
+  bgGrad.addColorStop(0.3, '#fde047');
+  bgGrad.addColorStop(0.7, '#f472b6');
+  bgGrad.addColorStop(1, '#be185d');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Soft glow vignette
+  ctx.fillStyle = "rgba(40, 10, 30, 0.4)";
+  ctx.fillRect(0, 0, W, H);
+
+  // 2. Fairy lights garland at the top
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, 80);
+  ctx.bezierCurveTo(300, 150, 780, 50, 1080, 120);
+  ctx.stroke();
+
+  for (let x = 60; x < W; x += 90) {
+    const y = 80 + Math.sin(x / 140) * 40;
+    ctx.fillStyle = "#fef08a";
+    ctx.shadowColor = "#fef08a";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(x, y + 25, 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+
+  // 3. Celebratory Balloons
+  function drawBalloon(bx, by, rad, color) {
+    ctx.fillStyle = color;
+    ctx.shadowColor = "rgba(0,0,0,0.3)";
+    ctx.shadowBlur = 16;
+    ctx.beginPath();
+    ctx.ellipse(bx, by, rad, rad * 1.25, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Highlight reflection
+    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.beginPath();
+    ctx.ellipse(bx - rad * 0.35, by - rad * 0.45, rad * 0.25, rad * 0.45, -0.4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+  drawBalloon(120, 260, 80, "#f43f5e");
+  drawBalloon(180, 200, 75, "#fbbf24");
+  drawBalloon(960, 210, 80, "#f43f5e");
+  drawBalloon(920, 280, 70, "#fbbf24");
+
+  // 4. Multi-tiered Birthday Cake
+  const cx = W / 2, cy = H * 0.65;
+  // Base Stand
+  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  ctx.shadowColor = "rgba(0,0,0,0.35)";
+  ctx.shadowBlur = 20;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 90, 260, 45, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Cake Tier 1
+  ctx.fillStyle = "#fff1f2";
+  ctx.beginPath();
+  ctx.roundRect(cx - 210, cy - 40, 420, 110, 20);
+  ctx.fill();
+  // Strawberries & berries garnish
+  for (let i = -180; i <= 180; i += 36) {
+    ctx.fillStyle = (i % 2 === 0) ? "#e11d48" : "#831843";
+    ctx.beginPath();
+    ctx.arc(cx + i, cy - 40, 12, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Cake Tier 2
+  ctx.fillStyle = "#ffe4e6";
+  ctx.beginPath();
+  ctx.roundRect(cx - 150, cy - 120, 300, 90, 16);
+  ctx.fill();
+
+  // Lit Candles
+  for (let c = -100; c <= 100; c += 40) {
+    ctx.fillStyle = "#c084fc";
+    ctx.fillRect(cx + c - 4, cy - 180, 8, 60);
+    // Candle flame
+    ctx.fillStyle = "#facc15";
+    ctx.shadowColor = "#fde047";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.ellipse(cx + c, cy - 192, 6, 12, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+
+  // Wrapped Gift Boxes on sides
+  function drawGift(gx, gy, gw, gh, col, rib) {
+    ctx.fillStyle = col;
+    ctx.shadowColor = "rgba(0,0,0,0.3)";
+    ctx.shadowBlur = 12;
+    ctx.fillRect(gx, gy, gw, gh);
+    ctx.fillStyle = rib;
+    ctx.fillRect(gx + gw*0.4, gy, gw*0.2, gh);
+    ctx.fillRect(gx, gy + gh*0.35, gw, gh*0.2);
+    ctx.shadowBlur = 0;
+  }
+  drawGift(140, H * 0.72, 110, 90, "#f43f5e", "#fde047");
+  drawGift(820, H * 0.68, 120, 110, "#fbbf24", "#f43f5e");
+
+  // 5. Hero Typography
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#2e1065";
+  ctx.shadowColor = "rgba(255,255,255,0.8)";
+  ctx.shadowBlur = 14;
+  ctx.font = "italic 700 96px 'Great Vibes', cursive, serif";
+  ctx.fillText(title || "Happy Birthday", cx, H * 0.28);
+  ctx.shadowBlur = 0;
+
+  // Subtitle / message
+  ctx.fillStyle = "#3b0764";
+  ctx.font = "600 32px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText(desc || "Celebrate your special day with love and joy!", cx, H * 0.38);
+
+  // Little heart icon under headline
+  ctx.fillStyle = "#be185d";
+  ctx.font = "32px sans-serif";
+  ctx.fillText("♥", cx, H * 0.32);
+
+  // 6. Royal Purple & Gold Footer Banner
+  const fy = H * 0.88;
+  const fGrad = ctx.createLinearGradient(0, fy, W, fy);
+  fGrad.addColorStop(0, "#1e0b3d");
+  fGrad.addColorStop(0.5, "#3b0764");
+  fGrad.addColorStop(1, "#1e0b3d");
+  ctx.fillStyle = fGrad;
+  ctx.shadowColor = "rgba(0,0,0,0.5)";
+  ctx.shadowBlur = 24;
+  ctx.beginPath();
+  ctx.roundRect(W * 0.08, fy, W * 0.84, 80, 16);
+  ctx.fill();
+
+  // Gold accent trim line
+  ctx.strokeStyle = "#fbbf24";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.roundRect(W * 0.08, fy, W * 0.84, 80, 16);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Crown & Tagline inside banner
+  ctx.fillStyle = "#fbbf24";
+  ctx.font = "26px sans-serif";
+  ctx.fillText("👑", W * 0.15, fy + 48);
+
+  ctx.fillStyle = "#fef08a";
+  ctx.font = "700 24px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText("— Dream Big • Stay Happy • Keep Smiling —", cx + 30, fy + 48);
+
+  return canvas.toDataURL('image/png');
+}
+
+// Generate Poster Action
+async function generatePoster() {
+  $('#canvasLoader').classList.add('active');
+  const title = $('#posterTitle').value.trim() || 'Happy Birthday';
+  const desc = $('#posterDesc').value.trim() || 'Celebrate your special day with love and joy!';
+  const prompt = $('#aiPrompt').value.trim();
+  const [w, h] = $('#sizeSelect').value.split('x').map(Number);
+
+  // 1. First attempt to call the live Python FastAPI backend
   try {
     const res = await fetch('/compose', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: prompt + `, ${selectedStyle} style, highly detailed birthday poster`,
+        headline: title,
+        subheading: desc,
+        business: "Brand",
+        style: selectedStyle,
+        width: w || 1080,
+        height: h || 1350,
+        phone: $('#brandPhone').value || '+91 98765 43210',
+        website: $('#brandWeb').value || 'https://yourbrand.com',
+        email: $('#brandEmail').value || 'hello@yourbrand.com',
+        cta: $('#brandExtra').value || 'Best Wishes!',
+        footer_style: 'wave',
+        footer_position: footerPos,
+        logo_base64: uploadedLogoB64 ? uploadedLogoB64.split(',')[1] : null,
+        poster_bytes: uploadedBgB64 ? uploadedBgB64.split(',')[1] : null
+      })
     });
+
     if (res.ok) {
       const data = await res.json();
       if (data.final_image_base64) {
-        return 'data:image/png;base64,' + data.final_image_base64;
+        currentPosterDataUrl = 'data:image/png;base64,' + data.final_image_base64;
+        $('#previewImage').src = currentPosterDataUrl;
+        $('#downloadPosterBtn').href = currentPosterDataUrl;
+        $('#canvasLoader').classList.remove('active');
+        return;
       }
     }
   } catch (err) {
-    console.warn('API error, using local canvas render:', err);
+    console.warn("Backend API unavailable or timed out, rendering high-fidelity canvas:", err);
   }
-  return drawCanvasFallback(w, h, text, 0);
-}
 
-async function mk(){
-  const n = +($('#count .on') ? $('#count .on').textContent : 1);
-  const [w, h] = $('#size').value.split(',').map(Number);
-  const t = $('#head').value || 'Happy Diwali';
-  const occ = $('#occ').value || 'Diwali';
-
-  posters = [];
-  for(let i = 0; i < n; i++) {
-    const p = await callBackendCompose(w, h, t, occ);
-    posters.push(p);
-  }
-  renderUI();
-}
-
-$('#gen').onclick = async () => {
-  if (busy) return;
-  busy = true;
-  $('#spin').classList.add('go');
-  say('AI', `Generating ${$('#count .on') ? $('#count .on').textContent : 1} poster(s) using AI...`);
-  try {
-    await mk();
-    const d = new Date();
-    $('#lg').textContent = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    say('AI', `Done! Generated ${posters.length} poster(s) for "${$('#head').value}".`);
-  } catch(e) {
-    console.error(e);
-  } finally {
-    $('#spin').classList.remove('go');
-    busy = false;
-  }
-};
-
-function load(file, cb){
-  if(!file) return;
-  const r = new FileReader();
-  r.onload = () => {
-    const i = new Image();
-    i.onload = () => cb(i, r.result);
-    i.src = r.result;
-  };
-  r.readAsDataURL(file);
-}
-
-function setLogo(f){
-  load(f, (i, u) => {
-    logoImg = i;
-    logoB64 = u;
-    $('#logoDrop').innerHTML = `<img src="${u}" alt="Logo">`;
-    say('AI', 'Logo received! Theme colors matched.');
-  });
-}
-
-function setBg(f){
-  load(f, (i, u) => {
-    bgImg = i;
-    bgB64 = u;
-    $('#bgDrop').innerHTML = `<img src="${u}" alt="Background">`;
-    $('#strip').innerHTML = `<img src="${u}" alt="Preview">`;
-    say('AI', 'Custom background loaded.');
-  });
-}
-
-$('#logoDrop').onclick = () => $('#logoF').click();
-$('#bgDrop').onclick = () => $('#bgF').click();
-$('#logoF').onchange = e => setLogo(e.target.files[0]);
-$('#bgF').onchange = e => setBg(e.target.files[0]);
-
-[['#logoDrop', setLogo], ['#bgDrop', setBg]].forEach(([s, f]) => {
-  const el = $(s);
-  el.ondragover = e => { e.preventDefault(); el.classList.add('over'); };
-  el.ondragleave = () => el.classList.remove('over');
-  el.ondrop = e => { e.preventDefault(); el.classList.remove('over'); f(e.dataTransfer.files[0]); };
-});
-
-const logs = [
-  ["2026-11-12", "imagica — AI Poster Studio Ready"],
-  ["2026-11-11", "imagica — Model Lab Verified"],
-  ["2026-11-10", "imagica — Initialized"]
-];
-
-function showLogs(){
-  $('#logs').innerHTML = logs.map(l => `<div>${l[0]}<small>${l[1]}</small></div>`).join('');
-}
-function log(n){
-  logs.unshift([new Date().toISOString().slice(0, 10), n || 'imagica — AI Poster']);
-  showLogs();
-}
-showLogs();
-
-$('#bars').innerHTML = [3, 5, 4, 8, 6, 9, 7, 10, 6, 8, 5, 7, 9, 6].map((v, i) => `<i class="${i == 4 ? 'h' : ''}" style="height:${v * 9}%"></i>`).join('');
-
-function say(who, t){
-  const m = document.createElement('div');
-  m.className = 'msg' + (who == 'AI' ? ' a' : '');
-  m.textContent = (who == 'AI' ? 'AI: ' : '') + t;
-  $('#chat').appendChild(m);
-  $('#chat').scrollTop = 1e5;
-}
-
-function send(){
-  const v = $('#ciInput').value.trim();
-  if(!v) return;
-  say('You', v);
-  $('#ciInput').value = '';
+  // 2. High-fidelity reference renderer fallback
   setTimeout(() => {
-    say('AI', `Noted: "${v}". Ready to generate with these parameters.`);
-  }, 400);
+    currentPosterDataUrl = drawReferencePoster(title, desc, selectedStyle);
+    $('#previewImage').src = currentPosterDataUrl;
+    $('#downloadPosterBtn').href = currentPosterDataUrl;
+    $('#canvasLoader').classList.remove('active');
+  }, 1200);
 }
 
-$('#send').onclick = send;
-$('#ciInput').onkeydown = e => { if (e.key === 'Enter') send(); };
+$('#generateHeroBtn').onclick = generatePoster;
 
-document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
-  style = (style + 1) % 3;
-  [...$('#styles').children].forEach((x, i) => x.classList.toggle('on', i == style));
-  say('AI', `Switched style to ${styleNames[style]}. Click Generate to apply.`);
-});
-
-$('#occ').oninput = () => {
-  $('#head').value = 'Happy ' + $('#occ').value;
+// Share button
+$('#shareBtn').onclick = () => {
+  if (navigator.share && currentPosterDataUrl) {
+    navigator.share({
+      title: $('#posterTitle').value || 'AI Poster',
+      text: $('#posterDesc').value || 'Created with imagica',
+      url: window.location.href
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Poster link copied to clipboard!');
+  }
 };
 
-// Initial render
-renderUI();
+// Initial Render on page load
+currentPosterDataUrl = "/static/assets/sample_poster.png";
+$('#previewImage').src = currentPosterDataUrl;
+$('#downloadPosterBtn').href = currentPosterDataUrl;
 </script>
 </body>
 </html>
