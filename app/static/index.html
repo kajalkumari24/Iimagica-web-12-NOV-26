@@ -6,7 +6,7 @@
 <title>imagica — AI Poster, Frame and Footer Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0b0914;
@@ -629,17 +629,19 @@ select.input-control {
 /* Canvas Area */
 .poster-viewport {
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 4 / 4.7;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
   background: #110d24;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: max-width 0.25s ease-out;
 }
 .poster-viewport img {
   width: 100%;
@@ -1146,9 +1148,9 @@ select.input-control {
           </div>
           <div style="display: flex; gap: 8px;">
             <div class="device-toggles">
-              <button type="button" class="device-btn active" title="Desktop">💻</button>
-              <button type="button" class="device-btn" title="Tablet">📱</button>
-              <button type="button" class="device-btn" title="Mobile">📲</button>
+              <button type="button" class="device-btn active" id="btnDevDesktop" title="Desktop">💻</button>
+              <button type="button" class="device-btn" id="btnDevTablet" title="Tablet">📱</button>
+              <button type="button" class="device-btn" id="btnDevMobile" title="Mobile">📲</button>
             </div>
             <button type="button" class="btn-fullscreen" id="btnFullscreen">⛶ Full Screen</button>
           </div>
@@ -1239,9 +1241,43 @@ const $$ = s => document.querySelectorAll(s);
 
 let selectedStyle = "elegant";
 let footerPos = "bottom";
+let activeFooterStyle = "royal_purple";
 let uploadedLogoB64 = null;
 let uploadedBgB64 = null;
+let bgImageObj = null;
+let logoImageObj = null;
 let currentPosterDataUrl = "";
+let renderTimer = null;
+
+function schedulePosterUpdate() {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(renderLivePoster, 60);
+}
+
+// Device Viewport Toggles (Desktop / Tablet / Mobile)
+$('#btnDevDesktop').onclick = () => {
+  $$('.device-btn').forEach(b => b.classList.remove('active'));
+  $('#btnDevDesktop').classList.add('active');
+  $('#posterViewport').style.maxWidth = '100%';
+};
+$('#btnDevTablet').onclick = () => {
+  $$('.device-btn').forEach(b => b.classList.remove('active'));
+  $('#btnDevTablet').classList.add('active');
+  $('#posterViewport').style.maxWidth = '360px';
+};
+$('#btnDevMobile').onclick = () => {
+  $$('.device-btn').forEach(b => b.classList.remove('active'));
+  $('#btnDevMobile').classList.add('active');
+  $('#posterViewport').style.maxWidth = '260px';
+};
+
+// Fullscreen Toggle
+$('#btnFullscreen').onclick = () => {
+  const elem = $('#posterViewport');
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  }
+};
 
 // Style pills selection
 $$('#stylePills .style-pill').forEach(btn => {
@@ -1249,49 +1285,65 @@ $$('#stylePills .style-pill').forEach(btn => {
     $$('#stylePills .style-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     selectedStyle = btn.getAttribute('data-style');
+    schedulePosterUpdate();
   };
 });
 
-// Category selection auto-update title & prompt
+// Category selection auto-updates form fields and immediately redraws poster
 $('#categorySelect').onchange = (e) => {
   const cat = e.target.value;
   if (cat === "birthday") {
     $('#posterTitle').value = "Happy Birthday";
     $('#posterDesc').value = "Celebrate your special day with love and joy!";
     $('#aiPrompt').value = "Create a beautiful birthday celebration poster with balloons, cake, flowers and warm golden lighting.";
+    $('#brandExtra').value = "— Dream Big • Stay Happy • Keep Smiling —";
   } else if (cat === "festival") {
-    $('#posterTitle').value = "Happy Diwali";
-    $('#posterDesc').value = "Wishing you light, joy and prosperity this festive season!";
+    $('#posterTitle').value = "शुभ दीपावली (Happy Diwali)";
+    $('#posterDesc').value = "Wishing you and your family abundant peace, light and joy!";
     $('#aiPrompt').value = "A premium festive Diwali poster with glowing oil diyas, marigold garlands, and golden rangoli.";
+    $('#brandExtra').value = "Festive Special Sweets & Dry Fruit Hampers";
   } else if (cat === "sale") {
-    $('#posterTitle').value = "Mega Sale 50% OFF";
-    $('#posterDesc').value = "Limited time offer on all premium collections!";
+    $('#posterTitle').value = "MEGA SALE 50% OFF";
+    $('#posterDesc').value = "Exclusive limited-time offer on all premium collections!";
     $('#aiPrompt').value = "A modern luxury promotional shopping poster with vibrant discount badges and elegant gift packaging.";
+    $('#brandExtra').value = "Flash Sale • Limited Stock • Shop Online Now";
   } else if (cat === "business") {
     $('#posterTitle').value = "Grand Opening";
-    $('#posterDesc').value = "We are thrilled to welcome you to our new store!";
+    $('#posterDesc').value = "We are thrilled to welcome you to our brand new store!";
     $('#aiPrompt').value = "Grand opening ceremony poster with royal blue ribbon, gold confetti, and architectural lighting.";
+    $('#brandExtra').value = "Visit Us Today • Exciting Welcome Gifts For All";
   }
   updateCharCounts();
+  renderLivePoster();
 };
 
 function updateCharCounts() {
   $('#descCount').textContent = `${$('#posterDesc').value.length}/200`;
   $('#promptCount').textContent = `${$('#aiPrompt').value.length}/500`;
 }
-$('#posterDesc').oninput = updateCharCounts;
+$('#posterDesc').oninput = () => { updateCharCounts(); schedulePosterUpdate(); };
 $('#aiPrompt').oninput = updateCharCounts;
+$('#posterTitle').oninput = schedulePosterUpdate;
+$('#brandPhone').oninput = schedulePosterUpdate;
+$('#brandWeb').oninput = schedulePosterUpdate;
+$('#brandEmail').oninput = schedulePosterUpdate;
+$('#brandExtra').oninput = schedulePosterUpdate;
+$('#styleSelect').onchange = schedulePosterUpdate;
+$('#themeSelect').onchange = schedulePosterUpdate;
+$('#sizeSelect').onchange = schedulePosterUpdate;
 
 // Footer Position Toggle
 $('#posBottom').onclick = () => {
   $('#posBottom').classList.add('active');
   $('#posTop').classList.remove('active');
   footerPos = "bottom";
+  schedulePosterUpdate();
 };
 $('#posTop').onclick = () => {
   $('#posTop').classList.add('active');
   $('#posBottom').classList.remove('active');
   footerPos = "top";
+  schedulePosterUpdate();
 };
 
 // Footer Template Selection
@@ -1299,27 +1351,52 @@ $$('.footer-template-card').forEach(card => {
   card.onclick = () => {
     $$('.footer-template-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
-    const bgStyle = card.style.background;
+    activeFooterStyle = card.getAttribute('data-style') || 'royal_purple';
+    const bgStyle = card.style.backgroundImage || card.style.background;
     $('#sfPreviewThumb').style.background = bgStyle;
+    $('#sfPreviewThumb').style.backgroundSize = "cover";
+    schedulePosterUpdate();
   };
 });
 $('#nextFooter').onclick = () => { $('#footerCarousel').scrollLeft += 100; };
 $('#prevFooter').onclick = () => { $('#footerCarousel').scrollLeft -= 100; };
 $('#btnChangeFooter').onclick = () => { $('#footerCarousel').scrollIntoView({ behavior: 'smooth' }); };
+$('#btnPreviewFooter').onclick = () => { $('#posterViewport').scrollIntoView({ behavior: 'smooth' }); };
 
-// File uploads
-$('#chooseFileBtn').onclick = () => $('#fileInput').click();
-$('#fileInput').onchange = (e) => {
-  const f = e.target.files[0];
+// Image Upload & Drag-and-Drop
+function handleImageFile(f) {
   if (!f) return;
   const reader = new FileReader();
   reader.onload = () => {
     uploadedBgB64 = reader.result;
     $('#thumbImg').src = reader.result;
+    const img = new Image();
+    img.onload = () => {
+      bgImageObj = img;
+      renderLivePoster();
+    };
+    img.src = reader.result;
   };
   reader.readAsDataURL(f);
-};
+}
 
+$('#chooseFileBtn').onclick = () => $('#fileInput').click();
+$('#fileInput').onchange = (e) => handleImageFile(e.target.files[0]);
+
+const dropZone = $('#dropZone');
+if (dropZone) {
+  dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#c084fc'; };
+  dropZone.ondragleave = () => { dropZone.style.borderColor = 'rgba(168, 85, 247, 0.3)'; };
+  dropZone.ondrop = (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+    if (e.dataTransfer && e.dataTransfer.files.length) {
+      handleImageFile(e.dataTransfer.files[0]);
+    }
+  };
+}
+
+// Logo Upload
 $('#changeLogoBtn').onclick = () => $('#logoFileInput').click();
 $('#logoFileInput').onchange = (e) => {
   const f = e.target.files[0];
@@ -1328,190 +1405,475 @@ $('#logoFileInput').onchange = (e) => {
   reader.onload = () => {
     uploadedLogoB64 = reader.result;
     $('#logoBox').innerHTML = `<img src="${reader.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+    const img = new Image();
+    img.onload = () => {
+      logoImageObj = img;
+      renderLivePoster();
+    };
+    img.src = reader.result;
   };
   reader.readAsDataURL(f);
 };
 $('#removeLogoBtn').onclick = () => {
   uploadedLogoB64 = null;
+  logoImageObj = null;
   $('#logoBox').innerHTML = "👑";
+  schedulePosterUpdate();
 };
 
-// Fullscreen
-$('#btnFullscreen').onclick = () => {
-  const elem = $('#posterViewport');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  }
-};
-
-// Client Canvas Renderer (High-fidelity reference preview & instant fallback)
-function drawReferencePoster(title, desc, style) {
+// =========================================================
+// Real-Time Dynamic Poster Renderer
+// Dynamically alters graphics, typography & footer as per inputs
+// =========================================================
+function renderLivePoster() {
   const canvas = document.createElement('canvas');
-  canvas.width = 1080;
-  canvas.height = 1350;
+  const sizeVal = $('#sizeSelect').value || '1080x1350';
+  const [W, H] = sizeVal.split('x').map(Number);
+  canvas.width = W || 1080;
+  canvas.height = H || 1350;
   const ctx = canvas.getContext('2d');
-  const W = 1080, H = 1350;
 
-  // 1. Soft warm festive background
-  const bgGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 800);
-  bgGrad.addColorStop(0, '#fef08a');
-  bgGrad.addColorStop(0.3, '#fde047');
-  bgGrad.addColorStop(0.7, '#f472b6');
-  bgGrad.addColorStop(1, '#be185d');
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, W, H);
+  const title = $('#posterTitle').value.trim() || 'Happy Birthday';
+  const desc = $('#posterDesc').value.trim() || 'Celebrate your special day with love and joy!';
+  const cat = $('#categorySelect').value;
+  const phone = $('#brandPhone').value.trim() || '+91 98765 43210';
+  const web = $('#brandWeb').value.trim() || 'https://yourbrand.com';
+  const extra = $('#brandExtra').value.trim() || '— Dream Big • Stay Happy • Keep Smiling —';
 
-  // Soft glow vignette
-  ctx.fillStyle = "rgba(40, 10, 30, 0.4)";
-  ctx.fillRect(0, 0, W, H);
+  // 1. Draw Background
+  if (bgImageObj) {
+    // Custom user uploaded background photo
+    const scale = Math.max(W / bgImageObj.width, H / bgImageObj.height);
+    const sw = bgImageObj.width * scale;
+    const sh = bgImageObj.height * scale;
+    const sx = (W - sw) / 2;
+    const sy = (H - sh) / 2;
+    ctx.drawImage(bgImageObj, sx, sy, sw, sh);
 
-  // 2. Fairy lights garland at the top
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(0, 80);
-  ctx.bezierCurveTo(300, 150, 780, 50, 1080, 120);
-  ctx.stroke();
+    // Subtle dark gradient vignette for readable typography
+    const vig = ctx.createLinearGradient(0, 0, 0, H);
+    vig.addColorStop(0, 'rgba(0,0,0,0.55)');
+    vig.addColorStop(0.35, 'rgba(0,0,0,0.25)');
+    vig.addColorStop(0.7, 'rgba(0,0,0,0.4)');
+    vig.addColorStop(1, 'rgba(0,0,0,0.75)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
+  } else if (cat === "festival") {
+    // -----------------------------------------------------------
+    // FESTIVAL (Diwali / Festive Celebration)
+    // -----------------------------------------------------------
+    const festGrad = ctx.createRadialGradient(W*0.5, H*0.45, 120, W*0.5, H*0.5, 850);
+    festGrad.addColorStop(0, '#581c1c');
+    festGrad.addColorStop(0.4, '#2d0612');
+    festGrad.addColorStop(1, '#0e0208');
+    ctx.fillStyle = festGrad;
+    ctx.fillRect(0, 0, W, H);
 
-  for (let x = 60; x < W; x += 90) {
-    const y = 80 + Math.sin(x / 140) * 40;
+    // Golden sparkles / star dust
     ctx.fillStyle = "#fef08a";
-    ctx.shadowColor = "#fef08a";
-    ctx.shadowBlur = 18;
-    ctx.beginPath();
-    ctx.arc(x, y + 25, 10, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.shadowBlur = 0;
+    for (let i = 0; i < 45; i++) {
+      const rx = (i * 97) % W;
+      const ry = (i * 73) % (H * 0.7);
+      ctx.globalAlpha = 0.3 + ((i % 5) * 0.14);
+      ctx.beginPath();
+      ctx.arc(rx, ry, (i % 3) + 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1.0;
 
-  // 3. Celebratory Balloons
-  function drawBalloon(bx, by, rad, color) {
-    ctx.fillStyle = color;
-    ctx.shadowColor = "rgba(0,0,0,0.3)";
-    ctx.shadowBlur = 16;
+    // Hanging Marigold Garlands at Top
+    for (let x = 30; x < W; x += 38) {
+      const drop = 40 + Math.sin(x / 110) * 25;
+      for (let y = 0; y < drop; y += 22) {
+        ctx.fillStyle = (y % 44 === 0) ? "#f59e0b" : "#fbbf24";
+        ctx.beginPath();
+        ctx.arc(x, y + 10, 11, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Hanging golden bell at bottom of garland
+      ctx.fillStyle = "#fde047";
+      ctx.beginPath();
+      ctx.arc(x, drop + 10, 6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Glowing Clay Oil Diyas at bottom center
+    const diyaY = footerPos === 'top' ? H * 0.76 : H * 0.68;
+    function drawDiya(dx, dy, scale) {
+      // Warm radiant glow halo
+      const halo = ctx.createRadialGradient(dx, dy - 20*scale, 5, dx, dy - 20*scale, 90*scale);
+      halo.addColorStop(0, 'rgba(254, 240, 138, 0.9)');
+      halo.addColorStop(0.3, 'rgba(245, 158, 11, 0.45)');
+      halo.addColorStop(1, 'rgba(245, 158, 11, 0)');
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(dx, dy - 20*scale, 90*scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Terracotta / Brass Diya Base
+      ctx.fillStyle = "#d97706";
+      ctx.beginPath();
+      ctx.ellipse(dx, dy, 55*scale, 20*scale, 0, 0, Math.PI);
+      ctx.fill();
+      ctx.fillStyle = "#78350f";
+      ctx.beginPath();
+      ctx.ellipse(dx, dy, 50*scale, 14*scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#f59e0b";
+      ctx.beginPath();
+      ctx.ellipse(dx, dy - 2*scale, 42*scale, 10*scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Glowing flame with flickering teardrop
+      ctx.fillStyle = "#fef08a";
+      ctx.shadowColor = "#fde047";
+      ctx.shadowBlur = 24;
+      ctx.beginPath();
+      ctx.moveTo(dx, dy - 42*scale);
+      ctx.bezierCurveTo(dx + 16*scale, dy - 25*scale, dx + 12*scale, dy - 4*scale, dx, dy - 4*scale);
+      ctx.bezierCurveTo(dx - 12*scale, dy - 4*scale, dx - 16*scale, dy - 25*scale, dx, dy - 42*scale);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    drawDiya(W * 0.5, diyaY, 1.3);
+    drawDiya(W * 0.28, diyaY + 20, 0.95);
+    drawDiya(W * 0.72, diyaY + 20, 0.95);
+
+  } else if (cat === "sale") {
+    // -----------------------------------------------------------
+    // SALE (High Impact Promotional)
+    // -----------------------------------------------------------
+    const saleGrad = ctx.createLinearGradient(0, 0, W, H);
+    saleGrad.addColorStop(0, '#7f1d1d');
+    saleGrad.addColorStop(0.4, '#1e1b4b');
+    saleGrad.addColorStop(1, '#09090b');
+    ctx.fillStyle = saleGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Diagonal speed ribbons
+    ctx.fillStyle = "rgba(239, 68, 68, 0.15)";
     ctx.beginPath();
-    ctx.ellipse(bx, by, rad, rad * 1.25, 0, 0, Math.PI * 2);
+    ctx.moveTo(0, H * 0.2);
+    ctx.lineTo(W, H * 0.05);
+    ctx.lineTo(W, H * 0.18);
+    ctx.lineTo(0, H * 0.33);
     ctx.fill();
-    // Highlight reflection
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
+
+    ctx.fillStyle = "rgba(245, 158, 11, 0.18)";
     ctx.beginPath();
-    ctx.ellipse(bx - rad * 0.35, by - rad * 0.45, rad * 0.25, rad * 0.45, -0.4, 0, Math.PI * 2);
+    ctx.moveTo(0, H * 0.5);
+    ctx.lineTo(W, H * 0.35);
+    ctx.lineTo(W, H * 0.48);
+    ctx.lineTo(0, H * 0.63);
+    ctx.fill();
+
+    // Floating Discount Badge
+    const badgeY = footerPos === 'top' ? H * 0.72 : H * 0.62;
+    ctx.fillStyle = "#ef4444";
+    ctx.shadowColor = "rgba(239, 68, 68, 0.5)";
+    ctx.shadowBlur = 24;
+    ctx.beginPath();
+    ctx.roundRect(W * 0.32, badgeY, W * 0.36, 68, 34);
     ctx.fill();
     ctx.shadowBlur = 0;
-  }
-  drawBalloon(120, 260, 80, "#f43f5e");
-  drawBalloon(180, 200, 75, "#fbbf24");
-  drawBalloon(960, 210, 80, "#f43f5e");
-  drawBalloon(920, 280, 70, "#fbbf24");
 
-  // 4. Multi-tiered Birthday Cake
-  const cx = W / 2, cy = H * 0.65;
-  // Base Stand
-  ctx.fillStyle = "rgba(255,255,255,0.95)";
-  ctx.shadowColor = "rgba(0,0,0,0.35)";
-  ctx.shadowBlur = 20;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy + 90, 260, 45, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.shadowBlur = 0;
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "800 28px 'Plus Jakarta Sans', sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("FLAT 50% OFF", W * 0.5, badgeY + 44);
 
-  // Cake Tier 1
-  ctx.fillStyle = "#fff1f2";
-  ctx.beginPath();
-  ctx.roundRect(cx - 210, cy - 40, 420, 110, 20);
-  ctx.fill();
-  // Strawberries & berries garnish
-  for (let i = -180; i <= 180; i += 36) {
-    ctx.fillStyle = (i % 2 === 0) ? "#e11d48" : "#831843";
+  } else if (cat === "business") {
+    // -----------------------------------------------------------
+    // BUSINESS / GRAND OPENING
+    // -----------------------------------------------------------
+    const bizGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 850);
+    bizGrad.addColorStop(0, '#1e293b');
+    bizGrad.addColorStop(0.5, '#0f172a');
+    bizGrad.addColorStop(1, '#020617');
+    ctx.fillStyle = bizGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Architectural Gold Framing Accents
+    ctx.strokeStyle = "rgba(245, 158, 11, 0.3)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(W * 0.05, H * 0.05, W * 0.9, H * 0.9);
+    ctx.strokeRect(W * 0.065, H * 0.065, W * 0.87, H * 0.87);
+
+    // Subtle bokeh circles
+    for (let b = 0; b < 18; b++) {
+      ctx.fillStyle = "rgba(148, 163, 184, 0.05)";
+      ctx.beginPath();
+      ctx.arc((b * 123) % W, (b * 191) % H, 40 + (b * 4), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else {
+    // -----------------------------------------------------------
+    // BIRTHDAY (Celebratory with Cake & Balloons)
+    // -----------------------------------------------------------
+    const bgGrad = ctx.createRadialGradient(W*0.5, H*0.4, 100, W*0.5, H*0.5, 800);
+    bgGrad.addColorStop(0, '#fef08a');
+    bgGrad.addColorStop(0.3, '#fde047');
+    bgGrad.addColorStop(0.7, '#f472b6');
+    bgGrad.addColorStop(1, '#be185d');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Soft glow vignette
+    ctx.fillStyle = "rgba(40, 10, 30, 0.35)";
+    ctx.fillRect(0, 0, W, H);
+
+    // Fairy lights garland at top
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.arc(cx + i, cy - 40, 12, 0, Math.PI * 2);
-    ctx.fill();
-  }
+    ctx.moveTo(0, 80);
+    ctx.bezierCurveTo(300, 150, 780, 50, 1080, 120);
+    ctx.stroke();
 
-  // Cake Tier 2
-  ctx.fillStyle = "#ffe4e6";
-  ctx.beginPath();
-  ctx.roundRect(cx - 150, cy - 120, 300, 90, 16);
-  ctx.fill();
-
-  // Lit Candles
-  for (let c = -100; c <= 100; c += 40) {
-    ctx.fillStyle = "#c084fc";
-    ctx.fillRect(cx + c - 4, cy - 180, 8, 60);
-    // Candle flame
-    ctx.fillStyle = "#facc15";
-    ctx.shadowColor = "#fde047";
-    ctx.shadowBlur = 18;
-    ctx.beginPath();
-    ctx.ellipse(cx + c, cy - 192, 6, 12, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.shadowBlur = 0;
-
-  // Wrapped Gift Boxes on sides
-  function drawGift(gx, gy, gw, gh, col, rib) {
-    ctx.fillStyle = col;
-    ctx.shadowColor = "rgba(0,0,0,0.3)";
-    ctx.shadowBlur = 12;
-    ctx.fillRect(gx, gy, gw, gh);
-    ctx.fillStyle = rib;
-    ctx.fillRect(gx + gw*0.4, gy, gw*0.2, gh);
-    ctx.fillRect(gx, gy + gh*0.35, gw, gh*0.2);
+    for (let x = 60; x < W; x += 90) {
+      const y = 80 + Math.sin(x / 140) * 40;
+      ctx.fillStyle = "#fef08a";
+      ctx.shadowColor = "#fef08a";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(x, y + 25, 10, 0, Math.PI * 2);
+      ctx.fill();
+    }
     ctx.shadowBlur = 0;
-  }
-  drawGift(140, H * 0.72, 110, 90, "#f43f5e", "#fde047");
-  drawGift(820, H * 0.68, 120, 110, "#fbbf24", "#f43f5e");
 
-  // 5. Hero Typography
+    // Celebratory Balloons
+    function drawBalloon(bx, by, rad, color) {
+      ctx.fillStyle = color;
+      ctx.shadowColor = "rgba(0,0,0,0.3)";
+      ctx.shadowBlur = 16;
+      ctx.beginPath();
+      ctx.ellipse(bx, by, rad, rad * 1.25, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.4)";
+      ctx.beginPath();
+      ctx.ellipse(bx - rad * 0.35, by - rad * 0.45, rad * 0.25, rad * 0.45, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    drawBalloon(120, 260, 80, "#f43f5e");
+    drawBalloon(180, 200, 75, "#fbbf24");
+    drawBalloon(960, 210, 80, "#f43f5e");
+    drawBalloon(920, 280, 70, "#fbbf24");
+
+    // Multi-tiered Birthday Cake
+    const cx = W / 2, cy = footerPos === 'top' ? H * 0.72 : H * 0.65;
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    ctx.shadowColor = "rgba(0,0,0,0.35)";
+    ctx.shadowBlur = 20;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + 90, 260, 45, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Cake Tier 1
+    ctx.fillStyle = "#fff1f2";
+    ctx.beginPath();
+    ctx.roundRect(cx - 210, cy - 40, 420, 110, 20);
+    ctx.fill();
+    for (let i = -180; i <= 180; i += 36) {
+      ctx.fillStyle = (i % 2 === 0) ? "#e11d48" : "#831843";
+      ctx.beginPath();
+      ctx.arc(cx + i, cy - 40, 12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Cake Tier 2
+    ctx.fillStyle = "#ffe4e6";
+    ctx.beginPath();
+    ctx.roundRect(cx - 150, cy - 120, 300, 90, 16);
+    ctx.fill();
+
+    // Lit Candles with Flames
+    for (let c = -100; c <= 100; c += 40) {
+      ctx.fillStyle = "#c084fc";
+      ctx.fillRect(cx + c - 4, cy - 180, 8, 60);
+      ctx.fillStyle = "#facc15";
+      ctx.shadowColor = "#fde047";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.ellipse(cx + c, cy - 192, 6, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+
+    // Wrapped Gift Boxes
+    function drawGift(gx, gy, gw, gh, col, rib) {
+      ctx.fillStyle = col;
+      ctx.shadowColor = "rgba(0,0,0,0.3)";
+      ctx.shadowBlur = 12;
+      ctx.fillRect(gx, gy, gw, gh);
+      ctx.fillStyle = rib;
+      ctx.fillRect(gx + gw*0.4, gy, gw*0.2, gh);
+      ctx.fillRect(gx, gy + gh*0.35, gw, gh*0.2);
+      ctx.shadowBlur = 0;
+    }
+    drawGift(140, H * 0.72, 110, 90, "#f43f5e", "#fde047");
+    drawGift(820, H * 0.68, 120, 110, "#fbbf24", "#f43f5e");
+  }
+
+  // -----------------------------------------------------------
+  // 2. Main Typography (Title & Subtitle)
+  // -----------------------------------------------------------
+  const textCenterY = footerPos === 'top' ? H * 0.36 : H * 0.28;
   ctx.textAlign = "center";
-  ctx.fillStyle = "#2e1065";
-  ctx.shadowColor = "rgba(255,255,255,0.8)";
-  ctx.shadowBlur = 14;
-  ctx.font = "italic 700 96px 'Great Vibes', cursive, serif";
-  ctx.fillText(title || "Happy Birthday", cx, H * 0.28);
+
+  // Check if title has Devanagari / Hindi characters
+  const isHindi = /[\u0900-\u097F]/.test(title);
+
+  ctx.shadowColor = "rgba(0,0,0,0.7)";
+  ctx.shadowBlur = 18;
+
+  if (cat === "festival") {
+    // Golden radiant festival title
+    ctx.fillStyle = "#fef08a";
+    ctx.font = isHindi ? "700 78px 'Noto Sans Devanagari', sans-serif" : "italic 700 86px 'Great Vibes', serif";
+    ctx.fillText(title, W / 2, textCenterY);
+
+    ctx.fillStyle = "#fed7aa";
+    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(desc, W / 2, textCenterY + 70);
+
+    ctx.fillStyle = "#facc15";
+    ctx.font = "32px sans-serif";
+    ctx.fillText("🪔  ✨  🪔", W / 2, textCenterY + 125);
+  } else if (cat === "sale") {
+    // Punchy bold sale title
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 88px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(title, W / 2, textCenterY);
+
+    ctx.fillStyle = "#fef08a";
+    ctx.font = "700 32px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(desc, W / 2, textCenterY + 68);
+
+    ctx.fillStyle = "#ef4444";
+    ctx.font = "28px sans-serif";
+    ctx.fillText("⚡  ⚡  ⚡", W / 2, textCenterY + 120);
+  } else if (cat === "business") {
+    // Clean corporate title
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "800 80px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(title, W / 2, textCenterY);
+
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(desc, W / 2, textCenterY + 65);
+
+    ctx.fillStyle = "#fbbf24";
+    ctx.font = "28px sans-serif";
+    ctx.fillText("✦  ✦  ✦", W / 2, textCenterY + 115);
+  } else {
+    // Classic script Birthday title
+    ctx.fillStyle = "#2e1065";
+    ctx.shadowColor = "rgba(255,255,255,0.85)";
+    ctx.shadowBlur = 12;
+    ctx.font = isHindi ? "700 78px 'Noto Sans Devanagari', sans-serif" : "italic 700 96px 'Great Vibes', cursive, serif";
+    ctx.fillText(title, W / 2, textCenterY);
+
+    ctx.fillStyle = "#3b0764";
+    ctx.font = "600 30px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(desc, W / 2, textCenterY + 78);
+
+    ctx.fillStyle = "#be185d";
+    ctx.font = "32px sans-serif";
+    ctx.fillText("♥", W / 2, textCenterY + 36);
+  }
   ctx.shadowBlur = 0;
 
-  // Subtitle / message
-  ctx.fillStyle = "#3b0764";
-  ctx.font = "600 32px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText(desc || "Celebrate your special day with love and joy!", cx, H * 0.38);
+  // -----------------------------------------------------------
+  // 3. Dynamic Royal Banner (Top or Bottom)
+  // -----------------------------------------------------------
+  const bannerY = (footerPos === 'top') ? 36 : (H - 124);
+  const bannerW = W * 0.88;
+  const bannerH = 88;
+  const bannerX = (W - bannerW) / 2;
 
-  // Little heart icon under headline
-  ctx.fillStyle = "#be185d";
-  ctx.font = "32px sans-serif";
-  ctx.fillText("♥", cx, H * 0.32);
+  // Banner Background Gradient by selected template
+  let bGrad = ctx.createLinearGradient(bannerX, 0, bannerX + bannerW, 0);
+  let trimColor = "#fbbf24";
+  let bannerIcon = "👑";
 
-  // 6. Royal Purple & Gold Footer Banner
-  const fy = H * 0.88;
-  const fGrad = ctx.createLinearGradient(0, fy, W, fy);
-  fGrad.addColorStop(0, "#1e0b3d");
-  fGrad.addColorStop(0.5, "#3b0764");
-  fGrad.addColorStop(1, "#1e0b3d");
-  ctx.fillStyle = fGrad;
-  ctx.shadowColor = "rgba(0,0,0,0.5)";
+  if (activeFooterStyle === "golden_ribbon") {
+    bGrad.addColorStop(0, '#78350f');
+    bGrad.addColorStop(0.5, '#d97706');
+    bGrad.addColorStop(1, '#78350f');
+    trimColor = '#fef08a';
+    bannerIcon = "✨";
+  } else if (activeFooterStyle === "floral_pink") {
+    bGrad.addColorStop(0, '#831843');
+    bGrad.addColorStop(0.5, '#db2777');
+    bGrad.addColorStop(1, '#831843');
+    trimColor = '#fbcfe8';
+    bannerIcon = "🌸";
+  } else if (activeFooterStyle === "midnight_gold") {
+    bGrad.addColorStop(0, '#090d16');
+    bGrad.addColorStop(0.5, '#1e3a8a');
+    bGrad.addColorStop(1, '#090d16');
+    trimColor = '#f59e0b';
+    bannerIcon = "💎";
+  } else if (activeFooterStyle === "botanical_green") {
+    bGrad.addColorStop(0, '#064e3b');
+    bGrad.addColorStop(0.5, '#059669');
+    bGrad.addColorStop(1, '#064e3b');
+    trimColor = '#a7f3d0';
+    bannerIcon = "🌿";
+  } else {
+    // Default Royal Purple
+    bGrad.addColorStop(0, '#1e0b3d');
+    bGrad.addColorStop(0.5, '#3b0764');
+    bGrad.addColorStop(1, '#1e0b3d');
+    trimColor = '#fbbf24';
+    bannerIcon = "👑";
+  }
+
+  ctx.fillStyle = bGrad;
+  ctx.shadowColor = "rgba(0,0,0,0.55)";
   ctx.shadowBlur = 24;
   ctx.beginPath();
-  ctx.roundRect(W * 0.08, fy, W * 0.84, 80, 16);
+  ctx.roundRect(bannerX, bannerY, bannerW, bannerH, 16);
   ctx.fill();
 
-  // Gold accent trim line
-  ctx.strokeStyle = "#fbbf24";
+  // Banner Border Trim
+  ctx.strokeStyle = trimColor;
   ctx.lineWidth = 2.5;
   ctx.beginPath();
-  ctx.roundRect(W * 0.08, fy, W * 0.84, 80, 16);
+  ctx.roundRect(bannerX, bannerY, bannerW, bannerH, 16);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  // Crown & Tagline inside banner
-  ctx.fillStyle = "#fbbf24";
-  ctx.font = "26px sans-serif";
-  ctx.fillText("👑", W * 0.15, fy + 48);
+  // Banner Logo or Icon
+  if (logoImageObj) {
+    ctx.drawImage(logoImageObj, bannerX + 20, bannerY + 16, 56, 56);
+  } else {
+    ctx.fillStyle = trimColor;
+    ctx.font = "32px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(bannerIcon, bannerX + 48, bannerY + 54);
+  }
 
-  ctx.fillStyle = "#fef08a";
-  ctx.font = "700 24px 'Plus Jakarta Sans', sans-serif";
-  ctx.fillText("— Dream Big • Stay Happy • Keep Smiling —", cx + 30, fy + 48);
+  // Banner Text Content
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "700 22px 'Plus Jakarta Sans', sans-serif";
+  const extraText = extra || "— Dream Big • Stay Happy • Keep Smiling —";
+  ctx.fillText(extraText, bannerX + 90, bannerY + 38);
 
-  return canvas.toDataURL('image/png');
+  ctx.fillStyle = trimColor;
+  ctx.font = "500 17px 'Plus Jakarta Sans', sans-serif";
+  ctx.fillText(`📞 ${phone}   |   🌐 ${web}`, bannerX + 90, bannerY + 66);
+
+  // Export and update preview & download
+  const dataUrl = canvas.toDataURL('image/png');
+  currentPosterDataUrl = dataUrl;
+  $('#previewImage').src = dataUrl;
+  $('#downloadPosterBtn').href = dataUrl;
+  return dataUrl;
 }
 
 // Generate Poster Action
@@ -1528,7 +1890,7 @@ async function generatePoster() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: prompt + `, ${selectedStyle} style, highly detailed birthday poster`,
+        prompt: prompt + `, ${selectedStyle} style, high quality poster artwork`,
         headline: title,
         subheading: desc,
         business: "Brand",
@@ -1557,16 +1919,14 @@ async function generatePoster() {
       }
     }
   } catch (err) {
-    console.warn("Backend API unavailable or timed out, rendering high-fidelity canvas:", err);
+    console.warn("Backend API unavailable or timed out, rendering live canvas:", err);
   }
 
-  // 2. High-fidelity reference renderer fallback
+  // 2. High-fidelity client canvas fallback
   setTimeout(() => {
-    currentPosterDataUrl = drawReferencePoster(title, desc, selectedStyle);
-    $('#previewImage').src = currentPosterDataUrl;
-    $('#downloadPosterBtn').href = currentPosterDataUrl;
+    renderLivePoster();
     $('#canvasLoader').classList.remove('active');
-  }, 1200);
+  }, 1000);
 }
 
 $('#generateHeroBtn').onclick = generatePoster;
@@ -1586,9 +1946,7 @@ $('#shareBtn').onclick = () => {
 };
 
 // Initial Render on page load
-currentPosterDataUrl = "/static/assets/sample_poster.png";
-$('#previewImage').src = currentPosterDataUrl;
-$('#downloadPosterBtn').href = currentPosterDataUrl;
+renderLivePoster();
 </script>
 </body>
 </html>
