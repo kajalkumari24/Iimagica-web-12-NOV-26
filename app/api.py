@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 
 from .core.colors import extract_brand_colors
 from .core.compose import compose_poster
+from .core.design_assets import list_design_assets
 from .core.extras import remove_background, upscale
 from .core.jobs import call
 from .core.store import CRITERIA, JsonStore
@@ -232,6 +233,12 @@ def compose(req: ComposeRequest):
 def models():
     """Registered providers, capabilities and current per-feature selection."""
     return registry.list_models()
+
+
+@app.get("/api/design/assets")
+def design_assets():
+    """Pattern Monster & GetIllustrations design assets & integration status."""
+    return list_design_assets()
 
 
 @app.post("/switch")

@@ -853,6 +853,57 @@ textarea.input-field {
       </div>
     </section>
 
+    <!-- Design Patterns & Assets (Pattern Monster & GetIllustrations API) -->
+    <section class="card-box">
+      <div class="card-heading" style="justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Design Patterns &amp; Vector Assets
+        </div>
+        <span style="font-size: 10px; font-weight: 700; color: #22d3ee; background: rgba(6,182,212,0.15); padding: 2px 7px; border-radius: 6px;">
+          Pattern Monster &amp; GetIllustrations API
+        </span>
+      </div>
+
+      <div class="form-group grid-2">
+        <!-- Pattern Monster Overlay -->
+        <div>
+          <label class="form-label">
+            <span>Pattern Monster Texture:</span>
+            <span class="status-indicator" style="font-size: 10px; color: #4ade80;">
+              <span class="status-dot"></span> 500 req/mo
+            </span>
+          </label>
+          <select class="input-field" id="patternSelect">
+            <option value="none">None (Clean Artwork)</option>
+            <option value="mandala" selected>🪔 Mandala Rangoli Mesh</option>
+            <option value="luxury_mesh">✨ Luxury Lattice Mesh</option>
+            <option value="geometric_wave">〰️ Geometric Sine Wave</option>
+            <option value="festive_sparkles">⭐ Festive Sparkles &amp; Stars</option>
+            <option value="polka_dots">⚪ Delicate Polka Dots</option>
+          </select>
+        </div>
+
+        <!-- GetIllustrations Vector Accent -->
+        <div>
+          <label class="form-label">
+            <span>GetIllustrations Accent:</span>
+            <span class="status-indicator" style="font-size: 10px; color: #4ade80;">
+              <span class="status-dot"></span> 1,500 req/mo
+            </span>
+          </label>
+          <select class="input-field" id="illustrationSelect">
+            <option value="none">None</option>
+            <option value="festive_diya" selected>🪔 Traditional Oil Diya</option>
+            <option value="royal_crest">🛡️ Royal Emblem Crest</option>
+            <option value="floral_bouquet">🌸 Festive Floral Bouquet</option>
+            <option value="sparkle_star">✨ Radiant Starburst</option>
+            <option value="corporate_seal">🏅 Corporate Premium Seal</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
     <!-- 4. Image Upload (Optional) -->
     <section class="card-box">
       <div class="card-heading">
@@ -1304,6 +1355,8 @@ $('#brandEmail').oninput = schedulePosterUpdate;
 $('#brandExtra').oninput = schedulePosterUpdate;
 $('#themeSelect').onchange = schedulePosterUpdate;
 $('#styleSelect').onchange = schedulePosterUpdate;
+if ($('#patternSelect')) $('#patternSelect').onchange = schedulePosterUpdate;
+if ($('#illustrationSelect')) $('#illustrationSelect').onchange = schedulePosterUpdate;
 
 // Upload & Drag-and-Drop
 const dropZone = $('#dropZone');
@@ -1385,6 +1438,9 @@ function renderLivePoster() {
   const themeHex = activeFrameColor || '#fbbf24';
   const rgb = hexToRgb(themeHex);
 
+  const selectedPattern = ($('#patternSelect') && $('#patternSelect').value) || 'mandala';
+  const selectedIllustration = ($('#illustrationSelect') && $('#illustrationSelect').value) || 'festive_diya';
+
   // 1. Draw Background
   if (bgImageObj) {
     const scale = Math.max(W / bgImageObj.width, H / bgImageObj.height);
@@ -1406,6 +1462,70 @@ function renderLivePoster() {
     bgGrad.addColorStop(1, '#070208');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
+
+    // Pattern Monster Design Texture Overlay
+    if (selectedPattern !== 'none') {
+      ctx.save();
+      ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.15)`;
+      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.14)`;
+      ctx.lineWidth = 1.2;
+
+      if (selectedPattern === 'luxury_mesh') {
+        // Luxury Diamond Lattice Mesh
+        const step = 44;
+        for (let x = 0; x < W; x += step) {
+          for (let y = 0; y < H * 0.72; y += step) {
+            ctx.beginPath();
+            ctx.moveTo(x + step / 2, y);
+            ctx.lineTo(x + step, y + step / 2);
+            ctx.lineTo(x + step / 2, y + step);
+            ctx.lineTo(x, y + step / 2);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fillRect(x + step / 2 - 1.5, y + step / 2 - 1.5, 3, 3);
+          }
+        }
+      } else if (selectedPattern === 'geometric_wave') {
+        // Geometric Sine Waves
+        for (let y = 80; y < H * 0.75; y += 48) {
+          ctx.beginPath();
+          for (let x = 0; x <= W; x += 30) {
+            const dy = Math.sin((x / 60) + (y / 50)) * 12;
+            if (x === 0) ctx.moveTo(x, y + dy);
+            else ctx.lineTo(x, y + dy);
+          }
+          ctx.stroke();
+        }
+      } else if (selectedPattern === 'festive_sparkles') {
+        // Festive Stars & Sparkles
+        for (let i = 0; i < 48; i++) {
+          const sx = (i * 127) % W;
+          const sy = (i * 89) % (H * 0.7);
+          const sSize = (i % 3) * 3 + 4;
+          ctx.beginPath();
+          ctx.moveTo(sx, sy - sSize);
+          ctx.lineTo(sx + sSize * 0.3, sy - sSize * 0.3);
+          ctx.lineTo(sx + sSize, sy);
+          ctx.lineTo(sx + sSize * 0.3, sy + sSize * 0.3);
+          ctx.lineTo(sx, sy + sSize);
+          ctx.lineTo(sx - sSize * 0.3, sy + sSize * 0.3);
+          ctx.lineTo(sx - sSize, sy);
+          ctx.lineTo(sx - sSize * 0.3, sy - sSize * 0.3);
+          ctx.closePath();
+          ctx.fill();
+        }
+      } else if (selectedPattern === 'polka_dots') {
+        // Polka Dots
+        for (let x = 20; x < W; x += 34) {
+          for (let y = 20; y < H * 0.72; y += 34) {
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+      ctx.restore();
+    }
 
     // Warm sparkling bokeh particles
     ctx.fillStyle = themeHex;
@@ -1445,61 +1565,108 @@ function renderLivePoster() {
     drawHangingDiya(W * 0.18, H * 0.22);
     drawHangingDiya(W * 0.82, H * 0.22);
 
-    // Vibrant Floral Mandala Rangoli Floor Pattern
+    // GetIllustrations Vector Accent Render
     const cx = W / 2, cy = H * 0.64;
-    function drawRangoli(rcx, rcy, rad) {
-      ctx.save();
-      ctx.translate(rcx, rcy);
-      for (let p = 0; p < 16; p++) {
-        ctx.rotate((Math.PI * 2) / 16);
-        ctx.fillStyle = (p % 2 === 0) ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.65)` : "rgba(225, 29, 72, 0.6)";
-        ctx.beginPath();
-        ctx.ellipse(0, rad * 0.7, rad * 0.18, rad * 0.4, 0, 0, Math.PI * 2);
-        ctx.fill();
 
-        ctx.fillStyle = themeHex;
-        ctx.beginPath();
-        ctx.ellipse(0, rad * 0.45, rad * 0.1, rad * 0.25, 0, 0, Math.PI * 2);
-        ctx.fill();
+    if (selectedIllustration === 'royal_crest') {
+      // Royal Emblem Shield Crest
+      ctx.strokeStyle = themeHex;
+      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.2)`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 80);
+      ctx.lineTo(cx + 60, cy - 50);
+      ctx.lineTo(cx + 60, cy + 20);
+      ctx.quadraticCurveTo(cx, cy + 85, cx, cy + 85);
+      ctx.quadraticCurveTo(cx - 60, cy + 20, cx - 60, cy + 20);
+      ctx.lineTo(cx - 60, cy - 50);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = themeHex;
+      ctx.font = "40px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("🛡️", cx, cy + 16);
+    } else if (selectedIllustration === 'floral_bouquet') {
+      // Festive Floral Bouquet
+      ctx.fillStyle = themeHex;
+      ctx.font = "65px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("🌸", cx, cy + 20);
+    } else if (selectedIllustration === 'sparkle_star') {
+      // Radiant Starburst
+      ctx.fillStyle = themeHex;
+      ctx.font = "65px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("✨", cx, cy + 20);
+    } else if (selectedIllustration === 'corporate_seal') {
+      // Corporate Premium Seal
+      ctx.strokeStyle = themeHex;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 60, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = themeHex;
+      ctx.font = "50px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("🏅", cx, cy + 18);
+    } else if (selectedIllustration !== 'none') {
+      // Default: Vibrant Floral Mandala Rangoli Floor Pattern with Diya
+      function drawRangoli(rcx, rcy, rad) {
+        ctx.save();
+        ctx.translate(rcx, rcy);
+        for (let p = 0; p < 16; p++) {
+          ctx.rotate((Math.PI * 2) / 16);
+          ctx.fillStyle = (p % 2 === 0) ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.65)` : "rgba(225, 29, 72, 0.6)";
+          ctx.beginPath();
+          ctx.ellipse(0, rad * 0.7, rad * 0.18, rad * 0.4, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = themeHex;
+          ctx.beginPath();
+          ctx.ellipse(0, rad * 0.45, rad * 0.1, rad * 0.25, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
       }
-      ctx.restore();
+      drawRangoli(cx, cy, 190);
+
+      // Center Terracotta Diya with Radiant Flame
+      const halo = ctx.createRadialGradient(cx, cy - 25, 10, cx, cy - 25, 160);
+      halo.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+      halo.addColorStop(0.3, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`);
+      halo.addColorStop(1, 'transparent');
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(cx, cy - 25, 160, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Terracotta Diya Bowl
+      ctx.fillStyle = "#d97706";
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, 75, 28, 0, 0, Math.PI);
+      ctx.fill();
+      ctx.fillStyle = "#78350f";
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, 70, 18, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = themeHex;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - 2, 60, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Golden Radiant Flame
+      ctx.fillStyle = "#fef08a";
+      ctx.shadowColor = themeHex;
+      ctx.shadowBlur = 30;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 65);
+      ctx.bezierCurveTo(cx + 22, cy - 35, cx + 18, cy - 6, cx, cy - 6);
+      ctx.bezierCurveTo(cx - 18, cy - 6, cx - 22, cy - 35, cx, cy - 65);
+      ctx.fill();
+      ctx.shadowBlur = 0;
     }
-    drawRangoli(cx, cy, 190);
-
-    // Center Terracotta Diya with Radiant Flame
-    const halo = ctx.createRadialGradient(cx, cy - 25, 10, cx, cy - 25, 160);
-    halo.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
-    halo.addColorStop(0.3, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`);
-    halo.addColorStop(1, 'transparent');
-    ctx.fillStyle = halo;
-    ctx.beginPath();
-    ctx.arc(cx, cy - 25, 160, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Terracotta Diya Bowl
-    ctx.fillStyle = "#d97706";
-    ctx.beginPath();
-    ctx.ellipse(cx, cy, 75, 28, 0, 0, Math.PI);
-    ctx.fill();
-    ctx.fillStyle = "#78350f";
-    ctx.beginPath();
-    ctx.ellipse(cx, cy, 70, 18, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = themeHex;
-    ctx.beginPath();
-    ctx.ellipse(cx, cy - 2, 60, 12, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Golden Radiant Flame
-    ctx.fillStyle = "#fef08a";
-    ctx.shadowColor = themeHex;
-    ctx.shadowBlur = 30;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy - 65);
-    ctx.bezierCurveTo(cx + 22, cy - 35, cx + 18, cy - 6, cx, cy - 6);
-    ctx.bezierCurveTo(cx - 18, cy - 6, cx - 22, cy - 35, cx, cy - 65);
-    ctx.fill();
-    ctx.shadowBlur = 0;
   }
 
   // -----------------------------------------------------------
