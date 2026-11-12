@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>iimagica Model Lab</title>
+<style>
+:root{--ink:#1c2230;--mute:#5d6678;--line:#c9cec6;--bg:#f4f5f1;--acc:#e2a11b;--bad:#b3362b;--ok:#2f6b4a}
+body{margin:0;font:15px/1.45 system-ui,sans-serif;background:var(--bg);color:var(--ink)}main{max-width:1100px;margin:auto;padding:24px 16px 80px}
+h1{margin:0}h2{margin:0 0 8px}section{margin-top:30px}table{border-collapse:collapse;width:100%;background:#fff}td,th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+button,select,input{font:inherit}button{padding:6px 10px;border:1px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}button.p{background:var(--ink);color:#fff}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.card{background:#fff;border:1px solid var(--line);padding:8px;border-radius:4px}.card img{width:100%;display:block}
+.bad{color:var(--bad)}.ok{color:var(--ok)}small,.mute{color:var(--mute)}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0}:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style></head><body><main>
+<h1>Model Lab</h1><p class="mute">Run the same fixed prompts through each provider, rate the results yourself, then pick a production model. Paid providers never run without your approval and a budget.</p>
+<section><h2>1. Providers</h2><table id="prov"></table><p id="connmsg" role="status" class="mute"></p></section>
+<section><h2>2. Run the dataset</h2>
+<div class="row" id="cats"></div>
+<div class="row"><label>Repeats <select id="reps"><option>1</option><option>2</option><option>3</option></select></label>
+<label>Budget for approved paid providers <input id="budget" type="number" min="0" step="0.01" value="0" style="width:90px"></label>
+<label>Image for logo/reference tests <input id="img" type="file" accept="image/png,image/jpeg,image/webp"></label></div>
+<div class="row"><button class="p" id="run">Run benchmark</button><span id="status" role="status" aria-live="polite"></span></div></section>
+<section><h2>3. Results</h2><p class="mute">Automated estimates are heuristics, not proof. Your ratings drive the leaderboard.</p><div id="results"></div>
+<div class="row"><a id="csv" href="/model-lab/report?format=csv" download>Download CSV</a></div></section>
+<section><h2>4. Leaderboard</h2><div class="row"><label>Rank by <select id="rank"></select></label><label>Category <select id="cat"><option value="">All</option></select></label></div>
+<table id="board"></table><p id="win" class="mute"></p></section>
+<section><h2>5. Production model</h2><div class="row" id="sel"></div><p id="selmsg" role="status" class="mute"></p></section>
+<script>
+const $=s=>document.querySelector(s),h=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,v]of Object.entries(a))x.startsWith('on')?e[x]=v:e.setAttribute(x,v);e.append(...k.flat().filter(v=>v!=null));return e};
+const api=async(p,o)=>{const r=await fetch(p,o),j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof j.detail==='string'?j.detail:JSON.stringify(j.detail||j));return j};
+const post=(p,b)=>api(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+let P=[],D={prompts:[],criteria:[]},runId=null;
+const FEATURES=['generate_image','edit_image','analyze_image','suggest_layout','enhance_prompt'],RANKS=['overall','text_accuracy','prompt_adherence','logo_preservation','visual_quality','speed','cost','reliability'];
+async function load(){P=await api('/model-lab/providers');D=await api('/model-lab/dataset');
+ const t=$('#prov');t.replaceChildren(h('tr',{},...['Use','Provider','Billing','Ready','Quota today',''].map(x=>h('th',{},x))),
+ ...P.map(p=>h('tr',{},h('td',{},h('input',{type:'checkbox','data-p':p.name,'aria-label':'Use '+p.display_name})),
+  h('td',{},h('b',{},p.display_name),h('br'),h('small',{},p.model_id+' · '+p.capabilities.join(', '))),
+  h('td',{},p.billing,p.billing!=='free'&&p.billing!=='free_tier'?h('label',{},h('br'),h('input',{type:'checkbox','data-a':p.name}),' approve paid'):null,p.free_tier_note?h('br'):null,h('small',{},p.free_tier_note||'')),
+  h('td',{class:p.configured?'ok':'bad'},p.configured?'configured':'missing key'),
+  h('td',{},p.quota.used_today+(p.quota.daily_limit!=null?' / '+p.quota.daily_limit:' (no limit set)')),
+  h('td',{},h('button',{onclick:()=>test(p.name,false)},'Check'),' ',h('button',{onclick:()=>test(p.name,true)},'Live test')))));
+ const cats=[...new Set(D.prompts.map(x=>x.category))];
+ $('#cats').replaceChildren(h('b',{},'Categories:'),...cats.map(c=>h('label',{},h('input',{type:'checkbox','data-c':c,checked:''}),' '+c)));
+ $('#cat').replaceChildren(h('option',{value:''},'All'),...cats.map(c=>h('option',{value:c},c)));
+ $('#rank').replaceChildren(...RANKS.map(c=>h('option',{value:c},c)));
+ const s=await api('/model-lab/selection');
+ $('#sel').replaceChildren(...FEATURES.map(f=>{const sel=h('select',{'aria-label':f},...P.filter(p=>p.capabilities.includes(f)).map(p=>h('option',{value:p.name,...((s.features[f]||s.default_provider)===p.name?{selected:''}:{})},p.display_name)));
+  return h('label',{},f+' ',sel,' ',h('button',{onclick:async()=>{try{await post('/model-lab/select-winner',{feature:f,provider:sel.value});$('#selmsg').textContent='Saved: '+f+' now uses '+sel.value}catch(e){$('#selmsg').textContent=e.message}}},'Use'))}));
+ board()}
+async function test(n,live){const m=$('#connmsg');m.textContent='Testing '+n+'…';try{const approve=[...document.querySelectorAll('[data-a]:checked')].map(x=>x.dataset.a);const r=await post('/model-lab/test-connection',{provider:n,live,approve_paid:approve,budget:+$('#budget').value});m.textContent=n+': '+JSON.stringify(r.live||r.health)}catch(e){m.textContent=n+': '+e.message}}
+const b64=f=>new Promise(ok=>{const r=new FileReader;r.onload=()=>ok(r.result.split(',')[1]);r.readAsDataURL(f)});
+$('#run').onclick=async()=>{const providers=[...document.querySelectorAll('[data-p]:checked')].map(x=>x.dataset.p),categories=[...document.querySelectorAll('[data-c]:checked')].map(x=>x.dataset.c);
+ if(!providers.length)return $('#status').textContent='Pick at least one provider.';const f=$('#img').files[0];
+ const body={providers,categories,repeats:+$('#reps').value,budget:+$('#budget').value,approve_paid:[...document.querySelectorAll('[data-a]:checked')].map(x=>x.dataset.a)};if(f)body.image_base64=await b64(f);
+ $('#run').disabled=true;try{const r=await post('/model-lab/benchmark',body);runId=r.run_id;const bl=Object.entries(r.blocked||{}).map(([k,v])=>k+': '+v).join(' | ');
+  for(;;){const j=await api('/jobs/'+r.job_id);const sk=(j.results||[]).filter(x=>x.status==='skipped').length;$('#status').textContent=`${j.done}/${j.total} done${sk?`, ${sk} skipped`:''}${bl?' · blocked: '+bl:''}`;if(j.status!=='running')break;await new Promise(z=>setTimeout(z,1500))}
+  await results();board()}catch(e){$('#status').textContent=e.message}$('#run').disabled=false};
+async function results(){const rows=await api('/model-lab/results'+(runId?'?run_id='+runId:'?limit=60')),by={};rows.forEach(x=>(by[x.prompt_id||x.prompt]??=[]).push(x));
+ $('#results').replaceChildren(...Object.entries(by).map(([k,v])=>h('div',{},h('h3',{},k),h('div',{class:'grid'},...v.map(card)))))}
+function card(x){const e=x.estimates||{},sel={};const box=h('div',{class:'card'},x.image_path?h('a',{href:'/model-lab/image?path='+encodeURIComponent(x.image_path),download:''},h('img',{src:'/model-lab/image?path='+encodeURIComponent(x.image_path),alt:x.provider+' output'})):h('p',{class:'bad'},x.error||'no image'),
+ h('b',{},x.provider),h('br'),h('small',{},`${x.model_id||''} · ${((x.elapsed_ms||0)/1000).toFixed(1)}s · cost ${x.est_cost??'unknown'}`),h('br'),
+ h('small',{},e.kind?`auto estimate: design ${e.heuristic_design_score??'n/a'}, aspect ${e.aspect_ok?'ok':'differs'}${e.blank?', looks blank':''}, text match ${e.text_similarity??'n/a'}`:''));
+ const d=h('details',{},h('summary',{},'Rate this'),...D.criteria.map(c=>{const s=h('select',{'aria-label':c},h('option',{value:''},'–'),...[1,2,3,4,5].map(n=>h('option',{value:n},n)));sel[c]=s;return h('label',{class:'row'},c.replace(/_/g,' ')+' ',s)}));
+ const note=h('input',{placeholder:'Notes',style:'width:100%'});d.append(note,h('button',{onclick:async()=>{const scores={};for(const[c,s]of Object.entries(sel))if(s.value)scores[c]=+s.value;try{await post('/model-lab/rate',{comparison_id:x.comparison_id,provider:x.provider,scores,notes:note.value});board()}catch(er){alert(er.message)}}},'Save rating'));box.append(d);return box}
+async function board(){const r=await api(`/model-lab/leaderboard?rank_by=${$('#rank').value||'overall'}&category=${encodeURIComponent($('#cat').value)}`);
+ $('#board').replaceChildren(h('tr',{},...['Provider','Runs','Success','Avg s','Cost / success','Human overall','Auto design (est.)','Auto text match (est.)'].map(x=>h('th',{},x))),
+ ...r.rows.map(x=>h('tr',{},h('td',{},x.provider),h('td',{},x.runs),h('td',{},Math.round(x.success_rate*100)+'%'),h('td',{},x.avg_ms!=null?(x.avg_ms/1000).toFixed(1):'–'),h('td',{},x.cost_per_success??'unknown'),h('td',{},x.human_overall??'not rated'),h('td',{},x.automated_estimates.heuristic_design_score??'–'),h('td',{},x.automated_estimates.text_similarity??'–'))));
+ $('#win').textContent='Winners by category: '+(Object.entries(r.winners_by_category).map(([c,w])=>`${c}: ${w.provider} (${w.basis})`).join(' · ')||'none yet')}
+$('#rank').onchange=$('#cat').onchange=board;load().catch(e=>$('#connmsg').textContent=e.message);
+</script></main></body></html>

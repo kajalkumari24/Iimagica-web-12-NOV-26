@@ -1,0 +1,101 @@
+default_provider: pollinations_flux
+providers:
+  pollinations_flux:
+    class: providers.pollinations_provider.PollinationsProvider
+    model_id: flux
+    display_name: Pollinations (flux)
+    api_key_env: POLLINATIONS_API_KEY
+    billing: free
+    status: FREE
+    free_tier_note: Free access available, permanent free tier.
+    enabled: true
+  stability:
+    class: providers.stability_provider.StabilityProvider
+    model_id: stable-diffusion-xl-1024-v1-0
+    display_name: Stability AI (SDXL)
+    api_key_env: STABILITY_API_KEY
+    billing: trial
+    status: TRIAL
+    free_tier_note: Promotional credits only (25 credits on signup). Strictly stops
+      at zero.
+    enabled: true
+  cloudflare_flux_schnell:
+    class: providers.cloudflare_provider.CloudflareProvider
+    model_id: '@cf/black-forest-labs/flux-1-schnell'
+    display_name: Cloudflare FLUX.1 schnell
+    api_key_env: CLOUDFLARE_API_TOKEN
+    billing: free_tier
+    status: FREE
+    free_tier_note: 10,000 Neurons/day free. Requires Workers AI token permission.
+    enabled: true
+  cloudflare_sdxl:
+    class: providers.cloudflare_provider.CloudflareProvider
+    model_id: '@cf/stabilityai/stable-diffusion-xl-base-1.0'
+    display_name: Cloudflare SDXL base
+    api_key_env: CLOUDFLARE_API_TOKEN
+    billing: free_tier
+    status: FREE
+    free_tier_note: 10,000 Neurons/day free. Same shared daily allowance.
+    enabled: true
+  gemini_text:
+    class: providers.gemini_provider.GeminiProvider
+    model_id: gemini-2.5-flash
+    display_name: Gemini 2.5 Flash (analysis, layout, prompts)
+    api_key_env: GEMINI_API_KEY
+    billing: free_tier
+    status: FREE
+    free_tier_note: Free tier available for Gemini text models.
+    enabled: true
+  gemini:
+    class: providers.gemini_provider.GeminiProvider
+    model_id: gemini-nano-banana-2.1
+    display_name: Gemini Nano Banana 2.1
+    api_key_env: GEMINI_API_KEY
+    billing: paid
+    status: PAID
+    free_tier_note: Image models require billing; skipped in free-tier testing.
+    enabled: false
+  gemini_lite:
+    class: providers.gemini_provider.GeminiProvider
+    model_id: gemini-3.1-flash-image
+    display_name: Gemini 3.1 Flash Image
+    api_key_env: GEMINI_API_KEY
+    billing: paid
+    status: PAID
+    free_tier_note: Image models require billing; skipped in free-tier testing.
+    enabled: false
+  huggingface_flux_schnell:
+    class: providers.huggingface_provider.HuggingFaceProvider
+    model_id: black-forest-labs/FLUX.1-schnell
+    display_name: Hugging Face FLUX.1 schnell
+    api_key_env: HF_TOKEN
+    billing: paid
+    status: PAID
+    free_tier_note: Serverless image inference retired on free router; excluded from
+      free tests.
+    enabled: false
+  flux:
+    class: providers.flux_provider.FluxProvider
+    model_id: flux-pro-1.1
+    display_name: FLUX Pro 1.1 (BFL)
+    api_key_env: FLUX_API_KEY
+    billing: paid
+    status: PAID
+    free_tier_note: Paid API; removed from free-tier testing.
+    enabled: false
+  mock:
+    class: providers.mock_provider.MockProvider
+    model_id: mock-1
+    display_name: Mock Provider (offline)
+    billing: free
+    status: FREE
+    enabled: true
+    daily_limit: null
+features:
+  generate_image: pollinations_flux
+  edit_image: stability
+  analyze_image: gemini_text
+  suggest_layout: gemini_text
+  enhance_prompt: gemini_text
+output_dir: outputs
+auto_backup_hours: 24

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>imagica — AI Poster, Frame and Footer Studio</title>
+<style>
+:root{--bg:#0a1116;--card:rgba(20,30,38,.72);--bd:rgba(255,255,255,.08);--in:#101a21;--tx:#f1f5f9;--mu:#8a9aa6;--ac:#2dd4bf;--glow:0 0 12px rgba(45,212,191,.5);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg) radial-gradient(900px 500px at 0% 0%,rgba(45,212,191,.12),transparent 60%);color:var(--tx);font-family:Inter,Poppins,system-ui,sans-serif;font-size:13px;min-height:100vh}
+.wrap{max-width:1400px;margin:0 auto;padding:16px 20px 0}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}
+.logo i{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#2dd4bf,#0e7490);display:block;box-shadow:var(--glow)}
+.status{text-align:right;color:#4ade80;font-size:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;margin-top:3px;padding:2px 10px;border-radius:99px;border:1px solid var(--bd);background:rgba(255,255,255,.04)}
+.pill:before{content:"";width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e}
+.grid{display:grid;grid-template-columns:1.12fr 1fr;gap:20px;align-items:start}
+.col{display:grid;gap:20px;min-width:0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.35);min-width:0}
+h3{margin:0 0 10px;font-size:13px;font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label.l{display:block;color:var(--mu);font-size:12px;margin:12px 0 5px}
+input,select{width:100%;background:var(--in);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:8px 10px;font:inherit;outline:0;transition:.2s}
+input::placeholder{color:var(--mu)}
+input:focus,select:focus{border-color:var(--ac);box-shadow:var(--glow)}
+select{margin-bottom:8px;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mu) 50%),linear-gradient(135deg,var(--mu) 50%,transparent 50%);background-position:calc(100% - 15px) 14px,calc(100% - 10px) 14px;background-size:5px 5px;background-repeat:no-repeat}
+.styles{display:flex;gap:8px}
+.sty{flex:1;text-align:center;font-size:10px;color:var(--mu);cursor:pointer}
+.sty div{aspect-ratio:1;border-radius:10px;border:2px solid transparent;margin-bottom:4px;transition:.2s}
+.sty.on div{border-color:var(--ac);box-shadow:var(--glow)}
+.sty.on{color:var(--tx)}
+.seg{display:flex;background:var(--in);border:1px solid var(--bd);border-radius:8px;padding:2px}
+.seg button{flex:1;background:0;border:0;color:var(--mu);padding:6px;border-radius:6px;font:inherit;cursor:pointer;transition:.2s}
+.seg button.on{background:rgba(45,212,191,.18);color:var(--tx);box-shadow:inset 0 0 0 1px rgba(45,212,191,.4)}
+.drop{aspect-ratio:1;border:1.5px dashed rgba(255,255,255,.22);border-radius:12px;display:grid;place-items:center;text-align:center;color:var(--tx);cursor:pointer;position:relative;overflow:hidden;background:rgba(255,255,255,.02);transition:.2s}
+.drop.over,.drop:hover{border-color:var(--ac);box-shadow:var(--glow)}
+.drop img,.bgp img,.strip img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.drop svg{display:block;margin:0 auto 6px}
+.crop{position:absolute;right:8px;bottom:8px;width:22px;height:22px;border:1px solid var(--bd);border-radius:6px;background:var(--in);display:grid;place-items:center;font-size:11px;color:var(--mu);z-index:2}
+.bgp{aspect-ratio:1;border-radius:12px;border:1px solid var(--bd);position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#1a252d 25%,#121b21 25% 50%,#1a252d 50% 75%,#121b21 75%);background-size:60px 60px}
+.strip{height:100px;margin-top:14px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.03);position:relative;overflow:hidden}
+.tg{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;color:var(--mu);font-size:12px}
+.sw{width:34px;height:18px;border-radius:99px;background:#2a3640;position:relative;cursor:pointer;transition:.2s}
+.sw:after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#cbd5e1;transition:.2s}
+.sw.on{background:var(--ac)}.sw.on:after{left:18px}
+.ci{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ci div{position:relative}
+.ci span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.7}
+.ci input{padding-left:32px}
+.ci2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.gen{display:flex;align-items:center;justify-content:center;gap:14px;height:calc(100% - 28px)}
+.btn{background:linear-gradient(180deg,#5eead4,#0d9488);border:0;color:#04201c;font-weight:600;font-size:14px;padding:12px 34px;border-radius:12px;cursor:pointer;box-shadow:0 0 18px rgba(45,212,191,.45),inset 0 1px 0 rgba(255,255,255,.5);transition:.2s;font-family:inherit}
+.btn:hover{filter:brightness(1.1)}
+.spin{width:20px;height:20px;border-radius:50%;border:2px dotted var(--mu);opacity:.7}
+.spin.go{border:2px solid rgba(45,212,191,.25);border-top-color:var(--ac);opacity:1;animation:r .8s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
+.posters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pc{border:1px solid var(--bd);border-radius:10px;overflow:hidden;position:relative;background:#0c141a}
+.pc img{display:block;width:100%}
+.pc a{position:absolute;right:6px;top:6px;width:22px;height:22px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:12px}
+.pc b{display:block;text-align:center;font-weight:400;font-size:10px;color:var(--mu);padding:5px;background:rgba(0,0,0,.35);text-decoration:none}
+.pc b a{position:static;display:inline;background:0;width:auto;color:var(--mu)}
+.pv{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;text-align:center;color:var(--mu);font-size:11px}
+.frame{border:4px solid #aab4bc;border-radius:6px;box-shadow:0 0 0 1px #000,0 8px 24px rgba(0,0,0,.5);margin-bottom:6px}
+.frame img,.phone img{display:block;width:100%}
+.phone{width:62%;margin:0 auto 6px;border:5px solid #1c252c;border-radius:20px;overflow:hidden;position:relative;outline:1px solid #46535d;background:#000;aspect-ratio:9/17}
+.phone:before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:34%;height:8px;border-radius:9px;background:#000;z-index:2}
+.phone img{height:100%;object-fit:cover}
+.three{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:48px;margin:6px 0 8px}
+.bars i{flex:1;background:#2c3a44;border-radius:2px}.bars i.h{background:var(--ac);box-shadow:var(--glow)}
+.logs{max-height:120px;overflow:auto;font-size:11px;color:var(--mu);scrollbar-width:thin}
+.logs div{padding:5px 0;border-bottom:1px solid var(--bd)}.logs small{display:block;color:var(--mu);opacity:.7}
+.ai{grid-row:span 2;display:flex;flex-direction:column;min-height:300px}
+.chat{flex:1;display:flex;flex-direction:column;gap:8px;overflow:auto;max-height:260px;scrollbar-width:thin}
+.msg{background:rgba(255,255,255,.07);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:88%;align-self:flex-end}
+.msg.a{align-self:flex-start;background:rgba(45,212,191,.12)}
+.chip{cursor:pointer;border:0;color:var(--tx);font:inherit}
+.send{display:flex;gap:6px;margin-top:10px;position:relative}
+.fab{position:absolute;right:-4px;bottom:-12px;width:34px;height:34px;border-radius:50%;background:#aeb9c2;color:#0a1116;border:0;display:grid;place-items:center;cursor:pointer;font-size:16px}
+.ai .send{margin-bottom:14px}
+footer{text-align:center;color:var(--mu);margin-top:26px;font-size:12px}
+.bar{height:16px;margin-top:14px;background:linear-gradient(90deg,#3a444c,#c3ccd3 50%,#2a3239)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.three,.ci2{grid-template-columns:1fr}.ai{grid-row:auto}}
+@media(max-width:520px){.row{grid-template-columns:1fr}.posters{grid-template-columns:1fr 1fr}.pv{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo"><i></i>imagica — AI Poster, Frame and Footer Studio</div>
+  <div class="status">Status: Online<br><span class="pill">Online</span></div>
+</header>
+
+<div class="grid">
+<div class="col">
+  <section class="card">
+    <div class="row">
+      <div>
+        <h3>Style &amp; Vibe</h3>
+        <div class="styles" id="styles">
+          <div class="sty on"><div style="background:linear-gradient(135deg,#0f2a30,#1e5560)"></div>Modern Minimal</div>
+          <div class="sty"><div style="background:radial-gradient(circle,#f6d6c0 30%,#e9948a 31% 55%,#f3c76a 56%)"></div>Boho Chic</div>
+          <div class="sty"><div style="background:conic-gradient(#ff5d8f,#ffd23f,#3bc9db,#ff5d8f)"></div>Retro Pop</div>
+        </div>
+        <label class="l">Occasion/Event</label>
+        <input id="occ" placeholder="Occasion/Event" value="Diwali">
+        <label class="l">Headline/English text</label>
+        <input id="head" placeholder="Headline/English text" value="Happy Diwali">
+      </div>
+      <div>
+        <h3>Occasion / Text</h3>
+        <select id="size"><option value="1080,1080">Square (1080x1080)</option><option value="1080,1350" selected>Portrait (1080x1350)</option><option value="1350,1080">Landscape (1350x1080)</option></select>
+        <select id="eventType"><option>Festival greeting</option><option>Sale announcement</option><option>Event invite</option></select>
+        <select id="lang"><option>English</option><option>Hindi</option></select>
+        <label class="l">Generation Count</label>
+        <div class="seg" id="count"><button>1</button><button class="on">2</button><button>3</button></div>
+        <label class="l">Platform Preferences</label>
+        <div class="seg" id="plat"><button class="on">Desktop</button><button>Mobile</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <div><h3>Logo Upload</h3>
+        <div class="drop" id="logoDrop"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>Logo Upload</div><span class="crop">⛶</span></div>
+      </div>
+      <div><h3>Background Image</h3><div class="bgp" id="bgDrop"></div></div>
+    </div>
+    <div class="strip" id="strip"></div>
+    <div class="tg"><div class="sw on" id="enh"></div>AI Enhance</div>
+    <input type="file" id="logoF" accept="image/*" hidden><input type="file" id="bgF" accept="image/*" hidden>
+  </section>
+
+  <section class="card">
+    <h3>Contact Info</h3>
+    <div class="ci">
+      <div><span>📞</span><input id="ciPhone" placeholder="Phone" value="+91 98765 43210"></div>
+      <div><span>💬</span><input id="ciWa" placeholder="WhatsApp" value="+91 98765 43210"></div>
+      <div><span>✉️</span><input id="ciEmail" placeholder="Email" value="info@sharmasweets.in"></div>
+      <div><span>🌐</span><input id="ciWeb" placeholder="Website" value="www.sharmasweets.in"></div>
+      <div><span>📍</span><input id="ciAddr" placeholder="Address" value="12 M.G. Road, Bangalore"></div>
+      <div><span>🔗</span><input id="ciSoc" placeholder="CTA Button" value="20% OFF ALL SWEETS"></div>
+    </div>
+  </section>
+
+  <div class="ci2">
+    <section class="card"><h3>Footer Settings</h3>
+      <select id="footerStyle"><option value="auto">Footer Design (Auto)</option><option value="wave">Wave</option><option value="curved">Curved</option><option value="double">Double</option><option value="rounded">Rounded</option><option value="minimal">Minimal bar</option></select>
+      <select><option>Modals (Popups)</option><option>Off</option><option>On</option></select>
+    </section>
+    <section class="card"><h3>Generate Poster</h3>
+      <div class="gen"><button class="btn" id="gen">Generate</button><div class="spin" id="spin"></div></div>
+    </section>
+  </div>
+</div>
+
+<div class="col">
+  <section class="card"><h3>Final Posters</h3><div class="posters" id="finals"></div></section>
+  <section class="card"><h3>Platform Versions</h3>
+    <div class="pv">
+      <div><div class="frame"><img id="pvD" alt="Desktop version"></div>Desktop</div>
+      <div><div class="phone"><img id="pvM" alt="Mobile version"></div>Mobile</div>
+    </div>
+  </section>
+  <div class="three">
+    <div class="col">
+      <section class="card"><h3>Database &amp; Analytics</h3>
+        <div style="color:var(--mu);font-size:11px">Storage Used</div>
+        <div class="bars" id="bars"></div>
+        <div style="color:var(--mu);font-size:11px;display:flex;justify-content:space-between">Latest Generation <span id="lg">—</span></div>
+      </section>
+      <section class="card"><h3>Download Logs</h3><div class="logs" id="logs"></div></section>
+    </div>
+    <section class="card ai"><h3>AI Assistant Panel</h3>
+      <div class="chat" id="chat">
+        <div class="msg a">AI: Occasion set to Diwali. Text is ready. Please upload assets.</div>
+        <button class="msg chip" type="button">Try festive color scheme?</button>
+        <button class="msg chip" type="button">Enhance prompt for Diwali?</button>
+      </div>
+      <div class="send"><input id="ciInput" placeholder="Message the assistant"><button class="fab" id="send" aria-label="Send">✦</button></div>
+    </section>
+  </div>
+</div>
+</div>
+<footer>© Kajal<div class="bar"></div></footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let style=0,logoImg=null,bgImg=null,logoB64=null,bgB64=null,posters=[],busy=false;
+const pal=[["#0f1c22","#2c4a54","#cfe3ea"],["#fbe3d0","#e9948a","#7a2e2e"],["#2b1055","#ff5d8f","#ffd23f"]];
+const styleNames=["Modern Minimal", "Boho Chic", "Retro Pop"];
+
+function sel(box,fn){[...box.children].forEach((b,i)=>b.onclick=()=>{[...box.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');fn&&fn(i)})}
+sel($('#styles'),i=>style=i);sel($('#count'));sel($('#plat'));
+$('#enh').onclick=e=>e.currentTarget.classList.toggle('on');
+
+function drawCanvasFallback(w,h,text,v){
+  const c=document.createElement('canvas');c.width=w/2;c.height=h/2;const x=c.getContext('2d');const W=c.width,H=c.height;
+  const p=pal[style%pal.length];
+  if(bgImg){x.drawImage(bgImg,0,0,W,H);x.fillStyle="rgba(5,12,16,.6)";x.fillRect(0,0,W,H)}
+  else{const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,p[0]);g.addColorStop(1,p[1]);x.fillStyle=g;x.fillRect(0,0,W,H)}
+  x.strokeStyle=p[2];x.globalAlpha=.55;x.lineWidth=3;x.strokeRect(W*.08,H*.06,W*.84,H*.88);x.lineWidth=1;x.strokeRect(W*.11,H*.09,W*.78,H*.82);x.globalAlpha=1;
+  if(logoImg){const s=W*.14;x.drawImage(logoImg,W/2-s/2,H*.12,s,s)}
+  const words=text.trim().split(/\s+/);const top=words.length>1?words.slice(0,-1).join(' '):'';const main=words[words.length-1]||'';
+  x.fillStyle=p[2];x.textAlign='center';
+  x.font=`${W*.05}px sans-serif`;x.fillText(top.toUpperCase(),W/2,H*.40);
+  x.font=`italic ${W*.18}px Georgia,serif`;x.shadowColor=p[2];x.shadowBlur=14;x.fillText(main,W/2,H*.58);x.shadowBlur=0;
+  x.fillStyle=p[2];x.globalAlpha=.6;x.fillRect(W*.3,H*.66,W*.4,2);x.font=`${W*.035}px sans-serif`;x.fillText($('#occ').value||'',W/2,H*.74);x.globalAlpha=1;
+  return c.toDataURL('image/png');
+}
+
+function renderUI(){
+  const t=$('#head').value||'Happy Diwali';
+  $('#finals').innerHTML=posters.map((u,i)=>`<div class="pc"><img src="${u}" alt="Poster ${i+1}"><a href="${u}" download="imagica-poster-${i+1}.png">⬇</a><b><a href="${u}" download="imagica-poster-${i+1}.png">Download</a></b></div>`).join('');
+  $('#finals').querySelectorAll('a').forEach(a=>a.onclick=()=>log(a.getAttribute('download')));
+  if(posters[0]){
+    $('#pvD').src=posters[0];
+    $('#pvM').src=posters[0];
+  } else {
+    $('#pvD').src=drawCanvasFallback(1080,1080,t,0);
+    $('#pvM').src=drawCanvasFallback(1080,1920,t,0);
+  }
+}
+
+async function callBackendCompose(w, h, text, occ) {
+  const sty = styleNames[style] || 'festive';
+  const prompt = `${occ} celebration poster with glowing lamps, decorations and ambient lighting in ${sty} style`;
+  const body = {
+    prompt: prompt,
+    business: $('#head').value || 'Brand',
+    headline: text,
+    subheading: $('#occ').value || '',
+    style: sty.toLowerCase().replace(' ', '_'),
+    width: w,
+    height: h,
+    phone: $('#ciPhone') ? $('#ciPhone').value : '',
+    whatsapp: $('#ciWa') ? $('#ciWa').value : '',
+    email: $('#ciEmail') ? $('#ciEmail').value : '',
+    website: $('#ciWeb') ? $('#ciWeb').value : '',
+    address: $('#ciAddr') ? $('#ciAddr').value : '',
+    cta: $('#ciSoc') ? $('#ciSoc').value : '20% OFF',
+    footer_position: 'bottom',
+    footer_style: $('#footerStyle') ? $('#footerStyle').value : 'auto',
+    logo_base64: logoB64 ? logoB64.split(',')[1] : null,
+    poster_base64: bgB64 ? bgB64.split(',')[1] : null
+  };
+
+  try {
+    const res = await fetch('/compose', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.final_image_base64) {
+        return 'data:image/png;base64,' + data.final_image_base64;
+      }
+    }
+  } catch (err) {
+    console.warn('API error, using local canvas render:', err);
+  }
+  return drawCanvasFallback(w, h, text, 0);
+}
+
+async function mk(){
+  const n = +($('#count .on') ? $('#count .on').textContent : 1);
+  const [w, h] = $('#size').value.split(',').map(Number);
+  const t = $('#head').value || 'Happy Diwali';
+  const occ = $('#occ').value || 'Diwali';
+
+  posters = [];
+  for(let i = 0; i < n; i++) {
+    const p = await callBackendCompose(w, h, t, occ);
+    posters.push(p);
+  }
+  renderUI();
+}
+
+$('#gen').onclick = async () => {
+  if (busy) return;
+  busy = true;
+  $('#spin').classList.add('go');
+  say('AI', `Generating ${$('#count .on') ? $('#count .on').textContent : 1} poster(s) using AI...`);
+  try {
+    await mk();
+    const d = new Date();
+    $('#lg').textContent = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    say('AI', `Done! Generated ${posters.length} poster(s) for "${$('#head').value}".`);
+  } catch(e) {
+    console.error(e);
+  } finally {
+    $('#spin').classList.remove('go');
+    busy = false;
+  }
+};
+
+function load(file, cb){
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    const i = new Image();
+    i.onload = () => cb(i, r.result);
+    i.src = r.result;
+  };
+  r.readAsDataURL(file);
+}
+
+function setLogo(f){
+  load(f, (i, u) => {
+    logoImg = i;
+    logoB64 = u;
+    $('#logoDrop').innerHTML = `<img src="${u}" alt="Logo">`;
+    say('AI', 'Logo received! Theme colors matched.');
+  });
+}
+
+function setBg(f){
+  load(f, (i, u) => {
+    bgImg = i;
+    bgB64 = u;
+    $('#bgDrop').innerHTML = `<img src="${u}" alt="Background">`;
+    $('#strip').innerHTML = `<img src="${u}" alt="Preview">`;
+    say('AI', 'Custom background loaded.');
+  });
+}
+
+$('#logoDrop').onclick = () => $('#logoF').click();
+$('#bgDrop').onclick = () => $('#bgF').click();
+$('#logoF').onchange = e => setLogo(e.target.files[0]);
+$('#bgF').onchange = e => setBg(e.target.files[0]);
+
+[['#logoDrop', setLogo], ['#bgDrop', setBg]].forEach(([s, f]) => {
+  const el = $(s);
+  el.ondragover = e => { e.preventDefault(); el.classList.add('over'); };
+  el.ondragleave = () => el.classList.remove('over');
+  el.ondrop = e => { e.preventDefault(); el.classList.remove('over'); f(e.dataTransfer.files[0]); };
+});
+
+const logs = [
+  ["2026-11-12", "imagica — AI Poster Studio Ready"],
+  ["2026-11-11", "imagica — Model Lab Verified"],
+  ["2026-11-10", "imagica — Initialized"]
+];
+
+function showLogs(){
+  $('#logs').innerHTML = logs.map(l => `<div>${l[0]}<small>${l[1]}</small></div>`).join('');
+}
+function log(n){
+  logs.unshift([new Date().toISOString().slice(0, 10), n || 'imagica — AI Poster']);
+  showLogs();
+}
+showLogs();
+
+$('#bars').innerHTML = [3, 5, 4, 8, 6, 9, 7, 10, 6, 8, 5, 7, 9, 6].map((v, i) => `<i class="${i == 4 ? 'h' : ''}" style="height:${v * 9}%"></i>`).join('');
+
+function say(who, t){
+  const m = document.createElement('div');
+  m.className = 'msg' + (who == 'AI' ? ' a' : '');
+  m.textContent = (who == 'AI' ? 'AI: ' : '') + t;
+  $('#chat').appendChild(m);
+  $('#chat').scrollTop = 1e5;
+}
+
+function send(){
+  const v = $('#ciInput').value.trim();
+  if(!v) return;
+  say('You', v);
+  $('#ciInput').value = '';
+  setTimeout(() => {
+    say('AI', `Noted: "${v}". Ready to generate with these parameters.`);
+  }, 400);
+}
+
+$('#send').onclick = send;
+$('#ciInput').onkeydown = e => { if (e.key === 'Enter') send(); };
+
+document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
+  style = (style + 1) % 3;
+  [...$('#styles').children].forEach((x, i) => x.classList.toggle('on', i == style));
+  say('AI', `Switched style to ${styleNames[style]}. Click Generate to apply.`);
+});
+
+$('#occ').oninput = () => {
+  $('#head').value = 'Happy ' + $('#occ').value;
+};
+
+// Initial render
+renderUI();
+</script>
+</body>
+</html>
