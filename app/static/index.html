@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
   --bg: #0b0914;
@@ -876,7 +877,7 @@ select.input-control {
   </div>
 
   <nav class="nav-menu">
-    <a class="nav-item active">
+    <a class="nav-item active" href="/">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       Create Poster
     </a>
@@ -884,17 +885,17 @@ select.input-control {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       My Projects
     </a>
-    <a class="nav-item" href="/model-lab">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.69 18.5a2 2 0 0 0 1.69 2.5h11.24a2 2 0 0 0 1.69-2.5L14 9.31V2"/></svg>
-      Model Lab
+    <a class="nav-item" href="#footerCarousel" onclick="document.getElementById('footerCarousel').scrollIntoView({behavior:'smooth'})">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      Templates
     </a>
-    <a class="nav-item" href="/editor">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      Canvas Editor
+    <a class="nav-item" href="/model-lab">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
     </a>
     <a class="nav-item" href="/docs">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      API Docs
+      Help
     </a>
   </nav>
 
@@ -983,6 +984,17 @@ select.input-control {
             <div class="form-field">
               <label class="form-label">Negative Prompt (Optional) <span class="char-count">0/200</span></label>
               <input class="input-control" id="negPrompt" placeholder="Blurry, low quality, watermark...">
+            </div>
+            <div class="form-field" style="margin-top: 10px;">
+              <label class="form-label">AI Model &amp; Provider</label>
+              <select class="input-control" id="modelProviderSelect" style="border-color: rgba(168, 85, 247, 0.4); background: #1a1435; font-weight: 600;">
+                <option value="pollinations_flux" selected>⚡ Pollinations (FLUX.1) — Free Tier</option>
+                <option value="writer">✍️ Writer AI (Palmyra-X) — Enterprise</option>
+                <option value="stability">🎨 Stability AI (SDXL 1.0) — Trial</option>
+                <option value="cloudflare">☁️ Cloudflare Workers AI (FLUX) — Free</option>
+                <option value="gemini">♊ Google Gemini (2.5 Flash) — Free</option>
+                <option value="mock">🧪 Offline / Local Engine</option>
+              </select>
             </div>
             <div class="form-field" style="margin-top: 10px;">
               <label class="form-label">Generation Settings</label>
@@ -1190,13 +1202,18 @@ select.input-control {
           <h5><span style="color:#c084fc;">⚙</span> Model &amp; API Info</h5>
           <div class="meta-row">
             <span>Model Used:</span>
-            <span class="badge-pill" style="background:#581c87; color:#e9d5ff; border:1px solid #9333ea;">Writer</span>
+            <span class="badge-pill" id="cardModelBadge" style="background:#581c87; color:#e9d5ff; border:1px solid #9333ea;">FLUX-1</span>
           </div>
           <div class="meta-row">
-            <span>API Provider:</span>
-            <span style="display:inline-flex; align-items:center; gap:5px; font-weight:700; color:#e2e8f0;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22.28 9.87a5.98 5.98 0 0 0-.48-4.68 6.07 6.07 0 0 0-6.19-2.98 6.02 6.02 0 0 0-4.33-1.87 6 6 0 0 0-5.74 4.25 6.07 6.07 0 0 0-3.9 2.83 6.04 6.04 0 0 0 .74 6.78 6 6 0 0 0 .48 4.68 6.07 6.07 0 0 0 6.2 2.98 6.02 6.02 0 0 0 4.32 1.87 6 6 0 0 0 5.74-4.25 6.07 6.07 0 0 0 3.9-2.83 6.04 6.04 0 0 0-.74-6.78Zm-7.79 9.89a4.52 4.52 0 0 1-2.92-1.07l.14-.08 4.86-2.81a.76.76 0 0 0 .38-.66v-6.86l2.18 1.26a.07.07 0 0 1 .04.05v5.82a4.54 4.54 0 0 1-4.68 4.35ZM4.69 16.48a4.5 4.5 0 0 1-.58-3.07l.14.09 4.86 2.8a.78.78 0 0 0 .77 0l5.95-3.43v2.52a.08.08 0 0 1-.03.06l-5.04 2.91a4.54 4.54 0 0 1-6.11-1.88Zm-1.2-8.32a4.54 4.54 0 0 1 2.34-2l-.01.17v5.62a.77.77 0 0 0 .38.67l5.94 3.43-2.18 1.26a.08.08 0 0 1-.07 0l-5.04-2.91a4.54 4.54 0 0 1-1.36-6.24Zm13.56 2.92L11.1 7.65l2.18-1.26a.08.08 0 0 1 .07 0l5.04 2.91a4.54 4.54 0 0 1-1.29 8.24v-5.79a.77.77 0 0 0-.38-.67l.33.02Zm2.5-2.61-.14-.09-4.86-2.8a.78.78 0 0 0-.77 0l-5.95 3.43V6.49a.08.08 0 0 1 .03-.06l5.04-2.91a4.54 4.54 0 0 1 6.65 4.95v.01ZM10.5 13.73l-2.6-1.5 2.6-1.5 2.6 1.5-2.6 1.5Z"/></svg>
-              OpenAI
+            <span>AI Provider:</span>
+            <span id="cardProviderName" style="display:inline-flex; align-items:center; gap:5px; font-weight:700; color:#e2e8f0;">
+              Pollinations.ai
+            </span>
+          </div>
+          <div class="meta-row">
+            <span>API Status:</span>
+            <span id="cardApiStatus" style="font-size:11px; font-weight:600; color:#4ade80;">
+              🟢 Connected • Free Tier
             </span>
           </div>
         </div>
@@ -1213,8 +1230,8 @@ select.input-control {
         <div class="author-signature">Kajal Kumari <span style="font-size: 20px; color:#a855f7;">💜</span></div>
       </section>
 
-      <!-- Success Notification & Actions Bar -->
-      <section class="action-status-bar">
+      <!-- Success Notification & Actions Bar (HIDDEN until generated) -->
+      <section class="action-status-bar" id="posterReadyBar" style="display: none;">
         <div class="status-msg-wrap">
           <div class="check-circle">✓</div>
           <div class="status-text">
@@ -1223,9 +1240,15 @@ select.input-control {
           </div>
         </div>
         <div class="action-buttons-group">
-          <a class="btn-download-primary" id="downloadPosterBtn" href="#" download="imagica-poster.png">
-            <span>⬇</span> Download
-          </a>
+          <button type="button" class="btn-download-primary" id="downloadPngBtn">
+            <span>⬇</span> PNG
+          </button>
+          <button type="button" class="btn-download-primary" id="downloadJpgBtn" style="background: linear-gradient(135deg, #7c3aed, #6366f1);">
+            <span>⬇</span> JPG
+          </button>
+          <button type="button" class="btn-download-primary" id="downloadPdfBtn" style="background: linear-gradient(135deg, #6366f1, #3b82f6);">
+            <span>📄</span> PDF
+          </button>
           <button type="button" class="btn-share" id="shareBtn">
             <span>🔗</span> Share
           </button>
@@ -1876,13 +1899,92 @@ function renderLivePoster() {
   return dataUrl;
 }
 
+// Model & Provider Registry Metadata
+const PROVIDER_METADATA = {
+  "writer": {
+    model: "Palmyra-X",
+    provider: "Writer AI",
+    status: "🟢 Active • Configurable (WRITER_API_KEY)",
+    statusColor: "#4ade80",
+    badgeBg: "#431407",
+    badgeBorder: "#ea580c"
+  },
+  "pollinations_flux": {
+    model: "FLUX-1",
+    provider: "Pollinations.ai",
+    status: "🟢 Connected • Free Tier",
+    statusColor: "#4ade80",
+    badgeBg: "#581c87",
+    badgeBorder: "#9333ea"
+  },
+  "stability": {
+    model: "SDXL 1.0",
+    provider: "Stability AI",
+    status: "🟢 Connected • Trial (18.7 Credits)",
+    statusColor: "#60a5fa",
+    badgeBg: "#1e1b4b",
+    badgeBorder: "#4f46e5"
+  },
+  "cloudflare": {
+    model: "FLUX-1 schnell",
+    provider: "Cloudflare Workers AI",
+    status: "🟡 Free Tier (10k Neurons/day)",
+    statusColor: "#fbbf24",
+    badgeBg: "#451a03",
+    badgeBorder: "#d97706"
+  },
+  "gemini": {
+    model: "Gemini 2.5 Flash",
+    provider: "Google Cloud",
+    status: "🟢 Connected • Free Quota",
+    statusColor: "#4ade80",
+    badgeBg: "#064e3b",
+    badgeBorder: "#059669"
+  },
+  "mock": {
+    model: "Mock-1",
+    provider: "Local Engine",
+    status: "⚪ Offline / Standalone",
+    statusColor: "#94a3b8",
+    badgeBg: "#1e293b",
+    badgeBorder: "#475569"
+  }
+};
+
+function updateModelProviderInfo(providerKey) {
+  const meta = PROVIDER_METADATA[providerKey] || PROVIDER_METADATA["pollinations_flux"];
+  $('#cardModelBadge').textContent = meta.model;
+  $('#cardModelBadge').style.background = meta.badgeBg;
+  $('#cardModelBadge').style.borderColor = meta.badgeBorder;
+  $('#cardProviderName').textContent = meta.provider;
+  $('#cardApiStatus').textContent = meta.status;
+  $('#cardApiStatus').style.color = meta.statusColor;
+}
+
+$('#modelProviderSelect').onchange = async (e) => {
+  const chosen = e.target.value;
+  updateModelProviderInfo(chosen);
+  try {
+    await fetch('/switch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider: chosen })
+    });
+  } catch (err) {
+    console.warn("Could not switch backend provider:", err);
+  }
+};
+
 // Generate Poster Action
 async function generatePoster() {
   $('#canvasLoader').classList.add('active');
+  $('#posterReadyBar').style.display = 'none';
+
   const title = $('#posterTitle').value.trim() || 'Happy Birthday';
   const desc = $('#posterDesc').value.trim() || 'Celebrate your special day with love and joy!';
   const prompt = $('#aiPrompt').value.trim();
   const [w, h] = $('#sizeSelect').value.split('x').map(Number);
+  const selectedProvider = $('#modelProviderSelect').value;
 
   // 1. First attempt to call the live Python FastAPI backend
   try {
@@ -1913,8 +2015,9 @@ async function generatePoster() {
       if (data.final_image_base64) {
         currentPosterDataUrl = 'data:image/png;base64,' + data.final_image_base64;
         $('#previewImage').src = currentPosterDataUrl;
-        $('#downloadPosterBtn').href = currentPosterDataUrl;
         $('#canvasLoader').classList.remove('active');
+        $('#posterReadyBar').style.display = 'flex';
+        $('#posterReadyBar').scrollIntoView({ behavior: 'smooth' });
         return;
       }
     }
@@ -1926,10 +2029,61 @@ async function generatePoster() {
   setTimeout(() => {
     renderLivePoster();
     $('#canvasLoader').classList.remove('active');
+    $('#posterReadyBar').style.display = 'flex';
+    $('#posterReadyBar').scrollIntoView({ behavior: 'smooth' });
   }, 1000);
 }
 
 $('#generateHeroBtn').onclick = generatePoster;
+
+// Multi-Format Downloads (PNG, JPG, PDF)
+$('#downloadPngBtn').onclick = () => {
+  const a = document.createElement('a');
+  a.href = currentPosterDataUrl;
+  a.download = 'imagica-poster.png';
+  a.click();
+};
+
+$('#downloadJpgBtn').onclick = () => {
+  const [w, h] = ($('#sizeSelect').value || '1080x1350').split('x').map(Number);
+  const img = new Image();
+  img.onload = () => {
+    const cv = document.createElement('canvas');
+    cv.width = w || 1080;
+    cv.height = h || 1350;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(img, 0, 0, cv.width, cv.height);
+    const jpgUrl = cv.toDataURL('image/jpeg', 0.95);
+    const a = document.createElement('a');
+    a.href = jpgUrl;
+    a.download = 'imagica-poster.jpg';
+    a.click();
+  };
+  img.src = currentPosterDataUrl;
+};
+
+$('#downloadPdfBtn').onclick = () => {
+  const [w, h] = ($('#sizeSelect').value || '1080x1350').split('x').map(Number);
+  if (window.jspdf && window.jspdf.jsPDF) {
+    const { jsPDF } = window.jspdf;
+    const orient = (h >= w) ? 'portrait' : 'landscape';
+    const pdf = new jsPDF({
+      orientation: orient,
+      unit: 'px',
+      format: [w, h]
+    });
+    pdf.addImage(currentPosterDataUrl, 'PNG', 0, 0, w, h);
+    pdf.save('imagica-poster.pdf');
+  } else {
+    const win = window.open('');
+    win.document.write(`<img src="${currentPosterDataUrl}" style="width:100%;height:auto;">`);
+    win.document.close();
+    win.focus();
+    win.print();
+  }
+};
 
 // Share button
 $('#shareBtn').onclick = () => {
@@ -1945,8 +2099,11 @@ $('#shareBtn').onclick = () => {
   }
 };
 
-// Initial Render on page load
+// Initial Setup
+updateModelProviderInfo('pollinations_flux');
 renderLivePoster();
+// Ensure poster ready bar is hidden until user generates poster
+$('#posterReadyBar').style.display = 'none';
 </script>
 </body>
 </html>

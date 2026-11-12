@@ -1,5 +1,14 @@
 default_provider: pollinations_flux
 providers:
+  writer:
+    class: providers.writer_provider.WriterProvider
+    model_id: palmyra-x-004
+    display_name: Writer AI (Palmyra)
+    api_key_env: WRITER_API_KEY
+    billing: configurable
+    status: ACTIVE
+    free_tier_note: Configurable via WRITER_API_KEY environment variable.
+    enabled: true
   pollinations_flux:
     class: providers.pollinations_provider.PollinationsProvider
     model_id: flux
