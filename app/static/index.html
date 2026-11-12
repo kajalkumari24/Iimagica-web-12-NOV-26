@@ -2068,6 +2068,14 @@ $('#shareBtn').onclick = () => {
   }
 };
 
+// Initial sync on page load
+const initialProv = $('#modelSelectDropdown') ? $('#modelSelectDropdown').value : 'pollinations_flux';
+fetch('/switch', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ provider: initialProv || 'pollinations_flux' })
+}).catch(() => {});
+
 // Initial Render
 logoImageObj.onload = renderLivePoster;
 renderLivePoster();

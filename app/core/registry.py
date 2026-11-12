@@ -122,6 +122,8 @@ class ProviderRegistry:
     def _persist(self) -> None:
         """Write the current selection back to config.yaml, so a model
         switch survives restarts and needs no code change."""
+        if "PYTEST_CURRENT_TEST" in os.environ or os.environ.get("TESTING") == "1":
+            return
         self.config["default_provider"] = self.default_provider
         self.config["features"] = dict(self.features)
         with open(self.config_path, "w", encoding="utf-8") as fh:
