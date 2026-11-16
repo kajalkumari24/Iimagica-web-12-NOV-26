@@ -6,7 +6,7 @@
 <title>iimagica — AI Poster Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&family=Noto+Sans+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Montserrat:wght@500;600;700;800&family=Noto+Sans+Devanagari:wght@600;700&family=Noto+Serif+Devanagari:wght@600;700&family=Open+Sans:wght@400;600;700&family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
@@ -264,7 +264,7 @@ textarea.input-field {
   gap: 6px;
   margin-top: 4px;
 }
-@media (max-width: 480px) {
+@media (max-width: 580px) {
   .footer-shape-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -274,16 +274,18 @@ textarea.input-field {
   border: 1px solid var(--input-border);
   color: var(--text-muted);
   border-radius: 6px;
-  padding: 6px 6px;
+  padding: 7px 6px;
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: flex-start;
+  gap: 6px;
   transition: all 0.2s;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .btn-shape-pill:hover {
   background: rgba(139, 92, 246, 0.16);
@@ -296,6 +298,133 @@ textarea.input-field {
   color: #22d3ee;
   box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
   font-weight: 700;
+}
+
+/* Advanced Typography & Font Customization Studio */
+.typography-panel {
+  background: rgba(15, 12, 32, 0.75);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 9px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+.typo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.typo-role-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px;
+  border-radius: 7px;
+  gap: 3px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+}
+.btn-typo-role {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  text-align: center;
+}
+.btn-typo-role.active {
+  background: rgba(6, 182, 212, 0.22);
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+.typo-cat-pills {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.btn-typo-cat {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 9.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.btn-typo-cat:hover {
+  color: #fff;
+}
+.btn-typo-cat.active {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: var(--primary-purple);
+  color: #e9d5ff;
+}
+.typo-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 520px) {
+  .typo-controls-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.typo-field-label {
+  font-size: 10.5px;
+  color: var(--text-sub);
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.typo-btn-group {
+  display: flex;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.btn-typo-opt {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 4px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.btn-typo-opt:hover {
+  color: #fff;
+}
+.btn-typo-opt.active {
+  background: rgba(6, 182, 212, 0.2);
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+.typo-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.typo-slider-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent-cyan);
+  height: 4px;
 }
 
 /* Person Photo Upload */
@@ -1079,18 +1208,149 @@ textarea.input-field {
         <div id="layoutWarningNotice" class="layout-warning-notice"></div>
       </div>
 
+      <!-- Advanced Typography & Font Customization Studio -->
+      <div class="typography-panel">
+        <div class="typo-header">
+          <span style="font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 5px;">
+            <span>🔤</span> Advanced Typography Studio:
+          </span>
+          <label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--accent-cyan); cursor: pointer;">
+            <input type="checkbox" id="autoTypoCheck" checked style="accent-color: var(--accent-cyan);">
+            <span>Auto-Select for Theme</span>
+          </label>
+        </div>
+
+        <!-- Role Selector Tabs -->
+        <div class="typo-role-tabs" id="typoRoleTabs">
+          <button type="button" class="btn-typo-role active" data-role="brand">Brand Name</button>
+          <button type="button" class="btn-typo-role" data-role="heading">Headings / Tagline</button>
+          <button type="button" class="btn-typo-role" data-role="contact">Contact Details</button>
+          <button type="button" class="btn-typo-role" data-role="description">Descriptions / Role</button>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="typo-cat-pills" id="typoCatPills">
+          <button type="button" class="btn-typo-cat active" data-cat="all">All Styles</button>
+          <button type="button" class="btn-typo-cat" data-cat="modern">Modern</button>
+          <button type="button" class="btn-typo-cat" data-cat="professional">Professional</button>
+          <button type="button" class="btn-typo-cat" data-cat="bold">Bold</button>
+          <button type="button" class="btn-typo-cat" data-cat="elegant">Elegant</button>
+          <button type="button" class="btn-typo-cat" data-cat="traditional">Traditional</button>
+          <button type="button" class="btn-typo-cat" data-cat="decorative">Decorative</button>
+        </div>
+
+        <!-- Active Role Controls Grid -->
+        <div class="typo-controls-grid">
+          <!-- Font Family Selector -->
+          <div>
+            <div class="typo-field-label">
+              <span>Font Family</span>
+              <span id="activeFontPreviewTag" style="color: var(--accent-cyan); font-size: 9.5px;">Montserrat</span>
+            </div>
+            <select class="input-field" id="typoFontFamilySelect" style="padding: 5px 8px; font-size: 11px;">
+              <!-- Populated dynamically by JS -->
+            </select>
+          </div>
+
+          <!-- Font Weight & Style -->
+          <div>
+            <div class="typo-field-label">
+              <span>Font Weight &amp; Style</span>
+            </div>
+            <div style="display: flex; gap: 5px;">
+              <select class="input-field" id="typoFontWeightSelect" style="flex: 2; padding: 5px 8px; font-size: 11px;">
+                <option value="400">Regular (400)</option>
+                <option value="500">Medium (500)</option>
+                <option value="600">SemiBold (600)</option>
+                <option value="700" selected>Bold (700)</option>
+                <option value="800">ExtraBold (800)</option>
+              </select>
+              <button type="button" class="btn-typo-opt" id="typoFontStyleBtn" title="Toggle Italic" style="flex: 1; border: 1px solid var(--input-border); border-radius: 6px; background: var(--input-bg);">
+                <em>Italic</em>
+              </button>
+            </div>
+          </div>
+
+          <!-- Letter Spacing -->
+          <div>
+            <div class="typo-field-label">
+              <span>Letter Spacing (Tracking)</span>
+              <span id="letterSpacingVal" style="color: var(--accent-cyan); font-weight: 700;">1.0px</span>
+            </div>
+            <div class="typo-slider-row">
+              <input type="range" id="typoLetterSpacingRange" min="-1" max="4" step="0.5" value="1">
+            </div>
+          </div>
+
+          <!-- Alignment & Vertical Position -->
+          <div>
+            <div class="typo-field-label">
+              <span>Alignment &amp; Vertical Offset</span>
+              <span id="verticalOffsetVal" style="color: var(--accent-cyan); font-weight: 700;">0px</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <div class="typo-btn-group" id="typoAlignGroup" style="flex: 1;">
+                <button type="button" class="btn-typo-opt" data-align="left" title="Left Align">⬅️</button>
+                <button type="button" class="btn-typo-opt active" data-align="center" title="Center Align">⏺️</button>
+                <button type="button" class="btn-typo-opt" data-align="right" title="Right Align">➡️</button>
+              </div>
+              <input type="range" id="typoVerticalOffsetRange" min="-8" max="8" step="1" value="0" style="flex: 1; accent-color: var(--accent-cyan);" title="Vertical position offset">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Footer Shape & Style Selection -->
       <div class="form-group" style="margin-bottom: 12px;">
         <label class="form-label" style="font-size: 11px;">
-          <span>Footer Shape &amp; Style:</span>
+          <span>Footer Design &amp; Layout:</span>
           <span style="color: var(--accent-cyan); font-weight: 700;" id="activeShapeLabel">Wavy Ribbon</span>
         </label>
         <div class="footer-shape-grid" id="footerShapeGrid">
           <button type="button" class="btn-shape-pill active" data-shape="wave">
-            <span>〰️</span> Wavy Ribbon
+            <span>〰️</span> Dynamic Wave
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="corporate">
+            <span>🏢</span> Modern Corporate
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="political">
+            <span>🏛️</span> Political Campaign
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="festival">
+            <span>🪔</span> Festival &amp; Celebration
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="branding">
+            <span>💼</span> Business Branding
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="gradient">
+            <span>🌈</span> Vibrant Gradient
           </button>
           <button type="button" class="btn-shape-pill" data-shape="curved">
             <span>⌒</span> Curved Arch
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="ribbon">
+            <span>🎀</span> 3D Ribbon Banner
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="double">
+            <span>═</span> Double-Layer Trim
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="transparent">
+            <span>🪟</span> Minimal Transparent
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="premium_3d">
+            <span>💎</span> Premium 3D Beveled
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="split">
+            <span>◩</span> Split 2-Tone Panel
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="image_based">
+            <span>🖼️</span> Image Textured
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="logo_focused">
+            <span>🛡️</span> Logo Breakout
+          </button>
+          <button type="button" class="btn-shape-pill" data-shape="photo_focused">
+            <span>👤</span> Photo / Leader
           </button>
           <button type="button" class="btn-shape-pill" data-shape="rectangle">
             <span>▰</span> Rectangle
@@ -1099,10 +1359,7 @@ textarea.input-field {
             <span>◰</span> Diagonal Cut
           </button>
           <button type="button" class="btn-shape-pill" data-shape="rounded">
-            <span>⬭</span> Rounded
-          </button>
-          <button type="button" class="btn-shape-pill" data-shape="double">
-            <span>═</span> Double Trim
+            <span>⬭</span> Soft Rounded
           </button>
         </div>
       </div>
@@ -1263,7 +1520,8 @@ textarea.input-field {
   Created By: <strong>Kajal Kumari</strong>
 </footer>
 
-<!-- Automatic Content-Aware Footer Layout Engines -->
+<!-- Advanced Typography & Content-Aware Footer Layout Engines -->
+<script src="/static/js/typographyEngine.js"></script>
 <script src="/static/js/contentAnalysisEngine.js"></script>
 <script src="/static/js/responsiveSizeEngine.js"></script>
 <script src="/static/js/layoutEngine.js"></script>
@@ -1510,7 +1768,153 @@ function getCustomFieldsData() {
 }
 
 // -------------------------------------------------------------
-// Footer Shape Selector Handlers
+// Advanced Typography Studio Controller
+// -------------------------------------------------------------
+let activeTypoRole = "brand";
+let activeTypoCat = "all";
+
+function populateFontFamilyDropdown() {
+  const select = $('#typoFontFamilySelect');
+  if (!select || !window.TypographyEngine) return;
+  select.innerHTML = '';
+
+  const fonts = (activeTypoCat === 'all') 
+    ? TypographyEngine.ALL_FONTS 
+    : (TypographyEngine.FONT_CATALOG[activeTypoCat] || TypographyEngine.ALL_FONTS);
+
+  fonts.forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f.family;
+    opt.textContent = `${f.name} (${f.category || activeTypoCat})`;
+    select.appendChild(opt);
+  });
+
+  const curCfg = TypographyEngine.getRoleConfig(activeTypoRole);
+  if (curCfg && curCfg.family) {
+    select.value = curCfg.family;
+  }
+}
+
+function syncTypographyUiFromRole() {
+  if (!window.TypographyEngine) return;
+  const cfg = TypographyEngine.getRoleConfig(activeTypoRole);
+  populateFontFamilyDropdown();
+
+  if ($('#typoFontFamilySelect')) $('#typoFontFamilySelect').value = cfg.family;
+  if ($('#activeFontPreviewTag')) {
+    const matched = TypographyEngine.ALL_FONTS.find(f => f.family === cfg.family);
+    $('#activeFontPreviewTag').textContent = matched ? matched.name : 'Custom';
+  }
+  if ($('#typoFontWeightSelect')) $('#typoFontWeightSelect').value = String(cfg.weight || '600');
+  if ($('#typoFontStyleBtn')) {
+    if (cfg.style === 'italic') $('#typoFontStyleBtn').classList.add('active');
+    else $('#typoFontStyleBtn').classList.remove('active');
+  }
+  if ($('#typoLetterSpacingRange')) {
+    $('#typoLetterSpacingRange').value = (cfg.letterSpacing !== undefined) ? cfg.letterSpacing : 1;
+    $('#letterSpacingVal').textContent = `${$('#typoLetterSpacingRange').value}px`;
+  }
+  if ($('#typoVerticalOffsetRange')) {
+    $('#typoVerticalOffsetRange').value = (cfg.offsetY !== undefined) ? cfg.offsetY : 0;
+    $('#verticalOffsetVal').textContent = `${$('#typoVerticalOffsetRange').value}px`;
+  }
+  $$('#typoAlignGroup .btn-typo-opt').forEach(b => {
+    if (b.getAttribute('data-align') === (cfg.align || 'center')) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+}
+
+// Role Tabs
+$$('#typoRoleTabs .btn-typo-role').forEach(btn => {
+  btn.onclick = () => {
+    $$('#typoRoleTabs .btn-typo-role').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTypoRole = btn.getAttribute('data-role');
+    syncTypographyUiFromRole();
+  };
+});
+
+// Category Filter Pills
+$$('#typoCatPills .btn-typo-cat').forEach(btn => {
+  btn.onclick = () => {
+    $$('#typoCatPills .btn-typo-cat').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTypoCat = btn.getAttribute('data-cat');
+    populateFontFamilyDropdown();
+  };
+});
+
+// Typography Event Listeners
+if ($('#typoFontFamilySelect')) {
+  $('#typoFontFamilySelect').onchange = (e) => {
+    TypographyEngine.setRoleConfig(activeTypoRole, { family: e.target.value });
+    const matched = TypographyEngine.ALL_FONTS.find(f => f.family === e.target.value);
+    if ($('#activeFontPreviewTag')) $('#activeFontPreviewTag').textContent = matched ? matched.name : 'Custom';
+    schedulePosterUpdate();
+  };
+}
+
+if ($('#typoFontWeightSelect')) {
+  $('#typoFontWeightSelect').onchange = (e) => {
+    TypographyEngine.setRoleConfig(activeTypoRole, { weight: e.target.value });
+    schedulePosterUpdate();
+  };
+}
+
+if ($('#typoFontStyleBtn')) {
+  $('#typoFontStyleBtn').onclick = () => {
+    const isItalic = $('#typoFontStyleBtn').classList.toggle('active');
+    TypographyEngine.setRoleConfig(activeTypoRole, { style: isItalic ? 'italic' : 'normal' });
+    schedulePosterUpdate();
+  };
+}
+
+if ($('#typoLetterSpacingRange')) {
+  $('#typoLetterSpacingRange').oninput = (e) => {
+    const val = parseFloat(e.target.value);
+    $('#letterSpacingVal').textContent = `${val}px`;
+    TypographyEngine.setRoleConfig(activeTypoRole, { letterSpacing: val });
+    schedulePosterUpdate();
+  };
+}
+
+if ($('#typoVerticalOffsetRange')) {
+  $('#typoVerticalOffsetRange').oninput = (e) => {
+    const val = parseInt(e.target.value);
+    $('#verticalOffsetVal').textContent = `${val}px`;
+    TypographyEngine.setRoleConfig(activeTypoRole, { offsetY: val });
+    schedulePosterUpdate();
+  };
+}
+
+$$('#typoAlignGroup .btn-typo-opt').forEach(btn => {
+  btn.onclick = () => {
+    $$('#typoAlignGroup .btn-typo-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    TypographyEngine.setRoleConfig(activeTypoRole, { align: btn.getAttribute('data-align') });
+    schedulePosterUpdate();
+  };
+});
+
+if ($('#autoTypoCheck')) {
+  $('#autoTypoCheck').onchange = (e) => {
+    TypographyEngine.setAutoSelectionEnabled(e.target.checked);
+    if (e.target.checked) {
+      TypographyEngine.autoSelectForTheme(selectedFooterShape);
+      syncTypographyUiFromRole();
+    }
+    schedulePosterUpdate();
+  };
+}
+
+// Initial typography sync
+if (window.TypographyEngine) {
+  TypographyEngine.autoSelectForTheme(selectedFooterShape);
+  syncTypographyUiFromRole();
+}
+
+// -------------------------------------------------------------
+// Footer Shape Selector Handlers (Supports 15+ Designs)
 // -------------------------------------------------------------
 $$('#footerShapeGrid .btn-shape-pill').forEach(btn => {
   btn.onclick = () => {
@@ -1518,6 +1922,12 @@ $$('#footerShapeGrid .btn-shape-pill').forEach(btn => {
     btn.classList.add('active');
     selectedFooterShape = btn.getAttribute('data-shape');
     $('#activeShapeLabel').textContent = btn.textContent.trim().replace(/^.+?\s/, '');
+    
+    // Auto-harmonize typography if enabled
+    if (window.TypographyEngine && TypographyEngine.isAutoSelectionEnabled()) {
+      TypographyEngine.autoSelectForTheme(selectedFooterShape);
+      syncTypographyUiFromRole();
+    }
     schedulePosterUpdate();
   };
 });
@@ -2033,23 +2443,237 @@ function renderLivePoster() {
   const x2 = W - frameInset - 8;
   const bottomY = H - frameInset - 8;
 
-  // Draw Selected Footer Shape Background
-  if (selectedFooterShape === 'curved') {
-    // Elegant Curved Arch
+  // -------------------------------------------------------------
+  // Draw Selected Footer Design Background (15+ Professional Designs)
+  // -------------------------------------------------------------
+  if (selectedFooterShape === 'corporate') {
+    // 1. Modern Corporate Footer
+    ctx.fillStyle = "#0c101c";
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.fillStyle = themeHex;
+    ctx.fillRect(x1, fy, x2 - x1, 4);
+
+    const divX = x1 + Math.round((x2 - x1) * 0.32);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(x1, fy + 18);
-    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 18);
+    ctx.moveTo(divX, fy + 12);
+    ctx.lineTo(divX, bottomY - 12);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'political') {
+    // 2. Political Campaign Footer: Saffron-White-Green tricolor accent header
+    ctx.fillStyle = "#071124";
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    const stripH = 7;
+    ctx.fillStyle = "#ff9933";
+    ctx.fillRect(x1, fy, x2 - x1, stripH);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(x1, fy + stripH, x2 - x1, stripH - 1);
+    ctx.fillStyle = "#138808";
+    ctx.fillRect(x1, fy + (stripH * 2) - 1, x2 - x1, stripH);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'festival') {
+    // 3. Festival & Celebration Footer: Royal crimson with golden filigree
+    const festGrad = ctx.createLinearGradient(0, fy, 0, bottomY);
+    festGrad.addColorStop(0, "#2a0818");
+    festGrad.addColorStop(0.5, "#18030e");
+    festGrad.addColorStop(1, "#0a0106");
+    ctx.fillStyle = festGrad;
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 20);
+    ctx.quadraticCurveTo(x1 + (x2 - x1) * 0.25, fy - 12, x1 + (x2 - x1) * 0.5, fy + 14);
+    ctx.quadraticCurveTo(x1 + (x2 - x1) * 0.75, fy - 12, x2, fy + 20);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 20);
+    ctx.quadraticCurveTo(x1 + (x2 - x1) * 0.25, fy - 12, x1 + (x2 - x1) * 0.5, fy + 14);
+    ctx.quadraticCurveTo(x1 + (x2 - x1) * 0.75, fy - 12, x2, fy + 20);
+    ctx.stroke();
+
+    ctx.fillStyle = themeHex;
+    for (let i = 1; i < 8; i++) {
+      const dotX = x1 + (x2 - x1) * (i / 8);
+      ctx.beginPath();
+      ctx.arc(dotX, fy + 4, (i % 2 === 0 ? 3.5 : 2), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else if (selectedFooterShape === 'branding') {
+    // 4. Business Branding Footer: Elevated center brand plate
+    ctx.fillStyle = "#110b24";
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x1 + 20, fy + 8);
+    ctx.lineTo(x1 + (x2 - x1) * 0.28, fy + 8);
+    ctx.moveTo(x1 + (x2 - x1) * 0.72, fy + 8);
+    ctx.lineTo(x2 - 20, fy + 8);
+    ctx.stroke();
+  } else if (selectedFooterShape === 'gradient') {
+    // 5. Vibrant Gradient Footer: Multi-stop mesh gradient
+    const meshGrad = ctx.createLinearGradient(x1, fy, x2, bottomY);
+    meshGrad.addColorStop(0, "#4338ca");
+    meshGrad.addColorStop(0.5, "#7c3aed");
+    meshGrad.addColorStop(1, "#0891b2");
+    ctx.fillStyle = meshGrad;
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'curved') {
+    // 6. Curved Arch
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 20);
+    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 20);
     ctx.lineTo(x2, bottomY);
     ctx.lineTo(x1, bottomY);
     ctx.closePath();
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(x1, fy + 18);
-    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 18);
+    ctx.moveTo(x1, fy + 20);
+    ctx.quadraticCurveTo(W / 2, fy - 22, x2, fy + 20);
     ctx.stroke();
+  } else if (selectedFooterShape === 'ribbon') {
+    // 7. 3D Ribbon Banner: Folded ends with double stitched border
+    ctx.fillStyle = fGrad;
+    ctx.fillRect(x1, fy + 8, x2 - x1, (bottomY - fy) - 8);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x1, fy + 8, x2 - x1, (bottomY - fy) - 8);
+
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(x1 + 6, fy + 14, (x2 - x1) - 12, (bottomY - fy) - 20);
+    ctx.setLineDash([]);
+  } else if (selectedFooterShape === 'double') {
+    // 8. Double-Layer Trim
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.lineTo(x2, bottomY);
+    ctx.lineTo(x1, bottomY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, fy);
+    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
+    ctx.stroke();
+
+    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(x1 + 6, fy + 10);
+    ctx.bezierCurveTo(W * 0.35, fy - 6, W * 0.65, fy + 26, x2 - 6, fy + 10);
+    ctx.stroke();
+  } else if (selectedFooterShape === 'transparent') {
+    // 9. Minimal Transparent / Glassmorphic Footer
+    ctx.fillStyle = "rgba(16, 12, 32, 0.45)";
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'premium_3d') {
+    // 10. Premium 3D-Style Footer with Beveled Highlights
+    ctx.fillStyle = fGrad;
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, fy + 1);
+    ctx.lineTo(x2, fy + 1);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, bottomY - 1);
+    ctx.lineTo(x2, bottomY - 1);
+    ctx.stroke();
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'split') {
+    // 11. Split-Section 2-Tone Footer
+    const splitX = x1 + Math.round((x2 - x1) * 0.33);
+
+    ctx.fillStyle = "#080612";
+    ctx.fillRect(x1, fy, splitX - x1, bottomY - fy);
+
+    ctx.fillStyle = "#18102e";
+    ctx.fillRect(splitX, fy, x2 - splitX, bottomY - fy);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(splitX, fy);
+    ctx.lineTo(splitX, bottomY);
+    ctx.stroke();
+
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'image_based') {
+    // 12. Image / Textured Footer
+    ctx.fillStyle = "#120a22";
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+    ctx.lineWidth = 1;
+    for (let px = x1; px < x2; px += 24) {
+      ctx.beginPath();
+      ctx.moveTo(px, fy);
+      ctx.lineTo(px, bottomY);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'logo_focused') {
+    // 13. Logo-Focused Footer
+    ctx.fillStyle = fGrad;
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
+  } else if (selectedFooterShape === 'photo_focused') {
+    // 14. Photo / Leader Focused Footer
+    ctx.fillStyle = fGrad;
+    ctx.fillRect(x1, fy, x2 - x1, bottomY - fy);
+
+    ctx.strokeStyle = themeHex;
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x1, fy, x2 - x1, bottomY - fy);
   } else if (selectedFooterShape === 'rectangle') {
-    // Crisp Full-Width Rectangle
+    // 15. Classic Full-Width Rectangle
     ctx.beginPath();
     ctx.rect(x1, fy, x2 - x1, bottomY - fy);
     ctx.fill();
@@ -2059,7 +2683,7 @@ function renderLivePoster() {
     ctx.lineTo(x2, fy);
     ctx.stroke();
   } else if (selectedFooterShape === 'diagonal') {
-    // Dynamic Modern Diagonal Cut
+    // 16. Diagonal Cut
     ctx.beginPath();
     ctx.moveTo(x1, fy + 24);
     ctx.lineTo(x2, fy - 14);
@@ -2073,35 +2697,13 @@ function renderLivePoster() {
     ctx.lineTo(x2, fy - 14);
     ctx.stroke();
   } else if (selectedFooterShape === 'rounded') {
-    // Rounded Floating Capsule
+    // 17. Soft Rounded Capsule
     ctx.beginPath();
     ctx.roundRect(x1 + 4, fy, (x2 - x1) - 8, bottomY - fy, [18, 18, 12, 12]);
     ctx.fill();
     ctx.stroke();
-  } else if (selectedFooterShape === 'double') {
-    // Double Layer Trim
-    ctx.beginPath();
-    ctx.moveTo(x1, fy);
-    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
-    ctx.lineTo(x2, bottomY);
-    ctx.lineTo(x1, bottomY);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(x1, fy);
-    ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
-    ctx.stroke();
-
-    // Secondary inner trim line
-    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.55)`;
-    ctx.lineWidth = 1.6;
-    ctx.beginPath();
-    ctx.moveTo(x1 + 6, fy + 10);
-    ctx.bezierCurveTo(W * 0.35, fy - 6, W * 0.65, fy + 26, x2 - 6, fy + 10);
-    ctx.stroke();
   } else {
-    // Default: Wavy Ribbon
+    // Default: Dynamic Wave
     ctx.beginPath();
     ctx.moveTo(x1, fy);
     ctx.bezierCurveTo(W * 0.35, fy - 16, W * 0.65, fy + 16, x2, fy);
@@ -2116,64 +2718,100 @@ function renderLivePoster() {
     ctx.stroke();
   }
 
-  // Draw Elements Positioned by the Layout Engine
+  // -------------------------------------------------------------
+  // Draw Elements Positioned by Layout Engine with Advanced Typography
+  // -------------------------------------------------------------
   solvedFit.elements.forEach(el => {
     if (el.type === 'logo') {
       const hasLogo = logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0;
       if (hasLogo) {
-        // Medallion circle for logo
-        ctx.fillStyle = "rgba(17, 13, 36, 0.92)";
+        const isBreakout = (selectedFooterShape === 'logo_focused');
+        const radius = (el.height / 2) + (isBreakout ? 8 : 4);
+        const centerY = isBreakout ? (el.y + el.height / 2 - 12) : (el.y + el.height / 2);
+
+        ctx.fillStyle = "rgba(17, 13, 36, 0.94)";
         ctx.strokeStyle = themeHex;
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = isBreakout ? 2.8 : 1.8;
         ctx.beginPath();
-        ctx.arc(el.x + el.width / 2, el.y + el.height / 2, (el.height / 2) + 4, 0, Math.PI * 2);
+        ctx.arc(el.x + el.width / 2, centerY, radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.drawImage(logoImageObj, el.x, el.y, el.width, el.height);
+        ctx.drawImage(logoImageObj, el.x, isBreakout ? (el.y - 12) : el.y, el.width, el.height);
       }
     } else if (el.type === 'person_photo') {
       const hasPhoto = personPhotoImageObj && personPhotoImageObj.complete && personPhotoImageObj.naturalWidth > 0;
       if (hasPhoto) {
+        const isPhotoFocused = (selectedFooterShape === 'photo_focused');
+        const drawY = isPhotoFocused ? (el.y - 14) : el.y;
+
         ctx.save();
         ctx.beginPath();
-        ctx.roundRect(el.x, el.y, el.width, el.height, el.borderRadius || 12);
+        ctx.roundRect(el.x, drawY, el.width, el.height, el.borderRadius || 12);
         ctx.clip();
-        ctx.drawImage(personPhotoImageObj, el.x, el.y, el.width, el.height);
+        ctx.drawImage(personPhotoImageObj, el.x, drawY, el.width, el.height);
         ctx.restore();
 
-        // Decorative border around photo badge
         ctx.strokeStyle = themeHex;
-        ctx.lineWidth = 2.4;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.roundRect(el.x, el.y, el.width, el.height, el.borderRadius || 12);
+        ctx.roundRect(el.x, drawY, el.width, el.height, el.borderRadius || 12);
         ctx.stroke();
       }
     } else if (el.text) {
-      const weight = el.weight || '600';
-      const size = el.fontSize || 13;
-      ctx.font = `${weight} ${size}px 'Plus Jakarta Sans', sans-serif`;
-      ctx.textAlign = el.align || 'center';
+      const role = (el.type === 'brand') ? 'brand' : ((el.type === 'tagline') ? 'heading' : ((el.type === 'person') ? 'description' : 'contact'));
+      const roleCfg = (window.TypographyEngine && TypographyEngine.getRoleConfig) ? TypographyEngine.getRoleConfig(role) : {};
 
+      const baseSize = el.fontSize || 13;
+      const size = (window.TypographyEngine && TypographyEngine.calculateAdaptiveFontSize) 
+        ? TypographyEngine.calculateAdaptiveFontSize(el.text, role, el.maxWidth || (W - 80), baseSize, 10.5, ctx)
+        : baseSize;
+
+      let elColor = "#f8fafc";
       if (el.type === 'brand') {
-        ctx.fillStyle = "#ffffff";
-      } else if (el.type === 'person') {
-        ctx.fillStyle = "#ffffff";
+        elColor = "#ffffff";
       } else if (el.type === 'tagline') {
-        ctx.fillStyle = "#fef08a";
+        elColor = "#fef08a";
       } else if (el.type === 'contacts_inline' || el.type === 'contact_item') {
-        ctx.fillStyle = themeHex;
-      } else {
-        ctx.fillStyle = "#f8fafc";
+        elColor = themeHex;
       }
+
+      const align = el.align || roleCfg.align || 'center';
+      const vOffset = roleCfg.offsetY || 0;
 
       if (el.wrappedLines && el.wrappedLines.length > 0) {
         const lh = el.lineHeight || (size * 1.3);
         el.wrappedLines.forEach((wLine, wIdx) => {
-          ctx.fillText(wLine, el.x, el.y + (wIdx * lh));
+          if (window.TypographyEngine && TypographyEngine.drawText) {
+            TypographyEngine.drawText(ctx, wLine, el.x, el.y + (wIdx * lh), {
+              role: role,
+              fontSize: size,
+              color: elColor,
+              align: align,
+              offsetY: vOffset
+            });
+          } else {
+            ctx.font = `${size}px 'Plus Jakarta Sans', sans-serif`;
+            ctx.fillStyle = elColor;
+            ctx.textAlign = align;
+            ctx.fillText(wLine, el.x, el.y + (wIdx * lh) + vOffset);
+          }
         });
       } else {
-        ctx.fillText(el.displayText || el.text, el.x, el.y);
+        if (window.TypographyEngine && TypographyEngine.drawText) {
+          TypographyEngine.drawText(ctx, el.displayText || el.text, el.x, el.y, {
+            role: role,
+            fontSize: size,
+            color: elColor,
+            align: align,
+            offsetY: vOffset
+          });
+        } else {
+          ctx.font = `${size}px 'Plus Jakarta Sans', sans-serif`;
+          ctx.fillStyle = elColor;
+          ctx.textAlign = align;
+          ctx.fillText(el.displayText || el.text, el.x, el.y + vOffset);
+        }
       }
     }
   });
@@ -2307,6 +2945,7 @@ async function generateNewPoster() {
         cta: $('#brandExtra').value || 'Celebrate with us',
         footer_style: selectedFooterShape || 'wave',
         footer_position: 'bottom',
+        typography: window.TypographyEngine ? TypographyEngine.getAllConfig() : null,
         logo_base64: uploadedLogoB64 ? uploadedLogoB64.split(',')[1] : null,
         poster_bytes: uploadedBgB64 ? uploadedBgB64.split(',')[1] : null
       })
@@ -2408,7 +3047,8 @@ $('#downloadSvgBtn').onclick = () => {
     footerShape: shape,
     themeColor: color,
     logoUrl: uploadedLogoB64,
-    personPhotoUrl: uploadedPersonPhotoB64
+    personPhotoUrl: uploadedPersonPhotoB64,
+    typography: window.TypographyEngine ? TypographyEngine.getAllConfig() : null
   });
 
   const blob = new Blob([svgXml], { type: 'image/svg+xml;charset=utf-8' });

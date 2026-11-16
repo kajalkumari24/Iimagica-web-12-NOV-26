@@ -141,6 +141,7 @@ class ComposeRequest(BaseModel):
     person_role: str = ""
     footer_height: int | None = None
     layout_archetype: str | None = None
+    typography: dict | None = None
 
 
 class SwitchRequest(BaseModel):
@@ -235,7 +236,8 @@ def compose(req: ComposeRequest):
                          footer_style=req.footer_style, mode=req.mode,
                          image_size=req.image_size, poster_bytes=poster,
                          footer_height=req.footer_height,
-                         person_photo_bytes=person_photo)
+                         person_photo_bytes=person_photo,
+                         typography=req.typography)
     if not out["success"]:
         raise HTTPException(status_code=502, detail=out["error"])
     out["final_image_base64"] = base64.b64encode(out.pop("final_bytes")).decode()

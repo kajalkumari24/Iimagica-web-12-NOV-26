@@ -37,14 +37,28 @@
    */
   function getShapeTopPadding(shape) {
     switch (shape) {
+      case 'political':
+      case 'photo_focused':
+      case 'logo_focused':
+        return 32;
       case 'curved':
+      case 'ribbon':
         return 26;
-      case 'wave':
-        return 22;
       case 'double':
+      case 'festival':
         return 24;
+      case 'wave':
       case 'diagonal':
         return 22;
+      case 'premium_3d':
+        return 20;
+      case 'branding':
+        return 18;
+      case 'corporate':
+      case 'gradient':
+      case 'transparent':
+      case 'split':
+      case 'image_based':
       case 'rounded':
         return 16;
       case 'rectangle':

@@ -52,16 +52,23 @@ FRAME_SHAPE_MAP = {
     "diagonal": "rectangle", "split": "double", "transparent": "rectangle",
 }
 FOOTER_STYLES = ("rectangle", "rounded", "wave", "diagonal", "curved",
-                 "double", "floating", "layered")
+                 "double", "floating", "layered", "corporate", "political",
+                 "festival", "branding", "gradient", "ribbon", "transparent",
+                 "premium_3d", "split", "image_based", "logo_focused", "photo_focused")
 FOOTER_SHAPE_MAP = {
     "rectangle": "rectangle", "full_width": "rectangle", "rounded": "rounded",
     "capsule": "rounded", "arch": "curved", "curved": "curved",
     "floating": "floating", "wave": "wave", "diagonal": "diagonal",
-    "ribbon": "diagonal", "double": "double", "layered": "layered",
-    "split": "layered", "transparent": "rounded",
+    "ribbon": "ribbon", "double": "double", "layered": "layered",
+    "split": "split", "transparent": "transparent",
+    "corporate": "corporate", "political": "political", "festival": "festival",
+    "branding": "branding", "gradient": "gradient", "premium_3d": "premium_3d",
+    "image_based": "image_based", "logo_focused": "logo_focused",
+    "photo_focused": "photo_focused"
 }
 # used when nothing is chosen, so footers do not all look the same
-AUTO_STYLES = ("curved", "wave", "diagonal", "double", "layered", "floating")
+AUTO_STYLES = ("curved", "wave", "corporate", "political", "festival",
+               "branding", "gradient", "double", "ribbon", "premium_3d", "split")
 
 
 # ------------------------------------------------------------------ helpers
@@ -335,7 +342,70 @@ def render_footer(width: int, height: int, shape: str, position: str,
             card, radius=radius, outline=accent + (255,),
             width=(2 if shape == "rounded" else 3) * SS)
         pad_x, box_top, pad_b = m + int(W * 0.04), vy + int(H * 0.08), vy + int(H * 0.06)
-    else:  # rectangle, double
+    elif shape == "political":
+        front_mask = Image.new("L", (W, H), 255)
+        img = _over(img, fill, front_mask)
+        d0 = ImageDraw.Draw(img)
+        sh = max(4, int(H * 0.05))
+        d0.rectangle([0, 0, W, sh], fill=(255, 153, 51, 255))
+        d0.rectangle([0, sh, W, sh * 2], fill=(255, 255, 255, 255))
+        d0.rectangle([0, sh * 2, W, sh * 3], fill=(19, 136, 8, 255))
+        box_top = sh * 3 + int(H * 0.06)
+        pad_x = int(W * 0.04)
+    elif shape == "corporate":
+        front_mask = Image.new("L", (W, H), 255)
+        img = _over(img, darken(primary, 0.45), front_mask)
+        d0 = ImageDraw.Draw(img)
+        d0.rectangle([0, 0, W, max(4, int(H * 0.04))], fill=accent + (255,))
+        div_x = int(W * 0.32)
+        d0.line([(div_x, int(H * 0.15)), (div_x, int(H * 0.85))], fill=(255, 255, 255, 50), width=2 * SS)
+        box_top = int(H * 0.14)
+        pad_x = int(W * 0.04)
+    elif shape == "festival":
+        front_edge = lambda x: 0.18 * H * math.sin(x / W * math.pi)  # soft arch
+        front_mask, pts = _edge_mask(W, H, front_edge)
+        img = _over(img, _vgradient(W, H, (140, 20, 40), (40, 5, 15)), front_mask)
+        d0 = ImageDraw.Draw(img)
+        d0.line(pts, fill=accent + (255,), width=3 * SS)
+        for step_x in range(int(W * 0.08), int(W * 0.92), int(W * 0.06)):
+            d0.ellipse([step_x - 3 * SS, int(front_edge(step_x)) - 3 * SS, step_x + 3 * SS, int(front_edge(step_x)) + 3 * SS], fill=accent + (255,))
+        box_top = int(H * 0.28)
+        pad_x = int(W * 0.04)
+    elif shape == "ribbon":
+        front_mask = Image.new("L", (W, H), 255)
+        img = _over(img, fill, front_mask)
+        d0 = ImageDraw.Draw(img)
+        d0.line([(int(W * 0.02), int(H * 0.10)), (int(W * 0.98), int(H * 0.10))], fill=accent + (255,), width=2 * SS)
+        d0.line([(int(W * 0.02), int(H * 0.90)), (int(W * 0.98), int(H * 0.90))], fill=accent + (255,), width=2 * SS)
+        box_top = int(H * 0.18)
+        pad_x = int(W * 0.05)
+    elif shape == "split":
+        front_mask = Image.new("L", (W, H), 255)
+        split_x = int(W * 0.33)
+        img = _over(img, darken(primary, 0.55), front_mask)
+        d0 = ImageDraw.Draw(img)
+        d0.rectangle([split_x, 0, W, H], fill=darken(primary, 0.25) + (255,))
+        d0.line([(split_x, 0), (split_x, H)], fill=accent + (255,), width=3 * SS)
+        box_top = int(H * 0.14)
+        pad_x = int(W * 0.04)
+    elif shape == "premium_3d":
+        front_mask = Image.new("L", (W, H), 255)
+        img = _over(img, fill, front_mask)
+        d0 = ImageDraw.Draw(img)
+        d0.line([(0, 1), (W, 1)], fill=(255, 255, 255, 160), width=2 * SS)
+        d0.line([(0, H - 2), (W, H - 2)], fill=(0, 0, 0, 180), width=2 * SS)
+        box_top = int(H * 0.14)
+        pad_x = int(W * 0.04)
+    elif shape == "transparent":
+        front_mask = Image.new("L", (W, H), 255)
+        glass = Image.new("RGBA", (W, H), (14, 10, 28, 175))
+        img = Image.alpha_composite(img, glass)
+        d0 = ImageDraw.Draw(img)
+        d0.rectangle([int(W * 0.02), int(H * 0.06), int(W * 0.98), int(H * 0.94)],
+                     outline=accent + (160,), width=2 * SS)
+        box_top = int(H * 0.14)
+        pad_x = int(W * 0.04)
+    else:  # rectangle, double, branding, gradient, image_based, logo_focused, photo_focused
         front_mask = Image.new("L", (W, H), 255)
         img = _over(img, fill, front_mask)
         d0 = ImageDraw.Draw(img)
@@ -509,7 +579,8 @@ def compose_poster(registry, prompt: str, business: str = "",
                    mode: str = "artwork", image_size: str = "1K",
                    poster_bytes: bytes | None = None,
                    footer_height: int | None = None,
-                   person_photo_bytes: bytes | None = None) -> dict:
+                   person_photo_bytes: bytes | None = None,
+                   typography: dict | None = None) -> dict:
     """Build the complete poster.
 
     mode="artwork": model paints art only; headline/footer drawn by code (default).
