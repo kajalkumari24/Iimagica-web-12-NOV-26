@@ -298,6 +298,111 @@ textarea.input-field {
   font-weight: 700;
 }
 
+/* Person Photo Upload */
+.photo-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.photo-thumb-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1.5px dashed rgba(6, 182, 212, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.photo-thumb-box:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+}
+.photo-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Smart Content-Aware Auto-Layout Panel */
+.auto-layout-panel {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.auto-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.layout-badge {
+  background: rgba(6, 182, 212, 0.16);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.archetype-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+  .archetype-pills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.btn-archetype-pill {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-muted);
+  border-radius: 5px;
+  padding: 5px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-archetype-pill:hover {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--card-border-hover);
+  color: #ffffff;
+}
+.btn-archetype-pill.active {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: var(--accent-cyan);
+  color: #22d3ee;
+  font-weight: 700;
+}
+.layout-warning-notice {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fef08a;
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-size: 10.5px;
+  margin-top: 6px;
+  display: none;
+}
+
 /* Add More Section / Dynamic Custom Fields */
 .btn-add-section {
   display: inline-flex;
@@ -898,7 +1003,7 @@ textarea.input-field {
         </div>
         <div class="logo-actions">
           <div style="font-size: 11.5px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-            <span>Logo Upload</span>
+            <span>Brand Logo Upload</span>
             <div class="frame-color-indicator">
               <span>Frame Color:</span>
               <label class="color-dot-swatch-wrapper" title="Click to fine-tune frame color">
@@ -917,10 +1022,61 @@ textarea.input-field {
             <button type="button" class="btn-logo-delete" id="removeLogoBtn" title="Reset to default logo">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
-            <span style="font-size: 10.5px; color: var(--text-sub);">Auto-extracts frame color &amp; scales footer</span>
+            <span style="font-size: 10.5px; color: var(--text-sub);">Auto-extracts frame color &amp; harmonizes layout</span>
           </div>
         </div>
         <input type="file" id="logoFileInput" accept="image/*" hidden>
+      </div>
+
+      <!-- Person Photo Upload Section (Optional for Founder, Politician, Doctor, Agent) -->
+      <div class="photo-upload-container">
+        <div class="photo-thumb-box" id="personPhotoThumbBox" title="Click to upload person photo">
+          <img id="personPhotoPreviewImg" style="display: none;" alt="Person Photo">
+          <svg id="personPhotoPlaceholderIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="logo-actions">
+          <div style="font-size: 11.5px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+            <span>Person Photograph (Optional)</span>
+            <span style="font-size: 9.5px; color: var(--accent-cyan);">Aspect ratio preserved</span>
+          </div>
+          <div class="logo-btn-row">
+            <button type="button" class="btn-logo-action" id="changePersonPhotoBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Photo
+            </button>
+            <button type="button" class="btn-logo-delete" id="removePersonPhotoBtn" title="Remove person photo" style="display: none;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+            <span style="font-size: 10.5px; color: var(--text-sub);">Automatically triggers Photo-Focused layout</span>
+          </div>
+        </div>
+        <input type="file" id="personPhotoFileInput" accept="image/*" hidden>
+      </div>
+
+      <!-- Smart Content-Aware Auto-Layout Control Panel -->
+      <div class="auto-layout-panel">
+        <div class="auto-layout-header">
+          <span style="font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 5px;">
+            <span>⚡</span> Content-Aware Layout Engine:
+          </span>
+          <span class="layout-badge" id="activeLayoutBadge">Balanced Two-Row (Auto)</span>
+        </div>
+        <div class="archetype-pills" id="archetypePillsGrid">
+          <button type="button" class="btn-archetype-pill active" data-archetype="auto">⚡ Auto (Best Fit)</button>
+          <button type="button" class="btn-archetype-pill" data-archetype="balanced-two-row">Balanced 2-Row</button>
+          <button type="button" class="btn-archetype-pill" data-archetype="compact-single-row">Compact 1-Row</button>
+          <button type="button" class="btn-archetype-pill" data-archetype="multi-row-stacked">Multi-Row Stack</button>
+          <button type="button" class="btn-archetype-pill" data-archetype="photo-focused">Photo-Focused</button>
+          <button type="button" class="btn-archetype-pill" data-archetype="three-column-grid">3-Column Grid</button>
+        </div>
+        <div style="font-size: 10px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+          <span>Calculated Height: <strong id="calculatedHeightText" style="color: #22d3ee;">135px</strong> (Formula: \(H_f=P_t+P_b+\sum H_r+\sum G_r\))</span>
+          <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+            <input type="checkbox" id="autoHeightCheck" checked style="accent-color: var(--accent-cyan);">
+            <span>Auto Sizing</span>
+          </label>
+        </div>
+        <div id="layoutWarningNotice" class="layout-warning-notice"></div>
       </div>
 
       <!-- Footer Shape & Style Selection -->
@@ -951,15 +1107,35 @@ textarea.input-field {
         </div>
       </div>
 
-      <!-- Standard Brand Details -->
+      <!-- Standard Brand & Person Details -->
+      <div class="form-group grid-2">
+        <div>
+          <label class="form-label">Brand / Business Name</label>
+          <input class="input-field" id="brandName" value="Royal Sweets &amp; Bakery">
+        </div>
+        <div>
+          <label class="form-label">Tagline / Footer Slogan</label>
+          <input class="input-field" id="brandExtra" value="Celebrate with sweetness &amp; joy">
+        </div>
+      </div>
+      <div class="form-group grid-2">
+        <div>
+          <label class="form-label">Person Name (Optional)</label>
+          <input class="input-field" id="personName" placeholder="e.g. Dr. Rajesh Sharma">
+        </div>
+        <div>
+          <label class="form-label">Person Designation / Title</label>
+          <input class="input-field" id="personRole" placeholder="e.g. Managing Director">
+        </div>
+      </div>
       <div class="form-group grid-2">
         <div>
           <label class="form-label">Brand Website</label>
-          <input class="input-field" id="brandWeb" value="https://yourbrand.com">
+          <input class="input-field" id="brandWeb" value="https://royalsweets.com">
         </div>
         <div>
           <label class="form-label">Brand Email</label>
-          <input class="input-field" id="brandEmail" value="hello@yourbrand.com">
+          <input class="input-field" id="brandEmail" value="hello@royalsweets.com">
         </div>
       </div>
       <div class="form-group grid-2">
@@ -968,8 +1144,8 @@ textarea.input-field {
           <input class="input-field" id="brandPhone" value="+91 98765 43210">
         </div>
         <div>
-          <label class="form-label">Tagline/Footer Text</label>
-          <input class="input-field" id="brandExtra" value="Celebrate with us | YourBrand.com">
+          <label class="form-label">Location / Address</label>
+          <input class="input-field" id="brandAddress" placeholder="e.g. MG Road, Connaught Place, New Delhi">
         </div>
       </div>
 
@@ -1019,6 +1195,9 @@ textarea.input-field {
         </button>
         <button type="button" class="btn-action-sm" id="downloadPdfBtn">
           <span>📄</span> Download PDF
+        </button>
+        <button type="button" class="btn-action-sm" id="downloadSvgBtn" title="Download Content-Aware Vector SVG Footer">
+          <span>📐</span> Download SVG Footer
         </button>
         <button type="button" class="btn-action-sm" id="shareBtn">
           <span>🔗</span> Share
@@ -1083,6 +1262,13 @@ textarea.input-field {
 <footer class="app-footer">
   Created By: <strong>Kajal Kumari</strong>
 </footer>
+
+<!-- Automatic Content-Aware Footer Layout Engines -->
+<script src="/static/js/contentAnalysisEngine.js"></script>
+<script src="/static/js/responsiveSizeEngine.js"></script>
+<script src="/static/js/layoutEngine.js"></script>
+<script src="/static/js/contentFitEngine.js"></script>
+<script src="/static/js/footerSvgRenderer.js"></script>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -1190,6 +1376,81 @@ $('#logoFileInput').onchange = (e) => handleLogoFile(e.target.files[0]);
 $('#removeLogoBtn').onclick = resetDefaultLogo;
 $('#frameColorDot').onclick = () => $('#frameColorInput').click();
 $('#frameColorInput').oninput = (e) => setFrameColor(e.target.value);
+
+// -------------------------------------------------------------
+// Person Photo Upload & State
+// -------------------------------------------------------------
+let uploadedPersonPhotoB64 = null;
+let personPhotoImageObj = null;
+
+function handlePersonPhotoFile(f) {
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedPersonPhotoB64 = reader.result;
+    const img = new Image();
+    img.onload = () => {
+      personPhotoImageObj = img;
+      $('#personPhotoPreviewImg').src = reader.result;
+      $('#personPhotoPreviewImg').style.display = 'block';
+      $('#personPhotoPlaceholderIcon').style.display = 'none';
+      $('#removePersonPhotoBtn').style.display = 'inline-flex';
+      // Auto-switch to photo-focused layout if on auto
+      if (selectedLayoutArchetype === 'auto') {
+        $$('#archetypePillsGrid .btn-archetype-pill').forEach(b => {
+          if (b.getAttribute('data-archetype') === 'auto') b.classList.add('active');
+        });
+      }
+      schedulePosterUpdate();
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function resetPersonPhoto() {
+  uploadedPersonPhotoB64 = null;
+  personPhotoImageObj = null;
+  $('#personPhotoPreviewImg').src = '';
+  $('#personPhotoPreviewImg').style.display = 'none';
+  $('#personPhotoPlaceholderIcon').style.display = 'block';
+  $('#removePersonPhotoBtn').style.display = 'none';
+  schedulePosterUpdate();
+}
+
+$('#changePersonPhotoBtn').onclick = () => $('#personPhotoFileInput').click();
+$('#personPhotoThumbBox').onclick = () => $('#personPhotoFileInput').click();
+$('#personPhotoFileInput').onchange = (e) => handlePersonPhotoFile(e.target.files[0]);
+$('#removePersonPhotoBtn').onclick = resetPersonPhoto;
+
+// -------------------------------------------------------------
+// Content-Aware Auto-Layout Archetype Handlers
+// -------------------------------------------------------------
+let selectedLayoutArchetype = "auto";
+let isAutoHeightEnabled = true;
+let lastSolvedFit = null;
+
+$$('#archetypePillsGrid .btn-archetype-pill').forEach(btn => {
+  btn.onclick = () => {
+    $$('#archetypePillsGrid .btn-archetype-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedLayoutArchetype = btn.getAttribute('data-archetype');
+    schedulePosterUpdate();
+  };
+});
+
+if ($('#autoHeightCheck')) {
+  $('#autoHeightCheck').onchange = (e) => {
+    isAutoHeightEnabled = e.target.checked;
+    schedulePosterUpdate();
+  };
+}
+
+// Input listeners for brand & person fields
+['#brandName', '#personName', '#personRole', '#brandAddress', '#brandExtra', '#brandWeb', '#brandEmail', '#brandPhone'].forEach(sel => {
+  const el = $(sel);
+  if (el) el.oninput = schedulePosterUpdate;
+});
 
 // -------------------------------------------------------------
 // Add More Section / Dynamic Custom Fields
@@ -1300,6 +1561,10 @@ $('#posterDesc').oninput = () => {
 };
 $('#posterTitle').oninput = schedulePosterUpdate;
 $('#posterSecondary').oninput = schedulePosterUpdate;
+if ($('#brandName')) $('#brandName').oninput = schedulePosterUpdate;
+if ($('#personName')) $('#personName').oninput = schedulePosterUpdate;
+if ($('#personRole')) $('#personRole').oninput = schedulePosterUpdate;
+if ($('#brandAddress')) $('#brandAddress').oninput = schedulePosterUpdate;
 $('#brandPhone').oninput = schedulePosterUpdate;
 $('#brandWeb').oninput = schedulePosterUpdate;
 $('#brandEmail').oninput = schedulePosterUpdate;
@@ -1696,23 +1961,63 @@ function renderLivePoster() {
   ctx.shadowBlur = 0;
 
   // -----------------------------------------------------------
-  // 4. Content-Adaptive Footer Ribbon & Branding
+  // 4. Automatic Content-Aware Footer Layout Engine
   // -----------------------------------------------------------
-  // Collect all contact items
-  const contactItems = [];
-  if (brandWeb) contactItems.push(`🌐 ${brandWeb.replace(/^https?:\/\//, '')}`);
-  if (brandPhone) contactItems.push(`📞 ${brandPhone}`);
-  if (brandEmail) contactItems.push(`✉ ${brandEmail}`);
+  const brandTitle = ($('#brandName')?.value || 'Royal Sweets & Bakery').trim();
+  const personName = ($('#personName')?.value || '').trim();
+  const personRole = ($('#personRole')?.value || '').trim();
+  const brandAddress = ($('#brandAddress')?.value || '').trim();
+
+  // Construct raw content object
+  const rawContent = {
+    brandName: brandTitle,
+    personName,
+    personRole,
+    tagline: extra,
+    logoImage: (logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0) ? logoImageObj : null,
+    personPhoto: (personPhotoImageObj && personPhotoImageObj.complete && personPhotoImageObj.naturalWidth > 0) ? personPhotoImageObj : null,
+    contacts: []
+  };
+
+  if (brandPhone) rawContent.contacts.push({ type: 'phone', label: 'Call', value: brandPhone, icon: '📞' });
+  if (brandWeb) rawContent.contacts.push({ type: 'web', label: 'Web', value: brandWeb.replace(/^https?:\/\//, ''), icon: '🌐' });
+  if (brandEmail) rawContent.contacts.push({ type: 'email', label: 'Email', value: brandEmail, icon: '✉' });
+  if (brandAddress) rawContent.contacts.push({ type: 'address', label: 'Loc', value: brandAddress, icon: '📍' });
   customFields.forEach(cf => {
-    contactItems.push(`${cf.label.split(' ')[0]} ${cf.value}`);
+    rawContent.contacts.push({ type: 'custom', label: cf.label.replace(/^.+?\s/, ''), value: cf.value, icon: cf.label.split(' ')[0] });
   });
 
-  // Calculate dynamic ribbon height based on items
-  let ribbonHeight = 110;
-  if (contactItems.length >= 5) ribbonHeight = 170;
-  else if (contactItems.length >= 3) ribbonHeight = 140;
-  else if (contactItems.length >= 1) ribbonHeight = 120;
+  // Execute ContentFitEngine to calculate exact layout, heights and coordinates
+  let solvedFit = ContentFitEngine.solveContentFit(
+    rawContent,
+    W,
+    H,
+    selectedFooterShape,
+    {
+      manualArchetype: (selectedLayoutArchetype !== 'auto') ? selectedLayoutArchetype : null,
+      maxFooterRatio: 0.28
+    }
+  );
+  lastSolvedFit = solvedFit;
 
+  // Update UI Layout Badge & Metrics
+  if ($('#activeLayoutBadge')) {
+    $('#activeLayoutBadge').textContent = `${solvedFit.layoutTitle} (H: ${solvedFit.footerHeight}px)`;
+  }
+  if ($('#calculatedHeightText')) {
+    $('#calculatedHeightText').textContent = `${solvedFit.footerHeight}px`;
+  }
+  const warnNotice = $('#layoutWarningNotice');
+  if (warnNotice) {
+    if (solvedFit.warnings && solvedFit.warnings.length > 0) {
+      warnNotice.style.display = 'block';
+      warnNotice.textContent = 'ℹ️ ' + solvedFit.warnings.join(' | ');
+    } else {
+      warnNotice.style.display = 'none';
+    }
+  }
+
+  const ribbonHeight = solvedFit.footerHeight;
   const fy = H - frameInset - ribbonHeight;
 
   // Dynamic Logo-Harmonized Footer Gradient (Visibly shifts to match logo colors)
@@ -1728,7 +2033,7 @@ function renderLivePoster() {
   const x2 = W - frameInset - 8;
   const bottomY = H - frameInset - 8;
 
-  // Draw Selected Footer Shape
+  // Draw Selected Footer Shape Background
   if (selectedFooterShape === 'curved') {
     // Elegant Curved Arch
     ctx.beginPath();
@@ -1811,48 +2116,67 @@ function renderLivePoster() {
     ctx.stroke();
   }
 
-  // Draw Logo in Footer (or center crest)
-  const hasLogo = logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0;
-  if (hasLogo) {
-    const logoSize = Math.min(54, ribbonHeight * 0.42);
-    const logoX = W * 0.16;
-    const logoY = fy + (ribbonHeight * 0.46) - (logoSize / 2);
+  // Draw Elements Positioned by the Layout Engine
+  solvedFit.elements.forEach(el => {
+    if (el.type === 'logo') {
+      const hasLogo = logoImageObj && logoImageObj.complete && logoImageObj.naturalWidth > 0;
+      if (hasLogo) {
+        // Medallion circle for logo
+        ctx.fillStyle = "rgba(17, 13, 36, 0.92)";
+        ctx.strokeStyle = themeHex;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(el.x + el.width / 2, el.y + el.height / 2, (el.height / 2) + 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
 
-    // Medallion circle for logo
-    ctx.fillStyle = "rgba(17, 13, 36, 0.9)";
-    ctx.strokeStyle = themeHex;
-    ctx.lineWidth = 1.8;
-    ctx.beginPath();
-    ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, (logoSize / 2) + 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+        ctx.drawImage(logoImageObj, el.x, el.y, el.width, el.height);
+      }
+    } else if (el.type === 'person_photo') {
+      const hasPhoto = personPhotoImageObj && personPhotoImageObj.complete && personPhotoImageObj.naturalWidth > 0;
+      if (hasPhoto) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(el.x, el.y, el.width, el.height, el.borderRadius || 12);
+        ctx.clip();
+        ctx.drawImage(personPhotoImageObj, el.x, el.y, el.width, el.height);
+        ctx.restore();
 
-    ctx.drawImage(logoImageObj, logoX, logoY, logoSize, logoSize);
-  }
+        // Decorative border around photo badge
+        ctx.strokeStyle = themeHex;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.roundRect(el.x, el.y, el.width, el.height, el.borderRadius || 12);
+        ctx.stroke();
+      }
+    } else if (el.text) {
+      const weight = el.weight || '600';
+      const size = el.fontSize || 13;
+      ctx.font = `${weight} ${size}px 'Plus Jakarta Sans', sans-serif`;
+      ctx.textAlign = el.align || 'center';
 
-  // Tagline text
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "700 21px 'Plus Jakarta Sans', sans-serif";
-  const taglineY = fy + 38;
-  ctx.fillText(extra, W / 2, taglineY);
+      if (el.type === 'brand') {
+        ctx.fillStyle = "#ffffff";
+      } else if (el.type === 'person') {
+        ctx.fillStyle = "#ffffff";
+      } else if (el.type === 'tagline') {
+        ctx.fillStyle = "#fef08a";
+      } else if (el.type === 'contacts_inline' || el.type === 'contact_item') {
+        ctx.fillStyle = themeHex;
+      } else {
+        ctx.fillStyle = "#f8fafc";
+      }
 
-  // Contact details & custom fields layout (adaptive rows)
-  if (contactItems.length > 0) {
-    ctx.fillStyle = themeHex;
-    ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
-
-    if (contactItems.length <= 3) {
-      const lineText = contactItems.join("   •   ");
-      ctx.fillText(lineText, W / 2, fy + 72);
-    } else {
-      // Multi-row adaptive display
-      const half = Math.ceil(contactItems.length / 2);
-      const row1 = contactItems.slice(0, half).join("   •   ");
-      const row2 = contactItems.slice(half).join("   •   ");
-      ctx.fillText(row1, W / 2, fy + 68);
-      ctx.fillText(row2, W / 2, fy + 98);
+      if (el.wrappedLines && el.wrappedLines.length > 0) {
+        const lh = el.lineHeight || (size * 1.3);
+        el.wrappedLines.forEach((wLine, wIdx) => {
+          ctx.fillText(wLine, el.x, el.y + (wIdx * lh));
+        });
+      } else {
+        ctx.fillText(el.displayText || el.text, el.x, el.y);
+      }
     }
-  }
+  });
 
   const dataUrl = canvas.toDataURL('image/png');
   currentPosterDataUrl = dataUrl;
@@ -1967,13 +2291,19 @@ async function generateNewPoster() {
         prompt: prompt + `, ${selectedStyle} style, high quality artwork`,
         headline: title,
         subheading: desc,
-        business: "Brand",
+        business: ($('#brandName') ? $('#brandName').value.trim() : '') || "Brand",
+        person_name: ($('#personName') ? $('#personName').value.trim() : '') || "",
+        person_role: ($('#personRole') ? $('#personRole').value.trim() : '') || "",
+        person_photo_base64: uploadedPersonPhotoB64 ? uploadedPersonPhotoB64.split(',')[1] : null,
+        footer_height: (lastSolvedFit && lastSolvedFit.footerHeight) ? lastSolvedFit.footerHeight : 160,
+        layout_archetype: (lastSolvedFit && lastSolvedFit.archetype) ? lastSolvedFit.archetype : selectedLayoutArchetype,
         style: selectedStyle,
         width: w || 1080,
         height: h || 1350,
         phone: $('#brandPhone').value || '+91 98765 43210',
         website: $('#brandWeb').value || 'https://yourbrand.com',
         email: $('#brandEmail').value || 'hello@yourbrand.com',
+        address: ($('#brandAddress') ? $('#brandAddress').value.trim() : ''),
         cta: $('#brandExtra').value || 'Celebrate with us',
         footer_style: selectedFooterShape || 'wave',
         footer_position: 'bottom',
@@ -2053,6 +2383,44 @@ $('#downloadPdfBtn').onclick = () => {
   } else {
     window.print();
   }
+};
+
+$('#downloadSvgBtn').onclick = () => {
+  if (!window.FooterSvgRenderer) {
+    alert("SVG Renderer not loaded.");
+    return;
+  }
+  const [w, h] = ($('#sizeSelect').value || '1080x1350').split('x').map(Number);
+  const color = currentFrameColor || '#fbbf24';
+  const shape = selectedFooterShape || 'curved';
+
+  if (!lastSolvedFit) {
+    renderLivePoster();
+  }
+
+  if (!lastSolvedFit) {
+    alert("Footer layout could not be calculated.");
+    return;
+  }
+
+  const svgXml = FooterSvgRenderer.renderSvg(lastSolvedFit, {
+    width: w || 1080,
+    footerShape: shape,
+    themeColor: color,
+    logoUrl: uploadedLogoB64,
+    personPhotoUrl: uploadedPersonPhotoB64
+  });
+
+  const blob = new Blob([svgXml], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `iimagica-footer-${lastSolvedFit.archetype || shape}.svg`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("Vector SVG Footer downloaded!");
 };
 
 $('#shareBtn').onclick = () => {

@@ -136,6 +136,11 @@ class ComposeRequest(BaseModel):
     image_size: str = Field(default="1K", pattern="^(1K|2K|4K)$")
     poster_base64: str | None = None
     logo_base64: str | None = None
+    person_photo_base64: str | None = None
+    person_name: str = ""
+    person_role: str = ""
+    footer_height: int | None = None
+    layout_archetype: str | None = None
 
 
 class SwitchRequest(BaseModel):
@@ -210,8 +215,14 @@ def compose(req: ComposeRequest):
             logo = base64.b64decode(req.logo_base64)
         except Exception as exc:  # noqa: BLE001
             raise HTTPException(status_code=400, detail="Invalid logo_base64") from exc
+    person_photo = None
+    if req.person_photo_base64:
+        try:
+            person_photo = base64.b64decode(req.person_photo_base64)
+        except Exception:
+            pass
     details = {k: getattr(req, k) for k in
-               ("phone", "whatsapp", "email", "website", "address", "cta")}
+               ("phone", "whatsapp", "email", "website", "address", "cta", "person_name", "person_role")}
     poster = None
     if req.poster_base64:
         try:
@@ -222,7 +233,9 @@ def compose(req: ComposeRequest):
                          req.style, req.width, req.height, req.footer_position,
                          headline=req.headline, subheading=req.subheading,
                          footer_style=req.footer_style, mode=req.mode,
-                         image_size=req.image_size, poster_bytes=poster)
+                         image_size=req.image_size, poster_bytes=poster,
+                         footer_height=req.footer_height,
+                         person_photo_bytes=person_photo)
     if not out["success"]:
         raise HTTPException(status_code=502, detail=out["error"])
     out["final_image_base64"] = base64.b64encode(out.pop("final_bytes")).decode()

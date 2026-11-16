@@ -224,6 +224,9 @@ def footer_lines(business: str, d: dict, include_cta: bool = True) -> list[tuple
     lines: list[tuple[str, bool]] = []
     if business.strip():
         lines.append((business.strip(), True))
+    if g("person_name"):
+        p_role = f" — {g('person_role')}" if g("person_role") else ""
+        lines.append((f"{g('person_name')}{p_role}", False))
     if include_cta and g("cta"):
         lines.append((g("cta"), False))
     contact = []
@@ -504,7 +507,9 @@ def compose_poster(registry, prompt: str, business: str = "",
                    footer_position: str = "bottom", *, headline: str = "",
                    subheading: str = "", footer_style: str = "auto",
                    mode: str = "artwork", image_size: str = "1K",
-                   poster_bytes: bytes | None = None) -> dict:
+                   poster_bytes: bytes | None = None,
+                   footer_height: int | None = None,
+                   person_photo_bytes: bytes | None = None) -> dict:
     """Build the complete poster.
 
     mode="artwork": model paints art only; headline/footer drawn by code (default).
@@ -595,13 +600,17 @@ def compose_poster(registry, prompt: str, business: str = "",
     cta = str(details.get("cta") or "").strip()
     lines = footer_lines(business, details, include_cta=False)
     n_rows = len(lines) + (1 if cta else 0)
-    if ft.get("height_ratio") is not None:
+    if footer_height is not None and footer_height > 0:
+        fh = max(int(height * 0.08), min(int(height * 0.32), int(footer_height)))
+    elif ft.get("height_ratio") is not None:
         ratio = _num(ft.get("height_ratio"), 0.15, 0.10, 0.22)
+        fh = int(height * ratio)
     elif ft.get("height_px") is not None:
         ratio = _num(ft.get("height_px"), height * 0.15, height * 0.10, height * 0.22) / height
+        fh = int(height * ratio)
     else:
         ratio = _num(0.09 + 0.026 * n_rows, 0.15, 0.12, 0.24)
-    fh = int(height * ratio)
+        fh = int(height * ratio)
 
     # 4) headline (artwork mode; moves below a top footer), footer, frame
     canvas = poster.convert("RGBA")
